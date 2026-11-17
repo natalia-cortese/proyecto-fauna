@@ -1,0 +1,263 @@
+{
+	"name": "Event sheet 1",
+	"events": [
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"sid": 599765811789324,
+					"parameters": {
+						"key": 39
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "move-forward",
+					"objectClass": "spriteNena",
+					"sid": 387875983351537,
+					"parameters": {
+						"distance": "10"
+					}
+				},
+				{
+					"id": "move-forward",
+					"objectClass": "spriteNene",
+					"sid": 268965342102448,
+					"parameters": {
+						"distance": "10"
+					}
+				}
+			],
+			"sid": 323668602326063
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"sid": 985351004683662,
+					"parameters": {
+						"key": 38
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "move-forward",
+					"objectClass": "spriteNena",
+					"sid": 133352351660318,
+					"parameters": {
+						"distance": "8"
+					}
+				},
+				{
+					"id": "move-forward",
+					"objectClass": "spriteNene",
+					"sid": 823661820271897,
+					"parameters": {
+						"distance": "8"
+					}
+				}
+			],
+			"sid": 962547022457503
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"sid": 664552201420735,
+					"parameters": {
+						"key": 39
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-mirrored",
+					"objectClass": "spriteNena",
+					"sid": 114446814636898,
+					"parameters": {
+						"state": "mirrored"
+					}
+				},
+				{
+					"id": "set-mirrored",
+					"objectClass": "spriteNene",
+					"sid": 452691662811460,
+					"parameters": {
+						"state": "mirrored"
+					}
+				}
+			],
+			"sid": 347378531104936
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"sid": 777185783988505,
+					"parameters": {
+						"key": 37
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-mirrored",
+					"objectClass": "spriteNena",
+					"sid": 377671403489963,
+					"parameters": {
+						"state": "mirrored"
+					}
+				},
+				{
+					"id": "set-mirrored",
+					"objectClass": "spriteNene",
+					"sid": 128848566702619,
+					"parameters": {
+						"state": "mirrored"
+					}
+				}
+			],
+			"sid": 754499505436871
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-collision-with-another-object",
+					"objectClass": "spriteNena",
+					"sid": 434708897015902,
+					"parameters": {
+						"object": "spriteSaguaro"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "restart-layout",
+					"objectClass": "System",
+					"sid": 557549391801571
+				}
+			],
+			"sid": 895229848703039
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-collision-with-another-object",
+					"objectClass": "spriteNene",
+					"sid": 656443321141034,
+					"parameters": {
+						"object": "spriteSaguaro"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "restart-layout",
+					"objectClass": "System",
+					"sid": 378980343604283
+				}
+			],
+			"sid": 616823873990232
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-x-seconds",
+					"objectClass": "System",
+					"sid": 159423259672943,
+					"parameters": {
+						"interval-seconds": "1.0"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "find-path",
+					"objectClass": "spriteNene",
+					"sid": 970400723015398,
+					"behaviorType": "Pathfinding",
+					"parameters": {
+						"x": "spriteNena.X",
+						"y": "spriteNena.Y"
+					}
+				}
+			],
+			"sid": 298374819269222
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-collision-with-another-object",
+					"objectClass": "spriteJaula",
+					"sid": 915085758887195,
+					"parameters": {
+						"object": "spriteNena"
+					}
+				},
+				{
+					"id": "compare-instance-variable",
+					"objectClass": "spriteNena",
+					"sid": 836472223119850,
+					"parameters": {
+						"instance-variable": "llave",
+						"comparison": 0,
+						"value": "1"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "destroy",
+					"objectClass": "spriteJaula",
+					"sid": 624321098355441
+				}
+			],
+			"sid": 892646067091206
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-collision-with-another-object",
+					"objectClass": "Sprite2",
+					"sid": 755110316301341,
+					"parameters": {
+						"object": "spriteNena"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-instvar-value",
+					"objectClass": "spriteNena",
+					"sid": 442417776431444,
+					"parameters": {
+						"instance-variable": "llave",
+						"value": "1"
+					}
+				},
+				{
+					"id": "destroy",
+					"objectClass": "Sprite2",
+					"sid": 968148024302523
+				}
+			],
+			"sid": 670952537952419
+		}
+	],
+	"sid": 424060678370981
+}
