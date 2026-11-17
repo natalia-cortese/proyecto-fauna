@@ -1,6 +1,6 @@
 {
 	"projectFormatVersion": 1,
-	"savedWithRelease": 50603,
+	"savedWithRelease": 50604,
 	"name": "fauna",
 	"runtime": "c3",
 	"useWorker": "auto",
@@ -163,7 +163,19 @@
 					}
 				}
 			],
-			"subfolders": []
+			"subfolders": [
+				{
+					"items": [],
+					"subfolders": [
+						{
+							"items": [],
+							"subfolders": [],
+							"name": "generador"
+						}
+					],
+					"name": "construct_laberinto"
+				}
+			]
 		},
 		"sound": {
 			"items": [],
