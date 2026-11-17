@@ -1,0 +1,94 @@
+{
+	"name": "Inicio",
+	"events": [
+		{
+			"eventType": "variable",
+			"name": "REGION",
+			"type": "string",
+			"initialValue": "puna",
+			"comment": "Zona elegida en la pantalla de inicio; el laberinto sortea animales de esta región.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 124261788222372
+		},
+		{
+			"eventType": "comment",
+			"text": "Pantalla de inicio: elegir zona en el mapa (scripts/inicio.js). Solo la Puna está habilitada."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 824768487616437
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "iniciarInicio(runtime);"
+				}
+			],
+			"sid": 718641458468862
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 810402273478017
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "actualizarInicio(runtime);"
+				}
+			],
+			"sid": 558740363440464
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"parameters": {
+						"key": 13
+					},
+					"sid": 312201988083333
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "jugar(runtime);"
+				}
+			],
+			"sid": 291455777187790
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"parameters": {
+						"key": 32
+					},
+					"sid": 260861059350108
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "jugar(runtime);"
+				}
+			],
+			"sid": 625385254813543
+		}
+	],
+	"sid": 513630808100713
+}

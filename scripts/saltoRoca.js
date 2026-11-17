@@ -1,95 +1,100 @@
-// La nena salta una roca cuando camina contra ella, si del otro lado hay lugar libre.
-// Se llama en cada tick desde Event sheet 1.
+// Un personaje salta una roca cuando camina contra ella, si del otro lado hay lugar libre.
+// Lo llama actualizarPersonajes() en cada tick, para el personaje que se está manejando.
 
 const DURACION = 0.4;
 const ALTURA = 28;
 const MARGEN = 4;
 
-const FLECHAS = [
-	["ArrowRight", 1, 0],
-	["ArrowLeft", -1, 0],
-	["ArrowDown", 0, 1],
-	["ArrowUp", 0, -1]
-];
+const saltando = new Map();
 
-export function saltarRoca(runtime)
+export function estaSaltando(inst)
 {
-	const nena = runtime.objects.spriteNena.getFirstInstance();
-	if (!nena || nena.instVars.jumping || !runtime.keyboard) return;
-
-	const apretadas = FLECHAS.filter(([tecla]) => runtime.keyboard.isKeyDown(tecla));
-	if (apretadas.length !== 1) return;
-	const [, dx, dy] = apretadas[0];
-
-	const roca = rocaDelante(runtime, nena, dx, dy);
-	if (!roca) return;
-
-	const destino = aterrizaje(nena, roca, dx, dy);
-	if (!destino) return;
-
-	saltar(runtime, nena, destino);
+	return saltando.has(inst);
 }
 
-function rocaDelante(runtime, nena, dx, dy)
+export function cancelarSalto(inst)
 {
-	nena.x += dx * MARGEN;
-	nena.y += dy * MARGEN;
-	const roca = runtime.objects.spriteRock.getAllInstances().find(r => nena.testOverlap(r));
-	nena.x -= dx * MARGEN;
-	nena.y -= dy * MARGEN;
-	return roca;
+	saltando.get(inst)?.();
 }
 
-function aterrizaje(nena, roca, dx, dy)
+export function saltarRoca(runtime, inst, dx, dy)
+{
+	if (saltando.has(inst)) return false;
+
+	const roca = tocando(runtime.objects.spriteRock, inst, dx, dy);
+	if (!roca) return false;
+
+	const destino = aterrizaje(inst, roca, dx, dy);
+	if (!destino) return false;
+
+	saltar(runtime, inst, destino);
+	return true;
+}
+
+export function tocando(tipo, inst, dx, dy)
+{
+	inst.x += dx * MARGEN;
+	inst.y += dy * MARGEN;
+	const otro = tipo.getAllInstances().find(o => inst.testOverlap(o));
+	inst.x -= dx * MARGEN;
+	inst.y -= dy * MARGEN;
+	return otro;
+}
+
+function aterrizaje(inst, roca, dx, dy)
 {
 	const r = roca.getBoundingBox();
-	const n = nena.getBoundingBox();
-	const x = dx > 0 ? r.right + (nena.x - n.left) + MARGEN
-		: dx < 0 ? r.left - (n.right - nena.x) - MARGEN
-		: nena.x;
-	const y = dy > 0 ? r.bottom + (nena.y - n.top) + MARGEN
-		: dy < 0 ? r.top - (n.bottom - nena.y) - MARGEN
-		: nena.y;
+	const n = inst.getBoundingBox();
+	const x = dx > 0 ? r.right + (inst.x - n.left) + MARGEN
+		: dx < 0 ? r.left - (n.right - inst.x) - MARGEN
+		: inst.x;
+	const y = dy > 0 ? r.bottom + (inst.y - n.top) + MARGEN
+		: dy < 0 ? r.top - (n.bottom - inst.y) - MARGEN
+		: inst.y;
 
-	const [x0, y0] = [nena.x, nena.y];
-	nena.x = x;
-	nena.y = y;
-	const libre = !nena.testOverlapSolid();
-	nena.x = x0;
-	nena.y = y0;
+	const [x0, y0] = [inst.x, inst.y];
+	inst.x = x;
+	inst.y = y;
+	const libre = !inst.testOverlapSolid();
+	inst.x = x0;
+	inst.y = y0;
 	return libre ? { x, y } : null;
 }
 
-function saltar(runtime, nena, destino)
+function saltar(runtime, inst, destino)
 {
-	const movimiento = nena.behaviors["8Direction"];
-	const inicio = { x: nena.x, y: nena.y, ancho: nena.width, alto: nena.height };
+	const movimiento = inst.behaviors["8Direction"];
+	const inicio = { x: inst.x, y: inst.y, ancho: Math.abs(inst.width), alto: inst.height };
 	let t = 0;
 
-	nena.instVars.jumping = 1;
 	movimiento.stop();
 	movimiento.isEnabled = false;
 
+	const terminar = () => {
+		runtime.removeEventListener("tick", alTick);
+		saltando.delete(inst);
+		inst.width = Math.sign(inst.width) * inicio.ancho;
+		inst.height = inicio.alto;
+		movimiento.isEnabled = true;
+	};
+
 	const alTick = () => {
-		if (!runtime.objects.spriteNena.getAllInstances().includes(nena))
+		if (!runtime.objects[inst.objectType.name].getAllInstances().includes(inst))
 		{
 			runtime.removeEventListener("tick", alTick);
+			saltando.delete(inst);
 			return;
 		}
 		t = Math.min(1, t + runtime.dt / DURACION);
 		const arco = Math.sin(Math.PI * t);
-		nena.x = inicio.x + (destino.x - inicio.x) * t;
-		nena.y = inicio.y + (destino.y - inicio.y) * t - arco * ALTURA;
+		inst.x = inicio.x + (destino.x - inicio.x) * t;
+		inst.y = inicio.y + (destino.y - inicio.y) * t - arco * ALTURA;
 		// Ancho negativo es espejado; se respeta si cambia de lado en el aire.
-		nena.width = Math.sign(nena.width) * Math.abs(inicio.ancho) * (1 + 0.15 * arco);
-		nena.height = inicio.alto * (1 + 0.15 * arco);
-		if (t < 1) return;
-
-		runtime.removeEventListener("tick", alTick);
-		nena.width = Math.sign(nena.width) * Math.abs(inicio.ancho);
-		nena.height = inicio.alto;
-		movimiento.isEnabled = true;
-		nena.instVars.jumping = 0;
+		inst.width = Math.sign(inst.width) * inicio.ancho * (1 + 0.15 * arco);
+		inst.height = inicio.alto * (1 + 0.15 * arco);
+		if (t >= 1) terminar();
 	};
+
+	saltando.set(inst, terminar);
 	runtime.addEventListener("tick", alTick);
 }

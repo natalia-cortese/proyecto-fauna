@@ -1,6 +1,8 @@
 // Arma en el layout el texto MAPA de generarMapa(): pinta los muros en el Tilemap
 // y crea o mueve los objetos de cada letra (ver scripts/construct_laberinto/GUIA_CONSTRUCT3.md).
 
+import { prepararCazador } from "./cazadores.js";
+
 const CASILLA = 64;
 const ESTILOS = "#FSYPR";
 
@@ -11,7 +13,8 @@ const OBJETOS = {
 	O: { nombre: "spriteRock", ancho: 40, alto: 34 },
 	G: { nombre: "spritePortal", ancho: 176, alto: 190 },
 	J: { nombre: "spriteJaula", ancho: 96, alto: 92 },
-	L: { nombre: "Sprite2", ancho: 70, alto: 76 }
+	L: { nombre: "Sprite2", ancho: 70, alto: 76 },
+	H: { nombre: "spriteCazador", ancho: 48, alto: 72 }
 };
 
 export function construirLaberinto(runtime, mapa, capa = "Layer 1")
@@ -50,6 +53,11 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 				inst.height = objeto.alto;
 				// El origin está en el centro: se baja para que quede apoyado en el borde de abajo de la casilla.
 				inst.y = (y + 1) * CASILLA - objeto.alto / 2;
+				if (letra === "H")
+				{
+					inst.setAnimation(Math.random() < 0.5 ? "Cazador1" : "Cazador2");
+					prepararCazador(inst, filas, x, y);
+				}
 			}
 			else if (letra === "E" && nena) { nena.x = cx; nena.y = cy; }
 			else if (letra === "N" && nene) { nene.x = cx; nene.y = cy; }
@@ -60,5 +68,6 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 	nene?.moveToTop();
 
 	// El Pathfinding calcula los obstáculos al arrancar, antes de que existan los muros.
+	nena?.behaviors.Pathfinding?.map.regenerateMap();
 	nene?.behaviors.Pathfinding?.map.regenerateMap();
 }

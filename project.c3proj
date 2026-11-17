@@ -80,18 +80,23 @@
 	"uniqueId": "4ns69k6xgj2",
 	"objectTypes": {
 		"items": [
-			"TiledBackground",
-			"spriteNena",
-			"Keyboard",
-			"spriteNene",
-			"Tilemap"
+			"Keyboard"
 		],
 		"subfolders": [
 			{
 				"items": [
+					"spriteNena",
+					"spriteNene"
+				],
+				"subfolders": [],
+				"name": "personajes"
+			},
+			{
+				"items": [
+					"TiledBackground",
+					"Tilemap",
+					"Niebla",
 					"spriteRock",
-					"spriteCueva",
-					"spritePortal",
 					"spriteSaguaro",
 					"spriteSetoBorde",
 					"spriteSetoBorde2",
@@ -105,13 +110,54 @@
 					"pilar_solo4x",
 					"recto_horizontal4x",
 					"recto_vertical",
-					"recto_vertical_v24x",
-					"spriteJaula",
-					"Sprite2",
-					"spriteHuida"
+					"recto_vertical_v24x"
 				],
 				"subfolders": [],
-				"name": "laberinto"
+				"name": "muros_y_tiles"
+			},
+			{
+				"items": [
+					"spriteHuida",
+					"spriteFichaAnimal"
+				],
+				"subfolders": [],
+				"name": "animales_libres"
+			},
+			{
+				"items": [
+					"spriteCazador"
+				],
+				"subfolders": [],
+				"name": "cazadores"
+			},
+			{
+				"items": [
+					"spriteJaula",
+					"Sprite2",
+					"spriteCueva",
+					"spritePortal"
+				],
+				"subfolders": [],
+				"name": "jaulas_y_metas"
+			},
+			{
+				"items": [
+					"spriteCorazon",
+					"spriteMarcador",
+					"spriteVelo",
+					"spriteSeguir"
+				],
+				"subfolders": [],
+				"name": "interfaz"
+			},
+			{
+				"items": [
+					"spriteInicioFondo",
+					"spriteZonaPuna",
+					"spriteBotonJugar"
+				],
+				"subfolders": [],
+				"name": "inicio"
 			}
 		]
 	},
@@ -124,6 +170,7 @@
 	},
 	"layouts": {
 		"items": [
+			"Inicio",
 			"Layout 1",
 			"Laberinto"
 		],
@@ -131,6 +178,7 @@
 	},
 	"eventSheets": {
 		"items": [
+			"Inicio",
 			"Event sheet 1",
 			"Laberinto"
 		],
@@ -159,6 +207,46 @@
 					"name": "saltoRoca.js",
 					"type": "application/javascript",
 					"sid": 778221041102597,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "niebla.js",
+					"type": "application/javascript",
+					"sid": 706509522441095,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "cazadores.js",
+					"type": "application/javascript",
+					"sid": 858102446338218,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "fichas.js",
+					"type": "application/javascript",
+					"sid": 416983724528315,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "personajes.js",
+					"type": "application/javascript",
+					"sid": 397539329655113,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "inicio.js",
+					"type": "application/javascript",
+					"sid": 609121726223685,
 					"script-info": {
 						"purpose": "none"
 					}
@@ -347,5 +435,5 @@
 	},
 	"viewportWidth": 1024,
 	"viewportHeight": 1024,
-	"firstLayout": "Laberinto"
+	"firstLayout": "Inicio"
 }
