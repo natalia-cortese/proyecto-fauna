@@ -28,6 +28,13 @@
 			"bundled": false
 		},
 		{
+			"type": "plugin",
+			"id": "Tilemap",
+			"name": "Tilemap",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
 			"type": "behavior",
 			"id": "EightDir",
 			"name": "8 Direction",
@@ -57,6 +64,13 @@
 		},
 		{
 			"type": "behavior",
+			"id": "scrollto",
+			"name": "Scroll To",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "behavior",
 			"id": "solid",
 			"name": "Solid",
 			"author": "Scirra",
@@ -69,7 +83,8 @@
 			"TiledBackground",
 			"spriteNena",
 			"Keyboard",
-			"spriteNene"
+			"spriteNene",
+			"Tilemap"
 		],
 		"subfolders": [
 			{
@@ -108,19 +123,46 @@
 	},
 	"layouts": {
 		"items": [
-			"Layout 1"
+			"Layout 1",
+			"Laberinto"
 		],
 		"subfolders": []
 	},
 	"eventSheets": {
 		"items": [
-			"Event sheet 1"
+			"Event sheet 1",
+			"Laberinto"
 		],
 		"subfolders": []
 	},
 	"rootFileFolders": {
 		"script": {
-			"items": [],
+			"items": [
+				{
+					"name": "generadorLaberinto.js",
+					"type": "application/javascript",
+					"sid": 263985541489252,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "construirLaberinto.js",
+					"type": "application/javascript",
+					"sid": 327767416853895,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "importsForEvents.js",
+					"type": "application/javascript",
+					"sid": 486676829094538,
+					"script-info": {
+						"purpose": "imports-for-events"
+					}
+				}
+			],
 			"subfolders": []
 		},
 		"sound": {
@@ -284,5 +326,5 @@
 	},
 	"viewportWidth": 1024,
 	"viewportHeight": 1024,
-	"firstLayout": "Layout 1"
+	"firstLayout": "Laberinto"
 }

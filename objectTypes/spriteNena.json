@@ -35,6 +35,11 @@
 			"behaviorId": "Tween",
 			"name": "Tween",
 			"sid": 897310723069632
+		},
+		{
+			"behaviorId": "scrollto",
+			"name": "ScrollTo",
+			"sid": 498129489053665
 		}
 	],
 	"effectTypes": [],

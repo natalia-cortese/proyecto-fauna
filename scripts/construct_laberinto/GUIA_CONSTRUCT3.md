@@ -25,6 +25,8 @@ En `guia_indices.png` está el número de cada tile.
 
 ## Preparación (una sola vez)
 
+> En el proyecto ya está hecha: el objeto `Tilemap` existe y el layout `Laberinto` lo usa (ver opción C). Estos pasos sirven para armar otro layout igual.
+
 1. **Propiedades del proyecto:** *Sampling* → **Nearest** y *Pixel rounding* → **On** (ya están así en `fauna`).
 2. **Insertá un objeto Tilemap** (nombre: `Tilemap`) en `Layer 1`:
    - En el editor de imagen, cargá `tileset_muros_noa_64.png`.
@@ -32,7 +34,7 @@ En `guia_indices.png` está el número de cada tile.
    - Instancia en X = 0, Y = 0, tamaño **1408 × 1088** (22 × 17 casillas).
 3. **Fondo:** el `TiledBackground` de la capa `BG` ponelo en X = 0, Y = 0, tamaño 1408 × 1088.
 4. **Colisiones:** agregale al Tilemap el behavior **Solid**. Así `spriteNena` (con *8 Direction*) no atraviesa los muros, y el *Pathfinding* de `spriteNene` los esquiva.
-5. **Limpiá el layout** (solo si usás la opción B): borrá las instancias de muros que están puestas a mano (todo lo de la carpeta `laberinto`: `spriteSeto*`, `recto_*`, `pilar_solo4x`, `spriteCruce`) y también `spriteSaguaro`, `spriteCueva`, `spriteRock`, `spritePortal`, `spriteJaula` y `Sprite2`, porque el mapa los va a crear. **No borres los tipos de objeto**, solo las instancias. `spriteNena` y `spriteNene` quedan en el layout: el mapa solo los mueve.
+5. **Usá un layout aparte** (solo si usás la opción B): poné el Tilemap, el fondo, `spriteNena` y `spriteNene` en un layout nuevo, sin muros ni decorados puestos a mano, porque el mapa los crea. **No borres todas las instancias de `Layout 1`:** Construct solo puede crear por evento un objeto que tenga al menos una instancia en algún layout, y toma de ahí sus propiedades. `spriteNena` y `spriteNene` sí van en el layout nuevo: el mapa solo los mueve.
 
 ---
 
@@ -134,7 +136,7 @@ Si un personaje se traba en los pasillos de 1 casilla, achicale el *collision po
 
 ## Opción C: un laberinto nuevo en cada partida (generador)
 
-En `generador/` está `generadorLaberinto.js`, que arma un `MAPA` al azar con las mismas letras de la opción B. Los eventos de la opción B lo construyen igual; solo cambia de dónde sale el texto.
+**Ya está conectado en el proyecto.** Abrí el layout **`Laberinto`** y apretá *Preview* (F5): cada partida arma un laberinto distinto. `Laberinto` es también el *First layout* del proyecto, así que el juego exportado arranca ahí. `Layout 1` (tu nivel hecho a mano) quedó igual.
 
 Qué genera (22 × 17 casillas, como el layout):
 
@@ -146,31 +148,37 @@ Qué genera (22 × 17 casillas, como el layout):
 
 ![Ejemplo generado](generador/ejemplo_generado.png)
 
-### 1. Importar los scripts
+### Qué hay en el proyecto
 
-En la *Project Bar*, clic derecho en **Scripts** › **Import scripts** y elegí `generador/generadorLaberinto.js` y `generador/importsForEvents.js`.
-`importsForEvents.js` es un nombre especial de Construct: lo que importa queda disponible en los bloques de script de las hojas de eventos.
+| Dónde | Qué hace |
+|---|---|
+| `scripts/generadorLaberinto.js` | `generarMapa(opciones)`: devuelve el texto `MAPA` (filas separadas por `\|`) |
+| `scripts/construirLaberinto.js` | `construirLaberinto(runtime, mapa)`: pinta los muros en el `Tilemap` con la máscara de vecinos, crea los objetos de cada letra con su tamaño, mueve a la nena y al nene, los pone delante del portal y regenera el mapa del *Pathfinding* |
+| `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
+| objeto `Tilemap` | `tileset_muros_noa_64.png`, tiles de 64, con **Solid** |
+| layout `Laberinto` | fondo, `Tilemap` vacío de 22 × 17, `spriteNena` y `spriteNene` |
+| hoja `Laberinto` | incluye `Event sheet 1` (movimiento, cactus, llaves, jaulas) y agrega lo de abajo |
+| `spriteNena` | behavior **Scroll To**: la cámara la sigue (el mapa es más grande que la pantalla de 1024 × 1024) |
 
-### 2. Variables globales
+Eventos de la hoja `Laberinto`:
 
-- `MAPA` (texto, vacío).
-- `SEMILLA` (número, `0`). Guarda qué laberinto se está jugando. Las variables globales no se borran con *Restart layout*, así que al chocar un cactus se repite el mismo laberinto.
+1. Variable global `SEMILLA` (número, `0`): qué laberinto se está jugando. Las variables globales no se borran con *Restart layout*, así que **chocar un cactus repite el mismo laberinto**.
+2. *On start of layout* › script:
 
-### 3. Generar el mapa al empezar
+   ```js
+   if (!runtime.globalVars.SEMILLA)
+   	runtime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;
+   const mapa = generarMapa({ jaulas: 3, semilla: runtime.globalVars.SEMILLA });
+   construirLaberinto(runtime, mapa);
+   ```
 
-En el **Evento 1** (*On start of layout*), agregá como **primera acción** un bloque de script (clic derecho › *Add script*):
+3. *Compare two values* `spriteJaula.Count` = `0` + *Trigger once* › Set `SEMILLA` to `0` › *Restart layout*: **al abrir todas las jaulas sale un laberinto nuevo.**
 
-```js
-if (!runtime.globalVars.SEMILLA)
-	runtime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;
-runtime.globalVars.MAPA = generarMapa({ jaulas: 3, semilla: runtime.globalVars.SEMILLA });
-```
+En `Event sheet 1`, `llave` pasó a ser un **contador**: cada llave suma 1 (*Add to*) y cada jaula pide `llave` ≥ 1 y resta 1 (*Subtract from*). Así cada llave abre una sola jaula y hay que juntarlas todas. En `Layout 1` funciona igual que antes.
 
-Las acciones del evento corren antes que sus sub-eventos, así que los For de la opción B ya encuentran el `MAPA` listo.
+### Cambiar el laberinto
 
-Para pasar a **otro laberinto** (por ejemplo, al abrir todas las jaulas): System › Set `SEMILLA` to `0` y después *Restart layout*.
-
-Opciones de `generarMapa` (todas opcionales):
+Editá el objeto que recibe `generarMapa` en el script de la hoja `Laberinto`, por ejemplo `generarMapa({ jaulas: 5, cactus: 5, semilla: ... })`. Opciones (todas opcionales):
 
 | Opción | Por defecto | Qué hace |
 |---|---|---|
@@ -181,26 +189,18 @@ Opciones de `generarMapa` (todas opcionales):
 | `bucles` | 0.06 | probabilidad de abrir un muro extra; más alto = más caminos alternativos |
 | `estilos` | `"##FS"` | letras de muro para el interior (repetir una letra la hace más común) |
 | `estiloBorde` | `"#"` | letra del borde del mapa |
-| `ancho`, `alto` | 22, 17 | tamaño en casillas (más grande = más laberinto; hace falta que la cámara siga a la nena) |
+| `ancho`, `alto` | 22, 17 | tamaño en casillas; si lo cambiás, cambiá también el tamaño del `Tilemap`, del fondo y del layout |
 | `semilla` | al azar | el mismo número da siempre el mismo laberinto |
 
-### 4. Eventos de llaves y jaulas para varias llaves
+Para jugar siempre **un laberinto fijo**, poné el número en la variable `SEMILLA` (por ejemplo `127492926`) en vez de `0`.
 
-Con varias llaves, `llave` pasa a ser un **contador**. Cambiá los dos eventos actuales:
-
-- **`Sprite2` › On collision with `spriteNena`:** `spriteNena` › **Add to** `llave` `1` (en lugar de *Set* `llave` a `1`), y `Sprite2` › Destroy.
-- **`spriteJaula` › On collision with `spriteNena`** + `spriteNena` › Compare instance variable `llave` **≥** `1`: `spriteNena` › **Subtract from** `llave` `1`, y `spriteJaula` › Destroy.
-
-Así cada llave abre una sola jaula y hay que juntar todas.
-Opcional, para terminar el nivel: System › *Compare two values* `spriteJaula.Count` = `0` (con *Trigger once*) › Set `SEMILLA` to `0` › *Restart layout*.
-
-### 5. Ver laberintos sin abrir Construct
+### Ver laberintos sin abrir Construct
 
 ```
-node Scripts/construct_laberinto/generador/vista_previa.mjs [semilla] [jaulas]
+node scripts/construct_laberinto/generador/vista_previa.mjs [semilla] [jaulas]
 ```
 
-Muestra el laberinto fila por fila y el texto listo para pegar en `MAPA`, por si querés fijar un nivel que te gustó.
+Muestra el laberinto fila por fila y el texto `MAPA`, por si querés guardar un nivel que te gustó.
 
 ---
 
