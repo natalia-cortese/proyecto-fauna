@@ -241,7 +241,7 @@
 						"x": 410,
 						"y": 65.5,
 						"width": 53,
-						"height": 106.00000000000001,
+						"height": 106,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -1732,7 +1732,7 @@
 					"behaviors": {
 						"Solid": {
 							"properties": {
-								"enabled": true,
+								"enabled": false,
 								"use-instance-tags": true,
 								"tags": ""
 							}
@@ -1750,6 +1750,11 @@
 							}
 						},
 						"Tween": {
+							"properties": {
+								"enabled": true
+							}
+						},
+						"ScrollTo": {
 							"properties": {
 								"enabled": true
 							}
@@ -1791,7 +1796,7 @@
 					"behaviors": {
 						"Solid": {
 							"properties": {
-								"enabled": true,
+								"enabled": false,
 								"use-instance-tags": true,
 								"tags": ""
 							}
@@ -1804,8 +1809,8 @@
 								"directions": "dir-4",
 								"set-angle": "no",
 								"allow-sliding": false,
-								"default-controls": true,
-								"enabled": true
+								"default-controls": false,
+								"enabled": false
 							}
 						},
 						"Pathfinding": {
@@ -1817,7 +1822,7 @@
 								"acceleration": 1000,
 								"deceleration": 2000,
 								"rotate-speed": 135,
-								"rotate-object": true,
+								"rotate-object": false,
 								"diagonals": true,
 								"direct-movement": "to-destination",
 								"enabled": true

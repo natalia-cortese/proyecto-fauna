@@ -1,0 +1,110 @@
+{
+	"name": "spriteHuida",
+	"plugin-id": "Sprite",
+	"sid": 286831612543009,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 476,
+						"height": 336,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 2276625,
+						"useCollisionPoly": false,
+						"duration": 1.6,
+						"tag": ""
+					},
+					{
+						"width": 476,
+						"height": 336,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 2996997,
+						"useCollisionPoly": false,
+						"duration": 1.3,
+						"tag": ""
+					},
+					{
+						"width": 476,
+						"height": 336,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8776992,
+						"useCollisionPoly": false,
+						"duration": 1.4,
+						"tag": ""
+					},
+					{
+						"width": 476,
+						"height": 336,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 6986553,
+						"useCollisionPoly": false,
+						"duration": 1.9,
+						"tag": ""
+					},
+					{
+						"width": 476,
+						"height": 336,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8657561,
+						"useCollisionPoly": false,
+						"duration": 2.5,
+						"tag": ""
+					},
+					{
+						"width": 476,
+						"height": 336,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8806660,
+						"useCollisionPoly": false,
+						"duration": 2.4,
+						"tag": ""
+					}
+				],
+				"sid": 472170163990542,
+				"name": "Huida",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 10
+			}
+		],
+		"subfolders": []
+	}
+}

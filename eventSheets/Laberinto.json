@@ -1,0 +1,88 @@
+{
+	"name": "Laberinto",
+	"events": [
+		{
+			"eventType": "variable",
+			"name": "SEMILLA",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "Laberinto que se está jugando. 0 = generar uno nuevo al empezar.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 728245628018761
+		},
+		{
+			"eventType": "include",
+			"includeSheet": "Event sheet 1"
+		},
+		{
+			"eventType": "comment",
+			"text": "Arma un laberinto con generarMapa() (scripts/generadorLaberinto.js). Chocar un cactus reinicia el mismo laberinto; abrir todas las jaulas pasa a uno nuevo."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 756185813850413
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "if (!runtime.globalVars.SEMILLA)\n\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;\nconst mapa = generarMapa({ jaulas: 3, semilla: runtime.globalVars.SEMILLA });\nconstruirLaberinto(runtime, mapa);"
+				}
+			],
+			"sid": 875703824961286
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 840906352664033,
+					"parameters": {
+						"first-value": "spriteJaula.Count",
+						"comparison": 0,
+						"second-value": "0"
+					}
+				},
+				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 411507177357811,
+					"parameters": {
+						"first-value": "spriteHuida.Count",
+						"comparison": 0,
+						"second-value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 701730046350687
+				}
+			],
+			"actions": [
+				{
+					"id": "set-eventvar-value",
+					"objectClass": "System",
+					"sid": 241880366033243,
+					"parameters": {
+						"variable": "SEMILLA",
+						"value": "0"
+					}
+				},
+				{
+					"id": "restart-layout",
+					"objectClass": "System",
+					"sid": 792632498221094
+				}
+			],
+			"sid": 198501111745510
+		}
+	],
+	"sid": 249521205178979
+}
