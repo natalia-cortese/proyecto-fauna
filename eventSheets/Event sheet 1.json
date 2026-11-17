@@ -5,6 +5,23 @@
 			"eventType": "block",
 			"conditions": [
 				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 114727274042886
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "saltarRoca(runtime);"
+				}
+			],
+			"sid": 505684020033084
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
 					"id": "on-key-pressed",
 					"objectClass": "Keyboard",
 					"sid": 664552201420735,
@@ -262,12 +279,45 @@
 					}
 				},
 				{
+					"id": "spawn-another-object",
+					"objectClass": "spriteJaula",
+					"sid": 964748078070273,
+					"parameters": {
+						"object": "spriteHuida",
+						"layer": "spriteJaula.LayerName",
+						"image-point": "0",
+						"create-hierarchy": false,
+						"template-name": "\"\""
+					}
+				},
+				{
 					"id": "destroy",
 					"objectClass": "spriteJaula",
 					"sid": 624321098355441
 				}
 			],
 			"sid": 892646067091206
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-animation-finished",
+					"objectClass": "spriteHuida",
+					"sid": 743284171414824,
+					"parameters": {
+						"animation": "\"Huida\""
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "destroy",
+					"objectClass": "spriteHuida",
+					"sid": 724645895682183
+				}
+			],
+			"sid": 972179013263523
 		},
 		{
 			"eventType": "block",

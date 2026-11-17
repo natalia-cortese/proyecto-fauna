@@ -138,12 +138,12 @@ Si un personaje se traba en los pasillos de 1 casilla, achicale el *collision po
 
 **Ya está conectado en el proyecto.** Abrí el layout **`Laberinto`** y apretá *Preview* (F5): cada partida arma un laberinto distinto. `Laberinto` es también el *First layout* del proyecto, así que el juego exportado arranca ahí. `Layout 1` (tu nivel hecho a mano) quedó igual.
 
-Qué genera (22 × 17 casillas, como el layout):
+Qué genera (28 × 19 casillas, como el layout `Laberinto`):
 
 - Pasillos de **2 casillas** de ancho (los personajes miden ~55×73 px, en 1 casilla no pasan).
 - Una **sala en el medio** con la cueva y las jaulas, con 3 entradas desde el laberinto.
 - **Tantas llaves como jaulas**, escondidas en callejones sin salida, lejos del inicio y de la sala, y separadas entre sí.
-- Cactus en otros callejones (nunca tapan un camino) y rocas en la fila de abajo de cada pasillo (dejan lugar para pasar).
+- Cactus en otros callejones (nunca tapan un camino) y rocas en la fila de abajo de cada pasillo (dejan lugar para pasar, y la nena las salta si camina contra una).
 - Portal, nena y nene en la esquina de abajo a la izquierda.
 
 ![Ejemplo generado](generador/ejemplo_generado.png)
@@ -154,9 +154,10 @@ Qué genera (22 × 17 casillas, como el layout):
 |---|---|
 | `scripts/generadorLaberinto.js` | `generarMapa(opciones)`: devuelve el texto `MAPA` (filas separadas por `\|`) |
 | `scripts/construirLaberinto.js` | `construirLaberinto(runtime, mapa)`: pinta los muros en el `Tilemap` con la máscara de vecinos, crea los objetos de cada letra con su tamaño, mueve a la nena y al nene, los pone delante del portal y regenera el mapa del *Pathfinding* |
+| `scripts/saltoRoca.js` | `saltarRoca(runtime)`: si la nena camina contra una roca y del otro lado hay lugar, salta por encima con un arco de 0,4 s. `Event sheet 1` lo llama en *Every tick*, así que también funciona en `Layout 1` |
 | `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
 | objeto `Tilemap` | `tileset_muros_noa_64.png`, tiles de 64, con **Solid** |
-| layout `Laberinto` | fondo, `Tilemap` vacío de 22 × 17, `spriteNena` y `spriteNene` |
+| layout `Laberinto` | 1792 × 1216: fondo, `Tilemap` vacío de 28 × 19, `spriteNena` y `spriteNene` |
 | hoja `Laberinto` | incluye `Event sheet 1` (movimiento, cactus, llaves, jaulas) y agrega lo de abajo |
 | `spriteNena` | behavior **Scroll To**: la cámara la sigue (el mapa es más grande que la pantalla de 1024 × 1024) |
 
@@ -172,7 +173,7 @@ Eventos de la hoja `Laberinto`:
    construirLaberinto(runtime, mapa);
    ```
 
-3. *Compare two values* `spriteJaula.Count` = `0` + *Trigger once* › Set `SEMILLA` to `0` › *Restart layout*: **al abrir todas las jaulas sale un laberinto nuevo.**
+3. *Compare two values* `spriteJaula.Count` = `0` + `spriteHuida.Count` = `0` + *Trigger once* › Set `SEMILLA` to `0` › *Restart layout*: **al abrir todas las jaulas, y cuando termina la animación de huida, sale un laberinto nuevo.**
 
 En `Event sheet 1`, `llave` pasó a ser un **contador**: cada llave suma 1 (*Add to*) y cada jaula pide `llave` ≥ 1 y resta 1 (*Subtract from*). Así cada llave abre una sola jaula y hay que juntarlas todas. En `Layout 1` funciona igual que antes.
 
@@ -183,13 +184,13 @@ Editá el objeto que recibe `generarMapa` en el script de la hoja `Laberinto`, p
 | Opción | Por defecto | Qué hace |
 |---|---|---|
 | `jaulas` | 3 | jaulas y llaves (de 1 a 5) |
-| `rocas` | 4 | rocas sueltas |
-| `cactus` | 3 | cactus, si hay callejones libres |
+| `rocas` | 6 | rocas sueltas |
+| `cactus` | 4 | cactus, si hay callejones libres (solo van en callejones porque tapan todo el pasillo) |
 | `entradasSala` | 3 | entradas a la sala del medio |
 | `bucles` | 0.06 | probabilidad de abrir un muro extra; más alto = más caminos alternativos |
 | `estilos` | `"##FS"` | letras de muro para el interior (repetir una letra la hace más común) |
 | `estiloBorde` | `"#"` | letra del borde del mapa |
-| `ancho`, `alto` | 22, 17 | tamaño en casillas; si lo cambiás, cambiá también el tamaño del `Tilemap`, del fondo y del layout |
+| `ancho`, `alto` | 28, 19 | tamaño en casillas; conviene 1 + múltiplo de 3 (22 × 16 es más fácil, 31 × 22 más difícil). Si lo cambiás, cambiá también el tamaño del `Tilemap`, del fondo y del layout (casillas × 64 px) |
 | `semilla` | al azar | el mismo número da siempre el mismo laberinto |
 
 Para jugar siempre **un laberinto fijo**, poné el número en la variable `SEMILLA` (por ejemplo `127492926`) en vez de `0`.

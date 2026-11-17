@@ -36,8 +36,8 @@
 					"world": {
 						"x": 0,
 						"y": 0,
-						"width": 1408,
-						"height": 1088,
+						"width": 1792,
+						"height": 1216,
 						"originX": 0,
 						"originY": 0,
 						"color": [
@@ -115,11 +115,11 @@
 					},
 					"ownData": {
 						"tilemapData": {
-							"width": 22,
-							"height": 17,
-							"max-width": 22,
-							"max-height": 17,
-							"data": "374x0"
+							"width": 28,
+							"height": 19,
+							"max-width": 28,
+							"max-height": 19,
+							"data": "532x0"
 						},
 						"tile-width": 64,
 						"tile-height": 64,
@@ -134,8 +134,8 @@
 					"world": {
 						"x": 0,
 						"y": 0,
-						"width": 1408,
-						"height": 1088,
+						"width": 1792,
+						"height": 1216,
 						"originX": 0,
 						"originY": 0,
 						"color": [
@@ -199,8 +199,8 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 96,
-						"y": 864,
+						"x": 96.0,
+						"y": 1056.0,
 						"width": 62,
 						"height": 74,
 						"originX": 0.5,
@@ -268,10 +268,44 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 160,
-						"y": 864,
+						"x": 160.0,
+						"y": 1056.0,
 						"width": 62,
 						"height": 77,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
+					"type": "spriteHuida",
+					"properties": {
+						"initially-visible": true,
+						"initial-animation": "Huida",
+						"initial-frame": 0,
+						"enable-collisions": false,
+						"live-preview": false
+					},
+					"uid": 62,
+					"sid": 379970126132683,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": -300,
+						"y": -300,
+						"width": 167,
+						"height": 118,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -319,8 +353,8 @@
 	"sid": 705863825421475,
 	"nonworld-instances": [],
 	"effectTypes": [],
-	"width": 1408,
-	"height": 1088,
+	"width": 1792,
+	"height": 1216,
 	"unboundedScrolling": false,
 	"sampling": "auto",
 	"ambientLight": 0.03,

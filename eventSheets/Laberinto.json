@@ -50,6 +50,16 @@
 					}
 				},
 				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 411507177357811,
+					"parameters": {
+						"first-value": "spriteHuida.Count",
+						"comparison": 0,
+						"second-value": "0"
+					}
+				},
+				{
 					"id": "trigger-once-while-true",
 					"objectClass": "System",
 					"sid": 701730046350687

@@ -7,12 +7,12 @@ const LIBRE = ".";
 export function generarMapa(opciones = {})
 {
 	const {
-		ancho = 22,
-		alto = 17,
+		ancho = 28,
+		alto = 19,
 		anchoPasillo = 2,
 		jaulas = 3,
-		rocas = 4,
-		cactus = 3,
+		rocas = 6,
+		cactus = 4,
 		entradasSala = 3,
 		bucles = 0.06,
 		estilos = "##FS",
