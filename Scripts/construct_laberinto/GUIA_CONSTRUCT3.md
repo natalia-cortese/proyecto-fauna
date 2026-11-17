@@ -1,6 +1,9 @@
 # Armar el laberinto rápido en Construct 3
 
-Todos los muros van en **un solo objeto Tilemap** con `tileset_muros_noa.png` (tiles de 32×32).
+Todos los muros van en **un solo objeto Tilemap** con `tileset_muros_noa_64.png` (tiles de **64×64**).
+
+> El layout del proyecto está pensado a 64 px por casilla: el fondo (`TiledBackground`) mide ~1408×1088 = 22×17 casillas y los personajes miden ~62×74.
+> `tileset_muros_noa.png` (32×32) es el original; `tileset_muros_noa_64.png` es el mismo dibujo ampliado ×2 sin suavizado. Los números de tile son los mismos en los dos.
 
 **Número de tile = máscara + estilo × 16 + variante × 96**
 
@@ -22,12 +25,14 @@ En `guia_indices.png` está el número de cada tile.
 
 ## Preparación (una sola vez)
 
-1. **Propiedades del proyecto:** *Sampling* → **Nearest** y *Pixel rounding* → **On**, así el pixel art no se ve borroso.
-2. **Insertá un objeto Tilemap:**
-   - En el editor de imagen, cargá `tileset_muros_noa.png`.
-   - En las propiedades: *Tile width* = 32, *Tile height* = 32.
-3. **Ponelo en una capa encima del fondo** (`fondo_topdown_1920x1080.png` en un Sprite o un Tiled Background).
-4. **Colisiones:** agregale el behavior **Solid**. Así la exploradora (con *8 Direction*) no atraviesa los muros.
+1. **Propiedades del proyecto:** *Sampling* → **Nearest** y *Pixel rounding* → **On** (ya están así en `fauna`).
+2. **Insertá un objeto Tilemap** (nombre: `Tilemap`) en `Layer 1`:
+   - En el editor de imagen, cargá `tileset_muros_noa_64.png`.
+   - En las propiedades del objeto: *Tile width* = 64, *Tile height* = 64.
+   - Instancia en X = 0, Y = 0, tamaño **1408 × 1088** (22 × 17 casillas).
+3. **Fondo:** el `TiledBackground` de la capa `BG` ponelo en X = 0, Y = 0, tamaño 1408 × 1088.
+4. **Colisiones:** agregale al Tilemap el behavior **Solid**. Así `spriteNena` (con *8 Direction*) no atraviesa los muros, y el *Pathfinding* de `spriteNene` los esquiva.
+5. **Limpiá el layout** (solo si usás la opción B): borrá las instancias de muros que están puestas a mano (todo lo de la carpeta `laberinto`: `spriteSeto*`, `recto_*`, `pilar_solo4x`, `spriteCruce`) y también `spriteSaguaro`, `spriteCueva`, `spriteRock`, `spritePortal`, `spriteJaula` y `Sprite2`, porque el mapa los va a crear. **No borres los tipos de objeto**, solo las instancias. `spriteNena` y `spriteNene` quedan en el layout: el mapa solo los mueve.
 
 ---
 
@@ -48,39 +53,34 @@ Escribís el nivel como texto y los eventos lo arman al iniciar el layout.
 
 ### 1. Variable global de texto `MAPA`
 
-Cada fila es una línea. Un punto (`.`) es camino y cualquier letra de la tabla es muro:
+El valor inicial de una variable es de **una sola línea**, así que las filas se separan con `|`. Un punto (`.`) es camino y cualquier letra de la tabla es muro. Ejemplo chico:
 
 ```
-###############
-#.....#.......#
-#.###.#.FFFFF.#
-#.#.....F...F.#
-#.#.#####.P.F.#
-#...#.....P...#
-###.#.PPPPPPP.#
-#.....#.......#
-###############
+###############|#.....#.......#|#.###.#.FFFFF.#|#.#.....F...F.#|###############
 ```
 
+Para editarlo cómodo, escribilo fila por fila (como en `MAPA_tu_nivel.txt`) y después uní las filas con `|`.
 Para varios niveles podés guardar un texto por nivel en un Array o en un archivo `.txt` que cargás con AJAX.
 
-### 2. Eventos (hoja del layout)
+### 2. Eventos (en `Event sheet 1`)
 
 **Evento 1: System › On start of layout**
 
-- **Sub-evento:** System › For `"y"` from `0` to `tokencount(MAPA, newline) - 1`
-  - **Sub-evento:** System › For `"x"` from `0` to `len(tokenat(MAPA, loopindex("y"), newline)) - 1`
-    - **Condición:** System › Compare two values
-      `find("#FSYPR", mid(tokenat(MAPA, loopindex("y"), newline), loopindex("x"), 1))` **≥** `0`
-    - **Acción:** Tilemap › Set tile
-      X = `loopindex("x")`
-      Y = `loopindex("y")`
-      Tile = `find("#FSYPR", mid(tokenat(MAPA, loopindex("y"), newline), loopindex("x"), 1)) * 16`
+Dentro del evento agregá dos **variables locales** de texto: `fila` y `c`.
 
-  *(Esta primera pasada marca dónde hay muro y de qué estilo.)*
+- **Sub-evento (primera pasada):** System › For `"y"` from `0` to `tokencount(MAPA, "|") - 1`
+  - **Acción:** System › Set `fila` to `tokenat(MAPA, loopindex("y"), "|")`
+  - **Sub-evento:** System › For `"x"` from `0` to `len(fila) - 1`
+    - **Acción:** System › Set `c` to `mid(fila, loopindex("x"), 1)`
+    - **Sub-evento (muros):** System › Compare two values `find("#FSYPR", c)` **≥** `0`
+      - **Acción:** Tilemap › Set tile
+        X = `loopindex("x")`, Y = `loopindex("y")`, Tile = `find("#FSYPR", c) * 16`
+    - **Sub-eventos de objetos:** uno por letra, ver la sección 3.
 
-- **Sub-evento** (al mismo nivel que el primer For): System › For `"y"` from `0` to `tokencount(MAPA, newline) - 1`
-  - **Sub-evento:** System › For `"x"` from `0` to `len(tokenat(MAPA, loopindex("y"), newline)) - 1`
+  *(Esta primera pasada marca dónde hay muro y de qué estilo, y crea los objetos.)*
+
+- **Sub-evento (segunda pasada, al mismo nivel que el primer For):** System › For `"y"` from `0` to `tokencount(MAPA, "|") - 1`
+  - **Sub-evento:** System › For `"x"` from `0` to `len(tokenat(MAPA, loopindex("y"), "|")) - 1`
     - **Condición:** System › Compare two values `Tilemap.TileAt(loopindex("x"), loopindex("y"))` **≥** `0`
     - **Acción:** Tilemap › Set tile en (`loopindex("x")`, `loopindex("y")`) con:
 
@@ -95,45 +95,129 @@ Para varios niveles podés guardar un texto por nivel en un Array o en un archiv
 
   *(La segunda pasada mira los 4 vecinos y elige la pieza exacta. También mezcla al azar las 3 variantes.)*
 
+- **Últimas acciones del evento 1:**
+  - `spriteNene` › Pathfinding › **Regenerate obstacle map**. El Pathfinding calcula los obstáculos al arrancar, antes de que existan los muros; sin esto `spriteNene` no los ve.
+  - `spriteNena` › **Move to top** y `spriteNene` › **Move to top**. Los objetos creados por evento quedan arriba de todo; sin esto el portal tapa a los personajes.
+
 > En Construct, una comparación como `(a >= 0)` devuelve 1 o 0, por eso la suma da directo la máscara.
 > Fuera del mapa, `TileAt` devuelve -1, así que los bordes también salen bien.
 
-### 3. Objetos del nivel (animales, jaulas, cazadores, trampas)
+### 3. Objetos del nivel
 
-Podés usar el mismo `MAPA` con otras letras, por ejemplo:
+Estas letras no son muros. Dentro de la primera pasada va un sub-evento por letra:
 
-| Letra | Objeto |
-|---|---|
-| `E` | exploradora |
-| `J` | jaula |
-| `C` | cazador |
-| `T` | cepo |
-| `M` | meta |
+- **Condición:** System › Compare two values `c` = `"K"` (la letra que corresponda)
+- **Acciones:**
+  1. System › **Create object** `spriteSaguaro` en la capa `"Layer 1"`, X = `loopindex("x")*64 + 32`, Y = `loopindex("y")*64 + 32`
+  2. `spriteSaguaro` › **Set size** (ver tabla)
+  3. `spriteSaguaro` › **Set Y** to `Self.Y + 32 - Self.Height / 2`
 
-En la primera pasada, sumá un sub-evento por letra con la acción System › **Create object** en `loopindex("x")*32 + 16`, `loopindex("y")*32 + 16`.
+Los sprites del proyecto tienen el *origin* en el **centro**. El paso 3 baja cada objeto para que quede apoyado en el borde de abajo de su casilla. El paso 2 hace falta porque un objeto creado por evento usa el tamaño de su imagen, y las imágenes tienen tamaños muy distintos (los personajes miden más de 1000 px).
+
+| Letra | Qué es | Objeto | Acción | Tamaño |
+|---|---|---|---|---|
+| `K` | cactus | `spriteSaguaro` | Create object | 80 × 130 |
+| `V` | cueva | `spriteCueva` | Create object | 200 × 150 |
+| `O` | roca | `spriteRock` | Create object | 40 × 34 |
+| `G` | portal COMIENZO | `spritePortal` | Create object | 176 × 190 |
+| `J` | jaula | `spriteJaula` | Create object | 96 × 92 |
+| `L` | llave | `Sprite2` | Create object | 70 × 76 |
+| `E` | exploradora (inicio) | `spriteNena` | **Set position** (no crear) | el del layout |
+| `N` | compañero | `spriteNene` | **Set position** (no crear) | el del layout |
+
+Para `E` y `N` usá **Set position** con X = `loopindex("x")*64 + 32` e Y = `loopindex("y")*64 + 32`. Ya existe una sola instancia de cada uno en el layout y los eventos de movimiento la usan.
+
+`spriteSaguaro` y `spriteRock` ya tienen **Solid**, así que bloquean el paso (tocar un cactus reinicia el layout). La cueva no bloquea.
+Si un personaje se traba en los pasillos de 1 casilla, achicale el *collision polygon*.
+
+---
+
+## Opción C: un laberinto nuevo en cada partida (generador)
+
+En `generador/` está `generadorLaberinto.js`, que arma un `MAPA` al azar con las mismas letras de la opción B. Los eventos de la opción B lo construyen igual; solo cambia de dónde sale el texto.
+
+Qué genera (22 × 17 casillas, como el layout):
+
+- Pasillos de **2 casillas** de ancho (los personajes miden ~55×73 px, en 1 casilla no pasan).
+- Una **sala en el medio** con la cueva y las jaulas, con 3 entradas desde el laberinto.
+- **Tantas llaves como jaulas**, escondidas en callejones sin salida, lejos del inicio y de la sala, y separadas entre sí.
+- Cactus en otros callejones (nunca tapan un camino) y rocas en la fila de abajo de cada pasillo (dejan lugar para pasar).
+- Portal, nena y nene en la esquina de abajo a la izquierda.
+
+![Ejemplo generado](generador/ejemplo_generado.png)
+
+### 1. Importar los scripts
+
+En la *Project Bar*, clic derecho en **Scripts** › **Import scripts** y elegí `generador/generadorLaberinto.js` y `generador/importsForEvents.js`.
+`importsForEvents.js` es un nombre especial de Construct: lo que importa queda disponible en los bloques de script de las hojas de eventos.
+
+### 2. Variables globales
+
+- `MAPA` (texto, vacío).
+- `SEMILLA` (número, `0`). Guarda qué laberinto se está jugando. Las variables globales no se borran con *Restart layout*, así que al chocar un cactus se repite el mismo laberinto.
+
+### 3. Generar el mapa al empezar
+
+En el **Evento 1** (*On start of layout*), agregá como **primera acción** un bloque de script (clic derecho › *Add script*):
+
+```js
+if (!runtime.globalVars.SEMILLA)
+	runtime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;
+runtime.globalVars.MAPA = generarMapa({ jaulas: 3, semilla: runtime.globalVars.SEMILLA });
+```
+
+Las acciones del evento corren antes que sus sub-eventos, así que los For de la opción B ya encuentran el `MAPA` listo.
+
+Para pasar a **otro laberinto** (por ejemplo, al abrir todas las jaulas): System › Set `SEMILLA` to `0` y después *Restart layout*.
+
+Opciones de `generarMapa` (todas opcionales):
+
+| Opción | Por defecto | Qué hace |
+|---|---|---|
+| `jaulas` | 3 | jaulas y llaves (de 1 a 5) |
+| `rocas` | 4 | rocas sueltas |
+| `cactus` | 3 | cactus, si hay callejones libres |
+| `entradasSala` | 3 | entradas a la sala del medio |
+| `bucles` | 0.06 | probabilidad de abrir un muro extra; más alto = más caminos alternativos |
+| `estilos` | `"##FS"` | letras de muro para el interior (repetir una letra la hace más común) |
+| `estiloBorde` | `"#"` | letra del borde del mapa |
+| `ancho`, `alto` | 22, 17 | tamaño en casillas (más grande = más laberinto; hace falta que la cámara siga a la nena) |
+| `semilla` | al azar | el mismo número da siempre el mismo laberinto |
+
+### 4. Eventos de llaves y jaulas para varias llaves
+
+Con varias llaves, `llave` pasa a ser un **contador**. Cambiá los dos eventos actuales:
+
+- **`Sprite2` › On collision with `spriteNena`:** `spriteNena` › **Add to** `llave` `1` (en lugar de *Set* `llave` a `1`), y `Sprite2` › Destroy.
+- **`spriteJaula` › On collision with `spriteNena`** + `spriteNena` › Compare instance variable `llave` **≥** `1`: `spriteNena` › **Subtract from** `llave` `1`, y `spriteJaula` › Destroy.
+
+Así cada llave abre una sola jaula y hay que juntar todas.
+Opcional, para terminar el nivel: System › *Compare two values* `spriteJaula.Count` = `0` (con *Trigger once*) › Set `SEMILLA` to `0` › *Restart layout*.
+
+### 5. Ver laberintos sin abrir Construct
+
+```
+node Scripts/construct_laberinto/generador/vista_previa.mjs [semilla] [jaulas]
+```
+
+Muestra el laberinto fila por fila y el texto listo para pegar en `MAPA`, por si querés fijar un nivel que te gustó.
 
 ---
 
 ## Tu nivel como texto (`MAPA_tu_nivel.txt`)
 
-Es tu layout actual pasado a texto: 22 columnas × 17 filas de 32 px. La imagen `ejemplo_tu_nivel.png` muestra cómo queda.
+Es `Layout 1` pasado a texto: 22 columnas × 17 filas de 64 px (1408 × 1088). La imagen `ejemplo_tu_nivel.png` muestra cómo queda, con el fondo y los sprites reales del proyecto.
 
-Letras de decoración y objetos:
+Qué es cada parte:
 
-| Letra | Qué crea | Sprite |
-|---|---|---|
-| `K` | cactus | `cactus_saguaro` |
-| `V` | cueva | `cueva_roca` |
-| `O` | roca | `roca_1` |
-| `G` | portal COMIENZO | `portal_comienzo` |
-| `E` | exploradora (inicio) | `quieta_abajo` |
+- Setos verdes (`#`): el borde de arriba, los setos verticales, los bloques chicos y los tres recintos en U con un cactus adentro (`#K#` arriba de `###`).
+- Setos floridos (`F`): el seto de arriba al centro y los verticales claros de la izquierda abajo y de la derecha.
+- Seto seco (`S`): el bloque amarillo del centro abajo y la hilera del borde de abajo. En el layout la hilera de abajo son postes separados; acá es continua para que los personajes no se escapen por los huecos.
 
-Estas letras no son muros. Se crean con **System › Create object** dentro de la primera pasada, un sub-evento por letra.
+Valor para pegar en la variable `MAPA`:
 
-- **Condición:** `mid(tokenat(MAPA, loopindex("y"), newline), loopindex("x"), 1)` = `"K"`
-- **Acción:** Create object `Cactus` en X = `loopindex("x")*32 + 16`, Y = `loopindex("y")*32 + 32`
+```
+.######........#######|#.....#........#.....F|#....O...FFFF.......LF|#..#.............#K#.F|#..#.......J...#.###.F|#..#..#K.......#.....F|#.....#..V.....#.....F|#..#..#..........#...F|...#..#........#...#.F|F......##.#..K.#...#..|F..#K#.........#...#..|F..###....O.....#K#..#|F......SS...##..###..#|...................L.#|.EN..................#|.G...................#|....SSSSSSSSSSSSSSSSS.
+```
 
-Poné el *origin* de esos sprites **abajo al centro**, así quedan apoyados en la casilla.
-Para que el cactus, la cueva y las rocas bloqueen el paso, agregales **Solid**.
-
-**Para editar el nivel, cambiá letras en el texto:** un tramo de seto es una fila de `#`, un recinto en U son 3 filas, y el camino es `.`.
+**Para editar el nivel, cambiá letras en el texto:** un tramo de seto es una fila de `#`, un recinto en U son 3 filas, y el camino es `.`. Si cambiás el archivo, volvé a unir las filas con `|`.
