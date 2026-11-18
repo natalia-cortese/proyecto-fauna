@@ -1,4 +1,4 @@
-// La onda de Dieguito: mientras se lo maneja, X tira una piedrita hacia donde camina.
+// La honda de Dieguito: mientras se lo maneja, X tira una piedrita hacia donde camina.
 // La piedrita vuela por encima de las rocas, se frena en muros y cactus, y derriba al cazador que toque.
 
 import { golpearCazador } from "./cazadores.js";
@@ -19,7 +19,7 @@ let mirada = [1, 0];
 let listoEn = 0;
 const vuelo = new WeakMap();
 
-export function reiniciarOnda(runtime)
+export function reiniciarHonda(runtime)
 {
 	mirada = [1, 0];
 	listoEn = 0;
@@ -27,7 +27,7 @@ export function reiniciarOnda(runtime)
 		p.destroy();
 }
 
-export function dispararOnda(runtime, tirador)
+export function dispararHonda(runtime, tirador)
 {
 	const tipo = runtime.objects.spritePiedrita;
 	if (!tipo || !tirador || runtime.gameTime < listoEn) return false;
@@ -40,7 +40,7 @@ export function dispararOnda(runtime, tirador)
 }
 
 // Actualiza hacia dónde mira Dieguito (si se lo maneja) y mueve las piedritas en vuelo.
-export function actualizarOnda(runtime, tirador, manejado)
+export function actualizarHonda(runtime, tirador, manejado)
 {
 	if (tirador && manejado && runtime.keyboard)
 	{

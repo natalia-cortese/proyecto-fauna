@@ -4,10 +4,17 @@
 // Cada ficha es una animación de spriteFichaAnimal llamada region_animal, en minúscula y sin tildes
 // (por ejemplo puna_vicuna). Para sumar un animal: agregá la animación en Construct y su nombre acá,
 // en la lista de su región. Cada laberinto sortea, según su semilla, qué animales de su región están en sus jaulas.
+//
+// Al abrirse la ficha suena el sonido del animal: el archivo sprite_sfx_NOA_<animal> de la carpeta sounds
+// (la hoja de eventos lo reproduce con la variable SONIDO). SONIDOS sirve para un animal cuyo archivo se llama distinto.
 
 export const ANIMALES = {
-	puna: ["vicuna", "zorro_andino"],
+	puna: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
 	chaco: ["quirquincho_bola"]
+};
+
+const SONIDOS = {
+	quirquincho_bola: "quirquincho"
 };
 
 let region = "puna";
@@ -27,10 +34,12 @@ export function reiniciarFichas(runtime)
 		huida.destroy();
 }
 
-// Sortea un animal por jaula: sin repetir mientras alcancen; si la región tiene menos animales que jaulas, se repiten.
+// Sortea un animal distinto por jaula. Si la región tiene menos animales que jaulas, avisa en la consola y se repiten.
 export function elegirAnimales(nuevaRegion, semilla, jaulas)
 {
 	if (!ANIMALES[nuevaRegion]?.length) throw new RangeError(`No hay animales para la región "${nuevaRegion}"`);
+	if (ANIMALES[nuevaRegion].length < jaulas)
+		console.warn(`La región "${nuevaRegion}" tiene ${ANIMALES[nuevaRegion].length} animales para ${jaulas} jaulas: se van a repetir.`);
 	region = nuevaRegion;
 	const rnd = aleatorio(semilla);
 	orden = [];
@@ -48,7 +57,9 @@ export function mostrarFicha(runtime)
 {
 	const ficha = runtime.objects.spriteFichaAnimal?.getFirstInstance();
 	if (!ficha) return;
-	ficha.setAnimation(`${region}_${orden[rescatados % orden.length]}`);
+	const animal = orden[rescatados % orden.length];
+	ficha.setAnimation(`${region}_${animal}`);
+	runtime.globalVars.SONIDO = `sprite_sfx_NOA_${SONIDOS[animal] ?? animal}`;
 	rescatados++;
 	abierta = true;
 	runtime.globalVars.FICHA = 1;

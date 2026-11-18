@@ -8,8 +8,22 @@
 	"usedAddons": [
 		{
 			"type": "plugin",
+			"id": "Audio",
+			"name": "Audio",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
 			"id": "Keyboard",
 			"name": "Keyboard",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Mouse",
+			"name": "Mouse",
 			"author": "Scirra",
 			"bundled": false
 		},
@@ -80,7 +94,9 @@
 	"uniqueId": "4ns69k6xgj2",
 	"objectTypes": {
 		"items": [
-			"Keyboard"
+			"Audio",
+			"Keyboard",
+			"Mouse"
 		],
 		"subfolders": [
 			{
@@ -147,7 +163,7 @@
 					"spriteMarcador",
 					"spriteVelo",
 					"spriteSeguir",
-					"spriteAyudaOnda",
+					"spriteAyudaHonda",
 					"spriteCartelJaula"
 				],
 				"subfolders": [],
@@ -239,7 +255,7 @@
 					}
 				},
 				{
-					"name": "onda.js",
+					"name": "honda.js",
 					"type": "application/javascript",
 					"sid": 605445745925425,
 					"script-info": {
@@ -294,7 +310,136 @@
 			]
 		},
 		"sound": {
-			"items": [],
+			"items": [
+				{
+					"name": "SonidoMapa_NOA_loop.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 450533717604147,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_coati.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 144632188163148,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_condor.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 243549464146799,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_corzuela.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 798382142977835,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_flamenco.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 868149738094160,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_gato_andino.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 673448580734065,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_guanaco.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 445378040924953,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_mono_cai.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 626219505533283,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_puma.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 150328553675303,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_quirquincho.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 572821798755407,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_tapir.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 580218005381591,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_taruca.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 555778963138427,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_tucan.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 316939204532360,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_vicuna.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 588170218789368,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_yaguarete.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 918030578564050,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_sfx_NOA_zorro_andino.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 367046469357239,
+					"file-info": {
+						"purpose": "none"
+					}
+				}
+			],
 			"subfolders": []
 		},
 		"music": {

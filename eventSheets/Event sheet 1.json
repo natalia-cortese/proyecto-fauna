@@ -42,6 +42,16 @@
 			"sid": 990889916247969
 		},
 		{
+			"eventType": "variable",
+			"name": "SONIDO",
+			"type": "string",
+			"initialValue": "",
+			"comment": "Sonido del animal de la ficha abierta (archivo de la carpeta sounds, sin la extensión).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 205746922165986
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
@@ -258,9 +268,71 @@
 				{
 					"type": "script",
 					"script": "mostrarFicha(runtime);"
+				},
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 639008389897037,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "SONIDO",
+						"loop": "looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"animal\""
+					}
+				},
+				{
+					"id": "set-paused",
+					"objectClass": "Audio",
+					"sid": 321747587052696,
+					"parameters": {
+						"tag": "\"musica\"",
+						"state": "pause"
+					}
 				}
 			],
 			"sid": 972179013263523
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 827023854467819,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 841293232722812
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 197389068083041,
+					"parameters": {
+						"tag": "\"animal\""
+					}
+				},
+				{
+					"id": "set-paused",
+					"objectClass": "Audio",
+					"sid": 505595732114802,
+					"parameters": {
+						"tag": "\"musica\"",
+						"state": "resume"
+					}
+				}
+			],
+			"sid": 251448161016584
 		}
 	],
 	"sid": 424060678370981

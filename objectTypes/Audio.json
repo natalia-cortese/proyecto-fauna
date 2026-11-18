@@ -1,0 +1,12 @@
+{
+	"name": "Audio",
+	"plugin-id": "Audio",
+	"sid": 623577371727272,
+	"singleglobal-inst": {
+		"type": "Audio",
+		"properties": {},
+		"uid": 80,
+		"sid": 990730932808499,
+		"tags": ""
+	}
+}

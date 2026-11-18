@@ -1,11 +1,11 @@
 // Maneja a Mafalda y a Dieguito: con Espacio se elige a cuál se maneja con las flechas,
-// el otro lo sigue con Pathfinding. También el salto de rocas, los cactus, las vidas y la onda de Dieguito.
+// el otro lo sigue con Pathfinding. También el salto de rocas, los cactus, las vidas y la honda de Dieguito.
 
 import { saltarRoca, estaSaltando, cancelarSalto, tocando } from "./saltoRoca.js";
 import { revelarNiebla } from "./niebla.js";
 import { actualizarCazadores } from "./cazadores.js";
 import { reiniciarFichas, fichaAbierta, cerrarFicha } from "./fichas.js";
-import { reiniciarOnda, dispararOnda, actualizarOnda } from "./onda.js";
+import { reiniciarHonda, dispararHonda, actualizarHonda } from "./honda.js";
 import { actualizarCartelJaula } from "./cartelJaula.js";
 
 export const VIDAS_MAXIMAS = 3;
@@ -38,7 +38,7 @@ export function iniciarPersonajes(runtime)
 	runtime.globalVars.VIDAS = VIDAS_MAXIMAS;
 	runtime.globalVars.LLAVES = 0;
 	reiniciarFichas(runtime);
-	reiniciarOnda(runtime);
+	reiniciarHonda(runtime);
 	aplicarControl(runtime);
 }
 
@@ -56,7 +56,7 @@ export function disparar(runtime)
 {
 	const dieguito = personaje(runtime, "spriteDieguito");
 	if (fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
-	dispararOnda(runtime, dieguito);
+	dispararHonda(runtime, dieguito);
 }
 
 function aplicarControl(runtime)
@@ -101,7 +101,7 @@ export function actualizarPersonajes(runtime)
 	}
 
 	if (actualizarCazadores(runtime, actual)) perderVida(runtime);
-	actualizarOnda(runtime, personaje(runtime, "spriteDieguito"), activo === "spriteDieguito");
+	actualizarHonda(runtime, personaje(runtime, "spriteDieguito"), activo === "spriteDieguito");
 
 	if (otro) seguir(runtime, otro, actual);
 
@@ -116,7 +116,7 @@ export function actualizarPersonajes(runtime)
 	actualizarMarcador(runtime, actual);
 	actualizarCartelJaula(runtime, actual, activo === "spriteMafalda");
 	actualizarCorazones(runtime);
-	for (const ayuda of runtime.objects.spriteAyudaOnda?.getAllInstances() ?? [])
+	for (const ayuda of runtime.objects.spriteAyudaHonda?.getAllInstances() ?? [])
 		ayuda.isVisible = activo === "spriteDieguito";
 	revelarNiebla(runtime, [actual, otro].filter(Boolean));
 }
