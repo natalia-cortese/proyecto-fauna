@@ -149,7 +149,7 @@
 					}
 				},
 				{
-					"type": "spriteNena",
+					"type": "spriteMafalda",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Animation 1",
@@ -231,7 +231,7 @@
 					}
 				},
 				{
-					"type": "spriteNene",
+					"type": "spriteDieguito",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Animation 1",
@@ -344,7 +344,7 @@
 						"initially-visible": true,
 						"initial-animation": "Cazador1",
 						"initial-frame": 0,
-						"enable-collisions": false,
+						"enable-collisions": true,
 						"live-preview": false
 					},
 					"uid": 68,
@@ -360,6 +360,40 @@
 						"y": -120,
 						"width": 48,
 						"height": 72,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
+					"type": "spritePiedrita",
+					"properties": {
+						"initially-visible": true,
+						"initial-animation": "Animation 1",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 77,
+					"sid": 798841741737728,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": -300,
+						"y": -300,
+						"width": 14,
+						"height": 14,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -484,6 +518,40 @@
 						"y": 980,
 						"width": 36,
 						"height": 24,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
+					"type": "spriteCartelJaula",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "solo_mafalda",
+						"initial-frame": 0,
+						"enable-collisions": false,
+						"live-preview": false
+					},
+					"uid": 79,
+					"sid": 868381478359987,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": -500,
+						"y": -300,
+						"width": 309,
+						"height": 50,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -724,6 +792,40 @@
 						"y": 960,
 						"width": 452,
 						"height": 51,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
+					"type": "spriteAyudaOnda",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "Animation 1",
+						"initial-frame": 0,
+						"enable-collisions": false,
+						"live-preview": false
+					},
+					"uid": 78,
+					"sid": 644297678626110,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 860.0,
+						"y": 40,
+						"width": 280,
+						"height": 42,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
