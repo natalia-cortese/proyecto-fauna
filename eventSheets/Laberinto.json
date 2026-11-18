@@ -37,6 +37,45 @@
 			"sid": 875703824961286
 		},
 		{
+			"eventType": "comment",
+			"text": "Música de fondo del laberinto, en loop. No se reinicia al perder vidas ni al pasar a otro laberinto. Mientras se muestra una ficha queda en pausa (Event sheet 1)."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 620677584802375
+				},
+				{
+					"id": "is-tag-playing",
+					"objectClass": "Audio",
+					"sid": 805441103818410,
+					"isInverted": true,
+					"parameters": {
+						"tag": "\"musica\""
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 554587945856731,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "\"SonidoMapa_NOA_loop\"",
+						"loop": "looping",
+						"volume": "-12",
+						"stereo-pan": "0",
+						"tag-optional": "\"musica\""
+					}
+				}
+			],
+			"sid": 464315297230666
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{

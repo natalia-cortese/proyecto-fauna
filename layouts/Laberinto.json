@@ -805,7 +805,7 @@
 					}
 				},
 				{
-					"type": "spriteAyudaOnda",
+					"type": "spriteAyudaHonda",
 					"properties": {
 						"initially-visible": false,
 						"initial-animation": "Animation 1",
@@ -822,9 +822,9 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 860.0,
+						"x": 852.5,
 						"y": 40,
-						"width": 280,
+						"width": 295,
 						"height": 42,
 						"originX": 0.5,
 						"originY": 0.5,

@@ -1,6 +1,6 @@
 // Cazadores: van y vienen por un tramo corto de su pasillo y cada tanto se esconden entre los setos
 // para aparecer en otro punto del tramo. Si el personaje manejado se les acerca mientras se ven, atrapan.
-// Una piedrita de la onda de Dieguito los derriba.
+// Una piedrita de la honda de Dieguito los derriba.
 
 const CASILLA = 64;
 const TRAMO = 2;
@@ -97,7 +97,7 @@ export function actualizarCazadores(runtime, personaje)
 	return atrapo;
 }
 
-// Una piedrita de la onda solo derriba al cazador si se lo ve; derribado cae y no vuelve en este laberinto.
+// Una piedrita de la honda solo derriba al cazador si se lo ve; derribado cae y no vuelve en este laberinto.
 export function golpearCazador(inst)
 {
 	const d = datos.get(inst);

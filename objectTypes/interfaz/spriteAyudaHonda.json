@@ -1,5 +1,5 @@
 {
-	"name": "spriteAyudaOnda",
+	"name": "spriteAyudaHonda",
 	"plugin-id": "Sprite",
 	"sid": 538103922084455,
 	"isGlobal": false,
@@ -12,7 +12,7 @@
 			{
 				"frames": [
 					{
-						"width": 280,
+						"width": 295,
 						"height": 42,
 						"originX": 0.5,
 						"originY": 0.5,
