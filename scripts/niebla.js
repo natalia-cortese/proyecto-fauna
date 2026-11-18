@@ -1,0 +1,42 @@
+// Niebla que tapa el laberinto y se despeja para siempre alrededor de los personajes.
+// Usa el Tilemap "Niebla" (casillas de 32 px): tile 0 = oscuro, 1 = medio, 2 = suave, -1 = despejado.
+
+const RADIO = 190;
+const BORDE = 48;
+
+const niveles = new WeakMap();
+
+export function revelarNiebla(runtime, personajes)
+{
+	const niebla = runtime.objects.Niebla?.getFirstInstance();
+	if (!niebla) return;
+
+	const { mapWidth: ancho, mapHeight: alto, tileWidth: tw, tileHeight: th } = niebla;
+	let nivel = niveles.get(niebla);
+	if (!nivel)
+	{
+		nivel = new Uint8Array(ancho * alto).fill(3);
+		niveles.set(niebla, nivel);
+	}
+
+	const alcance = RADIO + 2 * BORDE;
+	for (const p of personajes)
+	{
+		const px = p.x - niebla.x;
+		const py = p.y - niebla.y;
+		const x0 = Math.max(0, Math.floor((px - alcance) / tw));
+		const x1 = Math.min(ancho - 1, Math.floor((px + alcance) / tw));
+		const y0 = Math.max(0, Math.floor((py - alcance) / th));
+		const y1 = Math.min(alto - 1, Math.floor((py + alcance) / th));
+		for (let y = y0; y <= y1; y++)
+			for (let x = x0; x <= x1; x++)
+			{
+				const d = Math.hypot((x + 0.5) * tw - px, (y + 0.5) * th - py);
+				const nuevo = d < RADIO ? 0 : d < RADIO + BORDE ? 1 : d < alcance ? 2 : 3;
+				const k = y * ancho + x;
+				if (nuevo >= nivel[k]) continue;
+				nivel[k] = nuevo;
+				niebla.setTileAt(x, y, nuevo === 0 ? -1 : 3 - nuevo);
+			}
+	}
+}

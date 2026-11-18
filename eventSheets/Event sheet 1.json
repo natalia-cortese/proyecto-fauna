@@ -2,21 +2,68 @@
 	"name": "Event sheet 1",
 	"events": [
 		{
+			"eventType": "variable",
+			"name": "LLAVES",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "Llaves juntadas y todavía sin usar (las comparten los dos personajes).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 636750800696478
+		},
+		{
+			"eventType": "variable",
+			"name": "VIDAS",
+			"type": "number",
+			"initialValue": "3",
+			"comment": "Vidas que quedan; cada cactus resta una y vuelve al portal.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 854962550167240
+		},
+		{
+			"eventType": "variable",
+			"name": "FICHA",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "1 mientras se muestra la ficha del animal rescatado (el juego está en pausa).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 157205347782371
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
-					"id": "every-tick",
+					"id": "on-start-of-layout",
 					"objectClass": "System",
-					"sid": 114727274042886
+					"sid": 462280035699133
 				}
 			],
 			"actions": [
 				{
 					"type": "script",
-					"script": "saltarRoca(runtime);"
+					"script": "iniciarPersonajes(runtime);"
 				}
 			],
-			"sid": 505684020033084
+			"sid": 649972387766088
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 114943466261363
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "actualizarPersonajes(runtime);"
+				}
+			],
+			"sid": 339824692206836
 		},
 		{
 			"eventType": "block",
@@ -24,23 +71,19 @@
 				{
 					"id": "on-key-pressed",
 					"objectClass": "Keyboard",
-					"sid": 664552201420735,
+					"sid": 708631682275333,
 					"parameters": {
-						"key": 39
+						"key": 32
 					}
 				}
 			],
 			"actions": [
 				{
-					"id": "set-mirrored",
-					"objectClass": "spriteNena",
-					"sid": 114446814636898,
-					"parameters": {
-						"state": "not-mirrored"
-					}
+					"type": "script",
+					"script": "cambiarPersonaje(runtime);"
 				}
 			],
-			"sid": 347378531104936
+			"sid": 950283946951935
 		},
 		{
 			"eventType": "block",
@@ -48,203 +91,79 @@
 				{
 					"id": "on-key-pressed",
 					"objectClass": "Keyboard",
-					"sid": 777185783988505,
+					"sid": 250672321757238,
 					"parameters": {
-						"key": 37
+						"key": 13
 					}
 				}
 			],
 			"actions": [
 				{
-					"id": "set-mirrored",
-					"objectClass": "spriteNena",
-					"sid": 377671403489963,
-					"parameters": {
-						"state": "mirrored"
-					}
+					"type": "script",
+					"script": "cerrarFicha(runtime);"
 				}
 			],
-			"sid": 754499505436871
+			"sid": 870252601469277
 		},
 		{
 			"eventType": "block",
 			"conditions": [
 				{
 					"id": "on-collision-with-another-object",
-					"objectClass": "spriteNena",
-					"sid": 434708897015902,
+					"objectClass": "Sprite2",
+					"sid": 818875062373583,
 					"parameters": {
-						"object": "spriteSaguaro"
+						"object": "spriteNena"
 					}
 				}
 			],
 			"actions": [
 				{
-					"id": "restart-layout",
+					"id": "add-to-eventvar",
 					"objectClass": "System",
-					"sid": 557549391801571
+					"sid": 596904517516652,
+					"parameters": {
+						"variable": "LLAVES",
+						"value": "1"
+					}
+				},
+				{
+					"id": "destroy",
+					"objectClass": "Sprite2",
+					"sid": 485993296150473
 				}
 			],
-			"sid": 895229848703039
+			"sid": 499606353260467
 		},
 		{
 			"eventType": "block",
 			"conditions": [
 				{
 					"id": "on-collision-with-another-object",
-					"objectClass": "spriteNene",
-					"sid": 656443321141034,
+					"objectClass": "Sprite2",
+					"sid": 558111259679739,
 					"parameters": {
-						"object": "spriteSaguaro"
+						"object": "spriteNene"
 					}
 				}
 			],
 			"actions": [
 				{
-					"id": "restart-layout",
+					"id": "add-to-eventvar",
 					"objectClass": "System",
-					"sid": 378980343604283
-				}
-			],
-			"sid": 616823873990232
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "every-x-seconds",
-					"objectClass": "System",
-					"sid": 159423259672943,
+					"sid": 288565111092405,
 					"parameters": {
-						"interval-seconds": "0.5"
+						"variable": "LLAVES",
+						"value": "1"
 					}
 				},
 				{
-					"id": "compare-two-values",
-					"objectClass": "System",
-					"sid": 222509409085066,
-					"parameters": {
-						"first-value": "distance(spriteNene.X, spriteNene.Y, spriteNena.X, spriteNena.Y)",
-						"comparison": 4,
-						"second-value": "90"
-					}
+					"id": "destroy",
+					"objectClass": "Sprite2",
+					"sid": 963191710978902
 				}
 			],
-			"actions": [
-				{
-					"id": "find-path",
-					"objectClass": "spriteNene",
-					"sid": 970400723015398,
-					"behaviorType": "Pathfinding",
-					"parameters": {
-						"x": "spriteNena.X",
-						"y": "spriteNena.Y"
-					}
-				}
-			],
-			"sid": 298374819269222
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "on-path-found",
-					"objectClass": "spriteNene",
-					"sid": 852364558897353,
-					"behaviorType": "Pathfinding"
-				}
-			],
-			"actions": [
-				{
-					"id": "move-along-path",
-					"objectClass": "spriteNene",
-					"sid": 225460073137045,
-					"behaviorType": "Pathfinding"
-				}
-			],
-			"sid": 939546851630044
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "is-moving-along-path",
-					"objectClass": "spriteNene",
-					"sid": 429118475327326,
-					"behaviorType": "Pathfinding"
-				},
-				{
-					"id": "compare-two-values",
-					"objectClass": "System",
-					"sid": 655324094709928,
-					"parameters": {
-						"first-value": "distance(spriteNene.X, spriteNene.Y, spriteNena.X, spriteNena.Y)",
-						"comparison": 3,
-						"second-value": "70"
-					}
-				}
-			],
-			"actions": [
-				{
-					"id": "stop",
-					"objectClass": "spriteNene",
-					"sid": 691620014100971,
-					"behaviorType": "Pathfinding"
-				}
-			],
-			"sid": 915748005661471
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "compare-two-values",
-					"objectClass": "System",
-					"sid": 874223226261570,
-					"parameters": {
-						"first-value": "spriteNene.X",
-						"comparison": 2,
-						"second-value": "spriteNena.X - 8"
-					}
-				}
-			],
-			"actions": [
-				{
-					"id": "set-mirrored",
-					"objectClass": "spriteNene",
-					"sid": 688540168250987,
-					"parameters": {
-						"state": "not-mirrored"
-					}
-				}
-			],
-			"sid": 281966317747370
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "compare-two-values",
-					"objectClass": "System",
-					"sid": 947181195794962,
-					"parameters": {
-						"first-value": "spriteNene.X",
-						"comparison": 4,
-						"second-value": "spriteNena.X + 8"
-					}
-				}
-			],
-			"actions": [
-				{
-					"id": "set-mirrored",
-					"objectClass": "spriteNene",
-					"sid": 632055590868856,
-					"parameters": {
-						"state": "mirrored"
-					}
-				}
-			],
-			"sid": 473225199329412
+			"sid": 798935715831705
 		},
 		{
 			"eventType": "block",
@@ -252,17 +171,17 @@
 				{
 					"id": "on-collision-with-another-object",
 					"objectClass": "spriteJaula",
-					"sid": 915085758887195,
+					"sid": 155281671750123,
 					"parameters": {
 						"object": "spriteNena"
 					}
 				},
 				{
-					"id": "compare-instance-variable",
-					"objectClass": "spriteNena",
-					"sid": 836472223119850,
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 401052107682936,
 					"parameters": {
-						"instance-variable": "llave",
+						"variable": "LLAVES",
 						"comparison": 5,
 						"value": "1"
 					}
@@ -270,18 +189,18 @@
 			],
 			"actions": [
 				{
-					"id": "subtract-from-instvar",
-					"objectClass": "spriteNena",
-					"sid": 786396482565812,
+					"id": "subtract-from-eventvar",
+					"objectClass": "System",
+					"sid": 878957859303752,
 					"parameters": {
-						"instance-variable": "llave",
+						"variable": "LLAVES",
 						"value": "1"
 					}
 				},
 				{
 					"id": "spawn-another-object",
 					"objectClass": "spriteJaula",
-					"sid": 964748078070273,
+					"sid": 597418224989164,
 					"parameters": {
 						"object": "spriteHuida",
 						"layer": "spriteJaula.LayerName",
@@ -293,10 +212,62 @@
 				{
 					"id": "destroy",
 					"objectClass": "spriteJaula",
-					"sid": 624321098355441
+					"sid": 136921089565940
 				}
 			],
-			"sid": 892646067091206
+			"sid": 345051466835236
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-collision-with-another-object",
+					"objectClass": "spriteJaula",
+					"sid": 510658633093789,
+					"parameters": {
+						"object": "spriteNene"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 605320728877633,
+					"parameters": {
+						"variable": "LLAVES",
+						"comparison": 5,
+						"value": "1"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "subtract-from-eventvar",
+					"objectClass": "System",
+					"sid": 843561967403635,
+					"parameters": {
+						"variable": "LLAVES",
+						"value": "1"
+					}
+				},
+				{
+					"id": "spawn-another-object",
+					"objectClass": "spriteJaula",
+					"sid": 854283901087781,
+					"parameters": {
+						"object": "spriteHuida",
+						"layer": "spriteJaula.LayerName",
+						"image-point": "0",
+						"create-hierarchy": false,
+						"template-name": "\"\""
+					}
+				},
+				{
+					"id": "destroy",
+					"objectClass": "spriteJaula",
+					"sid": 767700160310848
+				}
+			],
+			"sid": 407251054214431
 		},
 		{
 			"eventType": "block",
@@ -315,39 +286,13 @@
 					"id": "destroy",
 					"objectClass": "spriteHuida",
 					"sid": 724645895682183
+				},
+				{
+					"type": "script",
+					"script": "mostrarFicha(runtime);"
 				}
 			],
 			"sid": 972179013263523
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "on-collision-with-another-object",
-					"objectClass": "Sprite2",
-					"sid": 755110316301341,
-					"parameters": {
-						"object": "spriteNena"
-					}
-				}
-			],
-			"actions": [
-				{
-					"id": "add-to-instvar",
-					"objectClass": "spriteNena",
-					"sid": 442417776431444,
-					"parameters": {
-						"instance-variable": "llave",
-						"value": "1"
-					}
-				},
-				{
-					"id": "destroy",
-					"objectClass": "Sprite2",
-					"sid": 968148024302523
-				}
-			],
-			"sid": 670952537952419
 		}
 	],
 	"sid": 424060678370981

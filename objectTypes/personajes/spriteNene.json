@@ -20,6 +20,11 @@
 			"behaviorId": "Pathfinding",
 			"name": "Pathfinding",
 			"sid": 443442787229923
+		},
+		{
+			"behaviorId": "scrollto",
+			"name": "ScrollTo",
+			"sid": 779618550551393
 		}
 	],
 	"effectTypes": [],

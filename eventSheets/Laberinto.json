@@ -31,7 +31,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "if (!runtime.globalVars.SEMILLA)\n\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;\nconst mapa = generarMapa({ jaulas: 3, semilla: runtime.globalVars.SEMILLA });\nconstruirLaberinto(runtime, mapa);"
+					"script": "const JAULAS = 3;\nif (!runtime.globalVars.SEMILLA)\n\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;\nconst mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });\nconstruirLaberinto(runtime, mapa);\nelegirAnimales(runtime.globalVars.REGION, runtime.globalVars.SEMILLA, JAULAS);"
 				}
 			],
 			"sid": 875703824961286
@@ -57,6 +57,16 @@
 						"first-value": "spriteHuida.Count",
 						"comparison": 0,
 						"second-value": "0"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 134890694653989,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "0"
 					}
 				},
 				{

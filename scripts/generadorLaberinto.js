@@ -1,6 +1,6 @@
 // Genera el texto MAPA (filas separadas por "|") con las mismas letras que usa GUIA_CONSTRUCT3.md:
 //   muros:   # F S Y P R      camino: .
-//   objetos: V cueva, J jaula, L llave, K cactus, O roca, G portal, E nena, N nene
+//   objetos: V cueva, J jaula, L llave, K cactus, O roca, H cazador, G portal, E nena, N nene
 
 const LIBRE = ".";
 
@@ -13,6 +13,7 @@ export function generarMapa(opciones = {})
 		jaulas = 3,
 		rocas = 6,
 		cactus = 4,
+		cazadores = 4,
 		entradasSala = 3,
 		bucles = 0.06,
 		estilos = "##FS",
@@ -157,8 +158,20 @@ export function generarMapa(opciones = {})
 	const celdasCactus = mezclar(rnd, celdasNormales.filter(c => esCallejon(c) && !usadas.has(clave(...c))))
 		.slice(0, cactus);
 	celdasCactus.forEach(c => usadas.add(clave(...c)));
-	const celdasRoca = mezclar(rnd, celdasNormales.filter(c => !usadas.has(clave(...c)) && !puertas.some(p => p[0] === c[0] && p[1] === c[1])))
+	const esPuerta = c => puertas.some(p => p[0] === c[0] && p[1] === c[1]);
+	const celdasRoca = mezclar(rnd, celdasNormales.filter(c => !usadas.has(clave(...c)) && !esPuerta(c)))
 		.slice(0, rocas);
+	celdasRoca.forEach(c => usadas.add(clave(...c)));
+
+	// Cazadores en pasillos (no callejones) lejos del inicio, separados entre sí.
+	const celdasCazador = [];
+	for (const c of mezclar(rnd, celdasNormales))
+	{
+		if (celdasCazador.length === cazadores) break;
+		if (usadas.has(clave(...c)) || esPuerta(c) || esCallejon(c) || dInicio.get(clave(...c)) < 4) continue;
+		const dc = distancias(clave(...c));
+		if (celdasCazador.every(o => dc.get(clave(...o)) >= 3)) celdasCazador.push(c);
+	}
 
 	// ---- Pasar a casillas ----
 	const mapa = Array.from({ length: alto }, () => Array(ancho).fill(null));
@@ -227,6 +240,7 @@ export function generarMapa(opciones = {})
 	// Cactus y rocas van en la fila de abajo de su celda: así queda lugar arriba para pasar.
 	for (const c of celdasCactus) poner(...casillaAbajo(c), "K");
 	for (const c of celdasRoca) poner(...casillaAbajo(c), "O");
+	for (const c of celdasCazador) poner(...casillaCualquiera(c), "H");
 
 	const [xi, yi] = origen(...inicio);
 	poner(xi, yi + anchoPasillo - 1, "G");
