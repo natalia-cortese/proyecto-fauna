@@ -19,6 +19,7 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 - **Espacio:** cambiar entre **Mafalda** y **Dieguito** (la flecha amarilla marca cuál se maneja y la cámara lo sigue; el otro lo sigue solo).
 - **X:** mientras se maneja a Dieguito, tira una piedrita con la onda hacia donde camina (una cada medio segundo). Arriba a la derecha aparece el cartel «X: tirar con la onda».
 - **Espacio o Enter:** cerrar la ficha de un animal.
+- **Solo Mafalda junta las llaves y abre las jaulas**, y solo mientras se la maneja (siguiendo a Dieguito no hace nada). Al acercarse a una jaula sin poder abrirla, la jaula muestra un globo: «Solo Mafalda puede abrirnos» si se maneja a Dieguito, o «Necesitás una de las llaves para abrirnos» si Mafalda no tiene llaves. **Solo Dieguito tira con la onda.** Así hay que ir cambiando de personaje.
 - Caminar contra una roca la salta si del otro lado hay lugar.
 
 ## Qué hay en el proyecto
@@ -31,16 +32,17 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 | `scripts/personajes.js` | movimiento, cambio de personaje con Espacio, el que sigue con *Pathfinding*, espejado según hacia dónde caminan, vidas (un cactus o un cazador resta una y los dos vuelven al portal, parpadeando 1,5 s sin poder perder otra) y corazones del HUD |
 | `scripts/cazadores.js` | cada cazador va y viene por un tramo corto de su pasillo; cada 3–6 s se esconde entre los setos y aparece en otro punto. Si el personaje manejado se le acerca a menos de 44 px mientras se ve, pierde una vida. Escondido no hace daño |
 | `scripts/onda.js` | la onda de Dieguito: la piedrita vuela hasta 420 px, pasa por encima de las rocas, se frena en muros y cactus y derriba al cazador que toque si se lo ve (no sirve contra uno escondido). El cazador derribado cae y no vuelve en ese laberinto |
+| `scripts/cartelJaula.js` | el globo `spriteCartelJaula` (capa `Niebla`) sobre la jaula más cercana cuando el personaje manejado está a menos de 40 px y no puede abrirla. Cada texto es una animación del globo: `solo_mafalda` y `necesita_llave` |
 | `scripts/saltoRoca.js` | salto en arco de 0,4 s por encima de una roca |
 | `scripts/niebla.js` | el `Tilemap` **Niebla** (casillas de 32 px) tapa el mapa y se despeja para siempre alrededor de los personajes. `RADIO` cambia cuánto se ve |
 | `scripts/fichas.js` | sorteo de animales por laberinto y ficha del animal rescatado (ver [Sumar un animal](#sumar-un-animal)) |
 | `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
 | hoja `Inicio` | variable `REGION` (texto, `"puna"`); llama a `inicio.js` al empezar, en cada tick y con Enter/Espacio |
-| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS` y `FICHA`; llama a `personajes.js` y a `fichas.js` (X dispara la onda); llaves y jaulas con cualquiera de los dos personajes (cada llave abre una sola jaula) |
+| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS`, `FICHA` y `PERSONAJE` (texto: quién se maneja, `"Mafalda"` o `"Dieguito"`); llama a `personajes.js` y a `fichas.js` (X dispara la onda); las llaves las junta Mafalda si `PERSONAJE` = `"Mafalda"` (*Is overlapping*, así también la levanta si se cambia a ella estando encima); las jaulas igual, con `LLAVES` ≥ 1 (cada llave abre una sola jaula) |
 | hoja `Laberinto` | incluye `Event sheet 1`; variable `SEMILLA`; arma el laberinto al empezar y pasa a uno nuevo al abrir todas las jaulas |
 | layout `Laberinto` | 1792 × 1216. Capas: `BG` (fondo), `Layer 1` (`Tilemap` con **Solid**, personajes y moldes fuera de pantalla de `spriteHuida`, `spriteCazador` y `spritePiedrita`), `Niebla` (niebla y flecha) y `HUD` (paralaje 0: corazones y ficha) |
 
-Los objetos están ordenados en carpetas del panel *Project*: `inicio` (fondo, zona y botón de la pantalla de inicio), `personajes` (Mafalda, Dieguito y la piedrita de la onda), `muros_y_tiles` (muros, fondo, niebla, rocas y cactus), `animales_libres` (animación de huida y fichas de los animales), `cazadores`, `jaulas_y_metas` (jaulas, llave, cueva, portal) e `interfaz` (corazones, flecha, velo, cartel de la ficha y cartel de la onda). En disco, cada objeto está en `objectTypes/<carpeta>/`. Las imágenes las maneja Construct en `images/` con el nombre del objeto; no se mueven a mano.
+Los objetos están ordenados en carpetas del panel *Project*: `inicio` (fondo, zona y botón de la pantalla de inicio), `personajes` (Mafalda, Dieguito y la piedrita de la onda), `muros_y_tiles` (muros, fondo, niebla, rocas y cactus), `animales_libres` (animación de huida y fichas de los animales), `cazadores`, `jaulas_y_metas` (jaulas, llave, cueva, portal) e `interfaz` (corazones, flecha, velo, cartel de la ficha, cartel de la onda y globo de las jaulas). En disco, cada objeto está en `objectTypes/<carpeta>/`. Las imágenes las maneja Construct en `images/` con el nombre del objeto; no se mueven a mano.
 
 ## Cambiar el laberinto
 

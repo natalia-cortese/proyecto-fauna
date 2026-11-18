@@ -6,6 +6,7 @@ import { revelarNiebla } from "./niebla.js";
 import { actualizarCazadores } from "./cazadores.js";
 import { reiniciarFichas, fichaAbierta, cerrarFicha } from "./fichas.js";
 import { reiniciarOnda, dispararOnda, actualizarOnda } from "./onda.js";
+import { actualizarCartelJaula } from "./cartelJaula.js";
 
 export const VIDAS_MAXIMAS = 3;
 const SEGUIR_DESDE = 90;
@@ -60,6 +61,7 @@ export function disparar(runtime)
 
 function aplicarControl(runtime)
 {
+	runtime.globalVars.PERSONAJE = activo === "spriteMafalda" ? "Mafalda" : "Dieguito";
 	for (const nombre of ["spriteMafalda", "spriteDieguito"])
 	{
 		const inst = personaje(runtime, nombre);
@@ -112,6 +114,7 @@ export function actualizarPersonajes(runtime)
 	}
 
 	actualizarMarcador(runtime, actual);
+	actualizarCartelJaula(runtime, actual, activo === "spriteMafalda");
 	actualizarCorazones(runtime);
 	for (const ayuda of runtime.objects.spriteAyudaOnda?.getAllInstances() ?? [])
 		ayuda.isVisible = activo === "spriteDieguito";

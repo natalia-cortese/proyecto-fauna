@@ -32,6 +32,16 @@
 			"sid": 157205347782371
 		},
 		{
+			"eventType": "variable",
+			"name": "PERSONAJE",
+			"type": "string",
+			"initialValue": "Mafalda",
+			"comment": "Personaje que se está manejando (Mafalda o Dieguito). Solo Mafalda, manejada, junta llaves y abre jaulas.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 990889916247969
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
@@ -129,11 +139,21 @@
 			"eventType": "block",
 			"conditions": [
 				{
-					"id": "on-collision-with-another-object",
+					"id": "is-overlapping-another-object",
 					"objectClass": "Sprite2",
-					"sid": 818875062373583,
+					"sid": 952183387216505,
 					"parameters": {
 						"object": "spriteMafalda"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 383587382670201,
+					"parameters": {
+						"variable": "PERSONAJE",
+						"comparison": 0,
+						"value": "\"Mafalda\""
 					}
 				}
 			],
@@ -159,41 +179,21 @@
 			"eventType": "block",
 			"conditions": [
 				{
-					"id": "on-collision-with-another-object",
-					"objectClass": "Sprite2",
-					"sid": 558111259679739,
+					"id": "is-overlapping-another-object",
+					"objectClass": "spriteJaula",
+					"sid": 522629200090479,
 					"parameters": {
-						"object": "spriteDieguito"
-					}
-				}
-			],
-			"actions": [
-				{
-					"id": "add-to-eventvar",
-					"objectClass": "System",
-					"sid": 288565111092405,
-					"parameters": {
-						"variable": "LLAVES",
-						"value": "1"
+						"object": "spriteMafalda"
 					}
 				},
 				{
-					"id": "destroy",
-					"objectClass": "Sprite2",
-					"sid": 963191710978902
-				}
-			],
-			"sid": 798935715831705
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "on-collision-with-another-object",
-					"objectClass": "spriteJaula",
-					"sid": 155281671750123,
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 306282623675236,
 					"parameters": {
-						"object": "spriteMafalda"
+						"variable": "PERSONAJE",
+						"comparison": 0,
+						"value": "\"Mafalda\""
 					}
 				},
 				{
@@ -236,58 +236,6 @@
 				}
 			],
 			"sid": 345051466835236
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "on-collision-with-another-object",
-					"objectClass": "spriteJaula",
-					"sid": 510658633093789,
-					"parameters": {
-						"object": "spriteDieguito"
-					}
-				},
-				{
-					"id": "compare-eventvar",
-					"objectClass": "System",
-					"sid": 605320728877633,
-					"parameters": {
-						"variable": "LLAVES",
-						"comparison": 5,
-						"value": "1"
-					}
-				}
-			],
-			"actions": [
-				{
-					"id": "subtract-from-eventvar",
-					"objectClass": "System",
-					"sid": 843561967403635,
-					"parameters": {
-						"variable": "LLAVES",
-						"value": "1"
-					}
-				},
-				{
-					"id": "spawn-another-object",
-					"objectClass": "spriteJaula",
-					"sid": 854283901087781,
-					"parameters": {
-						"object": "spriteHuida",
-						"layer": "spriteJaula.LayerName",
-						"image-point": "0",
-						"create-hierarchy": false,
-						"template-name": "\"\""
-					}
-				},
-				{
-					"id": "destroy",
-					"objectClass": "spriteJaula",
-					"sid": 767700160310848
-				}
-			],
-			"sid": 407251054214431
 		},
 		{
 			"eventType": "block",
