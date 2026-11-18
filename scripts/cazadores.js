@@ -1,11 +1,13 @@
 // Cazadores: van y vienen por un tramo corto de su pasillo y cada tanto se esconden entre los setos
 // para aparecer en otro punto del tramo. Si el personaje manejado se les acerca mientras se ven, atrapan.
+// Una piedrita de la onda de Dieguito los derriba.
 
 const CASILLA = 64;
 const TRAMO = 2;
 const VELOCIDAD = 55;
 const ATRAPA_A = 44;
 const FUNDIDO = 0.4;
+const DERRIBO = 0.6;
 const LIBRE = new Set([".", "L", "H", "J", "V", "G", "E", "N"]);
 
 const datos = new WeakMap();
@@ -68,6 +70,13 @@ export function actualizarCazadores(runtime, personaje)
 				cambiar(d, "apareciendo", FUNDIDO);
 			}
 		}
+		else if (d.fase === "derribado")
+		{
+			inst.opacity = Math.max(0, d.tiempo / DERRIBO);
+			inst.angleDegrees = (1 - d.tiempo / DERRIBO) * 90 * Math.sign(inst.width);
+			if (d.tiempo <= 0) inst.destroy();
+			continue;
+		}
 		else if (d.fase === "apareciendo")
 		{
 			inst.opacity = Math.min(1, 1 - d.tiempo / FUNDIDO);
@@ -86,6 +95,15 @@ export function actualizarCazadores(runtime, personaje)
 			atrapo = true;
 	}
 	return atrapo;
+}
+
+// Una piedrita de la onda solo derriba al cazador si se lo ve; derribado cae y no vuelve en este laberinto.
+export function golpearCazador(inst)
+{
+	const d = datos.get(inst);
+	if (!d || d.fase === "escondido" || d.fase === "derribado" || inst.opacity < 0.3) return false;
+	cambiar(d, "derribado", DERRIBO);
+	return true;
 }
 
 function cambiar(d, fase, tiempo)

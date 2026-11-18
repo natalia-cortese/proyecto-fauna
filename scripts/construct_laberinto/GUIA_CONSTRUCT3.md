@@ -16,7 +16,8 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 ## Controles
 
 - **Flechas:** mover al personaje elegido.
-- **Espacio:** cambiar entre la nena y el nene (la flecha amarilla marca cuál se maneja y la cámara lo sigue; el otro lo sigue solo).
+- **Espacio:** cambiar entre **Mafalda** y **Dieguito** (la flecha amarilla marca cuál se maneja y la cámara lo sigue; el otro lo sigue solo).
+- **X:** mientras se maneja a Dieguito, tira una piedrita con la onda hacia donde camina (una cada medio segundo). Arriba a la derecha aparece el cartel «X: tirar con la onda».
 - **Espacio o Enter:** cerrar la ficha de un animal.
 - Caminar contra una roca la salta si del otro lado hay lugar.
 
@@ -26,19 +27,20 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 |---|---|
 | `scripts/inicio.js` | pantalla de inicio: la zona y el botón laten, detecta los toques y pasa al laberinto con la región elegida. Las zonas habilitadas están en `ZONAS` |
 | `scripts/generadorLaberinto.js` | `generarMapa(opciones)`: arma el laberinto como texto (ver [El mapa como texto](#el-mapa-como-texto)) |
-| `scripts/construirLaberinto.js` | `construirLaberinto(runtime, mapa)`: pinta los muros en el `Tilemap`, crea los objetos de cada letra con su tamaño, pone a la nena y al nene delante del portal y regenera el mapa del *Pathfinding* |
+| `scripts/construirLaberinto.js` | `construirLaberinto(runtime, mapa)`: pinta los muros en el `Tilemap`, crea los objetos de cada letra con su tamaño, pone a Mafalda y a Dieguito delante del portal y regenera el mapa del *Pathfinding* |
 | `scripts/personajes.js` | movimiento, cambio de personaje con Espacio, el que sigue con *Pathfinding*, espejado según hacia dónde caminan, vidas (un cactus o un cazador resta una y los dos vuelven al portal, parpadeando 1,5 s sin poder perder otra) y corazones del HUD |
 | `scripts/cazadores.js` | cada cazador va y viene por un tramo corto de su pasillo; cada 3–6 s se esconde entre los setos y aparece en otro punto. Si el personaje manejado se le acerca a menos de 44 px mientras se ve, pierde una vida. Escondido no hace daño |
+| `scripts/onda.js` | la onda de Dieguito: la piedrita vuela hasta 420 px, pasa por encima de las rocas, se frena en muros y cactus y derriba al cazador que toque si se lo ve (no sirve contra uno escondido). El cazador derribado cae y no vuelve en ese laberinto |
 | `scripts/saltoRoca.js` | salto en arco de 0,4 s por encima de una roca |
 | `scripts/niebla.js` | el `Tilemap` **Niebla** (casillas de 32 px) tapa el mapa y se despeja para siempre alrededor de los personajes. `RADIO` cambia cuánto se ve |
 | `scripts/fichas.js` | sorteo de animales por laberinto y ficha del animal rescatado (ver [Sumar un animal](#sumar-un-animal)) |
 | `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
 | hoja `Inicio` | variable `REGION` (texto, `"puna"`); llama a `inicio.js` al empezar, en cada tick y con Enter/Espacio |
-| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS` y `FICHA`; llama a `personajes.js` y a `fichas.js`; llaves y jaulas con cualquiera de los dos personajes (cada llave abre una sola jaula) |
+| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS` y `FICHA`; llama a `personajes.js` y a `fichas.js` (X dispara la onda); llaves y jaulas con cualquiera de los dos personajes (cada llave abre una sola jaula) |
 | hoja `Laberinto` | incluye `Event sheet 1`; variable `SEMILLA`; arma el laberinto al empezar y pasa a uno nuevo al abrir todas las jaulas |
-| layout `Laberinto` | 1792 × 1216. Capas: `BG` (fondo), `Layer 1` (`Tilemap` con **Solid**, personajes y moldes fuera de pantalla de `spriteHuida` y `spriteCazador`), `Niebla` (niebla y flecha) y `HUD` (paralaje 0: corazones y ficha) |
+| layout `Laberinto` | 1792 × 1216. Capas: `BG` (fondo), `Layer 1` (`Tilemap` con **Solid**, personajes y moldes fuera de pantalla de `spriteHuida`, `spriteCazador` y `spritePiedrita`), `Niebla` (niebla y flecha) y `HUD` (paralaje 0: corazones y ficha) |
 
-Los objetos están ordenados en carpetas del panel *Project*: `inicio` (fondo, zona y botón de la pantalla de inicio), `personajes`, `muros_y_tiles` (muros, fondo, niebla, rocas y cactus), `animales_libres` (animación de huida y fichas de los animales), `cazadores`, `jaulas_y_metas` (jaulas, llave, cueva, portal) e `interfaz` (corazones, flecha, velo y cartel de la ficha). En disco, cada objeto está en `objectTypes/<carpeta>/`. Las imágenes las maneja Construct en `images/` con el nombre del objeto; no se mueven a mano.
+Los objetos están ordenados en carpetas del panel *Project*: `inicio` (fondo, zona y botón de la pantalla de inicio), `personajes` (Mafalda, Dieguito y la piedrita de la onda), `muros_y_tiles` (muros, fondo, niebla, rocas y cactus), `animales_libres` (animación de huida y fichas de los animales), `cazadores`, `jaulas_y_metas` (jaulas, llave, cueva, portal) e `interfaz` (corazones, flecha, velo, cartel de la ficha y cartel de la onda). En disco, cada objeto está en `objectTypes/<carpeta>/`. Las imágenes las maneja Construct en `images/` con el nombre del objeto; no se mueven a mano.
 
 ## Cambiar el laberinto
 
@@ -94,7 +96,7 @@ node scripts/construct_laberinto/generador/vista_previa.mjs [semilla] [jaulas]
 | `J` | jaula | `spriteJaula` | 96 × 92 |
 | `L` | llave | `Sprite2` | 70 × 76 |
 | `H` | cazador (`Cazador1` o `Cazador2` al azar) | `spriteCazador` | 48 × 72 |
-| `E` `N` | nena y nene (se mueven, no se crean) | `spriteNena`, `spriteNene` | los del layout |
+| `E` `N` | Mafalda y Dieguito (se mueven, no se crean) | `spriteMafalda`, `spriteDieguito` | los del layout |
 
 Los tamaños están en `OBJETOS`, al principio de `construirLaberinto.js`: un objeto creado por script usa el tamaño de su imagen, y las imágenes tienen tamaños muy distintos.
 

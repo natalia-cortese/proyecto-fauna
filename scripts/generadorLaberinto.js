@@ -1,6 +1,6 @@
 // Genera el texto MAPA (filas separadas por "|") con las mismas letras que usa GUIA_CONSTRUCT3.md:
 //   muros:   # F S Y P R      camino: .
-//   objetos: V cueva, J jaula, L llave, K cactus, O roca, H cazador, G portal, E nena, N nene
+//   objetos: V cueva, J jaula, L llave, K cactus, O roca, H cazador, G portal, E Mafalda, N Dieguito
 
 const LIBRE = ".";
 

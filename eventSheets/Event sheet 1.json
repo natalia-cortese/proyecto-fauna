@@ -109,11 +109,31 @@
 			"eventType": "block",
 			"conditions": [
 				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"sid": 798940198769138,
+					"parameters": {
+						"key": 88
+					}
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "disparar(runtime);"
+				}
+			],
+			"sid": 692877398611272
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
 					"id": "on-collision-with-another-object",
 					"objectClass": "Sprite2",
 					"sid": 818875062373583,
 					"parameters": {
-						"object": "spriteNena"
+						"object": "spriteMafalda"
 					}
 				}
 			],
@@ -143,7 +163,7 @@
 					"objectClass": "Sprite2",
 					"sid": 558111259679739,
 					"parameters": {
-						"object": "spriteNene"
+						"object": "spriteDieguito"
 					}
 				}
 			],
@@ -173,7 +193,7 @@
 					"objectClass": "spriteJaula",
 					"sid": 155281671750123,
 					"parameters": {
-						"object": "spriteNena"
+						"object": "spriteMafalda"
 					}
 				},
 				{
@@ -225,7 +245,7 @@
 					"objectClass": "spriteJaula",
 					"sid": 510658633093789,
 					"parameters": {
-						"object": "spriteNene"
+						"object": "spriteDieguito"
 					}
 				},
 				{

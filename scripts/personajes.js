@@ -1,10 +1,11 @@
-// Maneja a la nena y al nene: con Espacio se elige a cuál se maneja con las flechas,
-// el otro lo sigue con Pathfinding. También el salto de rocas, los cactus y las vidas.
+// Maneja a Mafalda y a Dieguito: con Espacio se elige a cuál se maneja con las flechas,
+// el otro lo sigue con Pathfinding. También el salto de rocas, los cactus, las vidas y la onda de Dieguito.
 
 import { saltarRoca, estaSaltando, cancelarSalto, tocando } from "./saltoRoca.js";
 import { revelarNiebla } from "./niebla.js";
 import { actualizarCazadores } from "./cazadores.js";
 import { reiniciarFichas, fichaAbierta, cerrarFicha } from "./fichas.js";
+import { reiniciarOnda, dispararOnda, actualizarOnda } from "./onda.js";
 
 export const VIDAS_MAXIMAS = 3;
 const SEGUIR_DESDE = 90;
@@ -18,24 +19,25 @@ const FLECHAS = [
 	["ArrowUp", 0, -1]
 ];
 
-let activo = "spriteNena";
+let activo = "spriteMafalda";
 let inicio = null;
 let invulnerableHasta = 0;
 let proximaBusqueda = 0;
 const xAnterior = new WeakMap();
 
 const personaje = (runtime, nombre) => runtime.objects[nombre]?.getFirstInstance();
-const otroNombre = nombre => nombre === "spriteNena" ? "spriteNene" : "spriteNena";
+const otroNombre = nombre => nombre === "spriteMafalda" ? "spriteDieguito" : "spriteMafalda";
 
 export function iniciarPersonajes(runtime)
 {
-	activo = "spriteNena";
+	activo = "spriteMafalda";
 	inicio = null;
 	invulnerableHasta = 0;
 	proximaBusqueda = 0;
 	runtime.globalVars.VIDAS = VIDAS_MAXIMAS;
 	runtime.globalVars.LLAVES = 0;
 	reiniciarFichas(runtime);
+	reiniciarOnda(runtime);
 	aplicarControl(runtime);
 }
 
@@ -49,9 +51,16 @@ export function cambiarPersonaje(runtime)
 	aplicarControl(runtime);
 }
 
+export function disparar(runtime)
+{
+	const dieguito = personaje(runtime, "spriteDieguito");
+	if (fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
+	dispararOnda(runtime, dieguito);
+}
+
 function aplicarControl(runtime)
 {
-	for (const nombre of ["spriteNena", "spriteNene"])
+	for (const nombre of ["spriteMafalda", "spriteDieguito"])
 	{
 		const inst = personaje(runtime, nombre);
 		if (!inst) continue;
@@ -73,7 +82,7 @@ export function actualizarPersonajes(runtime)
 	if (!actual || fichaAbierta()) return;
 
 	if (!inicio)
-		inicio = { nena: posicion(personaje(runtime, "spriteNena")), nene: posicion(personaje(runtime, "spriteNene")) };
+		inicio = { mafalda: posicion(personaje(runtime, "spriteMafalda")), dieguito: posicion(personaje(runtime, "spriteDieguito")) };
 
 	if (!estaSaltando(actual) && runtime.keyboard)
 	{
@@ -90,6 +99,7 @@ export function actualizarPersonajes(runtime)
 	}
 
 	if (actualizarCazadores(runtime, actual)) perderVida(runtime);
+	actualizarOnda(runtime, personaje(runtime, "spriteDieguito"), activo === "spriteDieguito");
 
 	if (otro) seguir(runtime, otro, actual);
 
@@ -103,6 +113,8 @@ export function actualizarPersonajes(runtime)
 
 	actualizarMarcador(runtime, actual);
 	actualizarCorazones(runtime);
+	for (const ayuda of runtime.objects.spriteAyudaOnda?.getAllInstances() ?? [])
+		ayuda.isVisible = activo === "spriteDieguito";
 	revelarNiebla(runtime, [actual, otro].filter(Boolean));
 }
 
@@ -147,7 +159,7 @@ function perderVida(runtime)
 	}
 
 	invulnerableHasta = runtime.gameTime + INVULNERABLE;
-	for (const [nombre, pos] of [["spriteNena", inicio.nena], ["spriteNene", inicio.nene]])
+	for (const [nombre, pos] of [["spriteMafalda", inicio.mafalda], ["spriteDieguito", inicio.dieguito]])
 	{
 		const inst = personaje(runtime, nombre);
 		if (!inst || !pos) continue;

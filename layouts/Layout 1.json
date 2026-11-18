@@ -1714,7 +1714,7 @@
 					}
 				},
 				{
-					"type": "spriteNena",
+					"type": "spriteMafalda",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Animation 1",
@@ -1796,7 +1796,7 @@
 					}
 				},
 				{
-					"type": "spriteNene",
+					"type": "spriteDieguito",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Animation 1",

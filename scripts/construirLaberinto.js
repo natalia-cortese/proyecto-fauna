@@ -37,8 +37,8 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 			tilemap.setTileAt(x, y, mascara + estilo(x, y) * 16 + variante * 96);
 		}
 
-	const nena = runtime.objects.spriteNena.getFirstInstance();
-	const nene = runtime.objects.spriteNene.getFirstInstance();
+	const mafalda = runtime.objects.spriteMafalda.getFirstInstance();
+	const dieguito = runtime.objects.spriteDieguito.getFirstInstance();
 	for (let y = 0; y < filas.length; y++)
 		for (let x = 0; x < filas[y].length; x++)
 		{
@@ -59,15 +59,15 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 					prepararCazador(inst, filas, x, y);
 				}
 			}
-			else if (letra === "E" && nena) { nena.x = cx; nena.y = cy; }
-			else if (letra === "N" && nene) { nene.x = cx; nene.y = cy; }
+			else if (letra === "E" && mafalda) { mafalda.x = cx; mafalda.y = cy; }
+			else if (letra === "N" && dieguito) { dieguito.x = cx; dieguito.y = cy; }
 		}
 
 	// Los objetos creados quedan arriba de todo; sin esto el portal tapa a los personajes.
-	nena?.moveToTop();
-	nene?.moveToTop();
+	mafalda?.moveToTop();
+	dieguito?.moveToTop();
 
 	// El Pathfinding calcula los obstáculos al arrancar, antes de que existan los muros.
-	nena?.behaviors.Pathfinding?.map.regenerateMap();
-	nene?.behaviors.Pathfinding?.map.regenerateMap();
+	mafalda?.behaviors.Pathfinding?.map.regenerateMap();
+	dieguito?.behaviors.Pathfinding?.map.regenerateMap();
 }

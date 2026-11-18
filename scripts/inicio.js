@@ -18,12 +18,12 @@ export function iniciarInicio(runtime)
 	base = new Map();
 	runtime.timeScale = 1;
 
-	for (const nombre of ["spriteNena", "spriteNene"])
+	for (const nombre of ["spriteMafalda", "spriteDieguito"])
 		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
 			for (const b of ["8Direction", "Pathfinding", "ScrollTo"])
 				if (inst.behaviors[b]) inst.behaviors[b].isEnabled = false;
 
-	for (const nombre of [...Object.keys(ZONAS), "spriteBotonJugar", "spriteNena", "spriteNene"])
+	for (const nombre of [...Object.keys(ZONAS), "spriteBotonJugar", "spriteMafalda", "spriteDieguito"])
 		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
 			base.set(inst, { y: inst.y, w: inst.width, h: inst.height });
 
@@ -41,9 +41,9 @@ export function actualizarInicio(runtime)
 	for (const [inst, b] of base)
 	{
 		const nombre = inst.objectType.name;
-		if (nombre === "spriteNena" || nombre === "spriteNene")
+		if (nombre === "spriteMafalda" || nombre === "spriteDieguito")
 		{
-			const fase = nombre === "spriteNena" ? 0 : 1.6;
+			const fase = nombre === "spriteMafalda" ? 0 : 1.6;
 			inst.y = b.y - Math.abs(Math.sin(tiempo * 3 + fase)) * 6;
 			continue;
 		}
