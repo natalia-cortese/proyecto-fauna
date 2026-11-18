@@ -60,7 +60,7 @@ Para cambiar la cantidad de jaulas, cambiá `JAULAS`. Las demás opciones se sum
 | `jaulas` | 3 | jaulas y llaves (de 1 a 5) |
 | `rocas` | 6 | rocas sueltas |
 | `cactus` | 4 | cactus, si hay callejones libres (solo van en callejones porque tapan todo el pasillo) |
-| `cazadores` | 2 | cazadores en pasillos, a 4 casillas o más del inicio y separados entre sí |
+| `cazadores` | 4 | cazadores en pasillos, a 4 casillas o más del inicio y separados entre sí |
 | `entradasSala` | 3 | entradas a la sala del medio |
 | `bucles` | 0.06 | probabilidad de abrir un muro extra; más alto = más caminos alternativos |
 | `estilos` | `"##FS"` | letras de muro para el interior (repetir una letra la hace más común) |
