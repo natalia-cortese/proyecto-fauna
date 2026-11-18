@@ -163,7 +163,7 @@
 					"spriteMarcador",
 					"spriteVelo",
 					"spriteSeguir",
-					"spriteAyudaHonda",
+					"spriteAyudaOnda",
 					"spriteCartelJaula"
 				],
 				"subfolders": [],
@@ -255,7 +255,7 @@
 					}
 				},
 				{
-					"name": "honda.js",
+					"name": "onda.js",
 					"type": "application/javascript",
 					"sid": 605445745925425,
 					"script-info": {
@@ -542,11 +542,11 @@
 		"subfolders": []
 	},
 	"properties": {
-		"description": "",
+		"description": "This is a game where you can learn and collect information from the fauna in Argentina.",
 		"version": "1.0.0.0",
-		"autoIncrementVersion": false,
-		"author": "",
-		"authorEmail": "",
+		"autoIncrementVersion": true,
+		"author": "Cortese, Torres, Celes",
+		"authorEmail": "taku246@gmail.com",
 		"authorWebsite": "",
 		"appId": "",
 		"saveLLMContextFile": true,
