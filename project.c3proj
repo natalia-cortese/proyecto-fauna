@@ -163,8 +163,9 @@
 					"spriteMarcador",
 					"spriteVelo",
 					"spriteSeguir",
-					"spriteAyudaOnda",
-					"spriteCartelJaula"
+					"spriteAyudaHonda",
+					"spriteCartelJaula",
+					"spriteGameOver"
 				],
 				"subfolders": [],
 				"name": "interfaz"
@@ -255,7 +256,7 @@
 					}
 				},
 				{
-					"name": "onda.js",
+					"name": "honda.js",
 					"type": "application/javascript",
 					"sid": 605445745925425,
 					"script-info": {

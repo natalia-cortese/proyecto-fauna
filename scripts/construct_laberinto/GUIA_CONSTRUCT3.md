@@ -7,7 +7,8 @@ Cómo está armado el juego y qué tocar para cambiarlo.
 1. **`Inicio`** (*First layout*): pantalla de título **FAUNA** con el mapa de Argentina. Solo la **Puna** está habilitada; las demás zonas tienen candado. Tocar la Puna, tocar **JUGAR** o apretar Enter/Espacio guarda la zona en la variable global **`REGION`** y pasa a `Laberinto`.
 2. **`Laberinto`**: suena de fondo, en loop, `SonidoMapa_NOA_loop` (carpeta `sounds`, a -12 dB, etiqueta `"musica"`; no se corta al perder vidas ni al pasar de laberinto, y queda en pausa mientras se muestra una ficha). Cada partida arma un laberinto nuevo (28 × 19 casillas de 64 px) con niebla, llaves, jaulas, cactus, rocas y cazadores. Las jaulas guardan animales sorteados de la región elegida.
 3. Al abrir una jaula se ve la animación de huida y después la **ficha del animal** en el centro de la pantalla, con su sonido en loop, y el juego en pausa hasta apretar Espacio o Enter. Mientras está abierta no suena la música del laberinto; al cerrarla se corta el sonido del animal y la música sigue desde donde quedó.
-4. Al abrir todas las jaulas y cerrar la última ficha, sale un laberinto nuevo. Al perder las 3 vidas se repite el mismo laberinto, con los mismos animales.
+4. Al abrir todas las jaulas y cerrar la última ficha, sale un laberinto nuevo.
+5. Al perder las 3 vidas aparece la pantalla de **GAME OVER** (`spriteGameOver` sobre el velo oscuro, con el juego en pausa y la música más baja). **Espacio o Enter** vuelven a jugar el mismo laberinto, con los mismos animales; **Esc** vuelve al mapa de `Inicio` y corta la música.
 
 Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F5): arranca en el layout abierto. El juego exportado arranca siempre en `Inicio`.
 
@@ -18,7 +19,8 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 - **Flechas:** mover al personaje elegido.
 - **Espacio:** cambiar entre **Mafalda** y **Dieguito** (la flecha amarilla marca cuál se maneja y la cámara lo sigue; el otro lo sigue solo).
 - **X:** mientras se maneja a Dieguito, tira una piedrita con la honda hacia donde camina (una cada medio segundo). Arriba a la derecha aparece el cartel «X: tirar con la honda».
-- **Espacio o Enter:** cerrar la ficha de un animal.
+- **Espacio o Enter:** cerrar la ficha de un animal, o volver a intentar desde la pantalla de GAME OVER.
+- **Esc:** en la pantalla de GAME OVER, volver al mapa.
 - **Solo Mafalda junta las llaves y abre las jaulas**, y solo mientras se la maneja (siguiendo a Dieguito no hace nada). Al acercarse a una jaula sin poder abrirla, la jaula muestra un globo: «Solo Mafalda puede abrirnos» si se maneja a Dieguito, o «Necesitás una de las llaves para abrirnos» si Mafalda no tiene llaves. Si Dieguito toca una llave, arriba de la llave aparece «Solo Mafalda puede recolectar las llaves». **Solo Dieguito tira con la honda.** Así hay que ir cambiando de personaje.
 - Caminar contra una roca la salta si del otro lado hay lugar.
 
@@ -29,7 +31,7 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 | `scripts/inicio.js` | pantalla de inicio: la zona y el botón laten, detecta los toques y pasa al laberinto con la región elegida. Las zonas habilitadas están en `ZONAS` |
 | `scripts/generadorLaberinto.js` | `generarMapa(opciones)`: arma el laberinto como texto (ver [El mapa como texto](#el-mapa-como-texto)) |
 | `scripts/construirLaberinto.js` | `construirLaberinto(runtime, mapa)`: pinta los muros en el `Tilemap`, crea los objetos de cada letra con su tamaño, pone a Mafalda y a Dieguito delante del portal y regenera el mapa del *Pathfinding* |
-| `scripts/personajes.js` | movimiento, cambio de personaje con Espacio, el que sigue con *Pathfinding*, espejado según hacia dónde caminan, vidas (un cactus o un cazador resta una y los dos vuelven al portal, parpadeando 1,5 s sin poder perder otra) y corazones del HUD |
+| `scripts/personajes.js` | movimiento, cambio de personaje con Espacio, el que sigue con *Pathfinding*, espejado según hacia dónde caminan, vidas (un cactus o un cazador resta una y los dos vuelven al portal, parpadeando 1,5 s sin poder perder otra), corazones del HUD y la pantalla de GAME OVER (`reintentar` y `volverAlInicio`). En `Layout 1`, que no tiene `spriteGameOver`, perder todas las vidas reinicia el layout |
 | `scripts/cazadores.js` | cada cazador va y viene por un tramo corto de su pasillo; cada 3–6 s se esconde entre los setos y aparece en otro punto. Si el personaje manejado se le acerca a menos de 44 px mientras se ve, pierde una vida. Escondido no hace daño |
 | `scripts/honda.js` | la honda de Dieguito: la piedrita vuela hasta 420 px, pasa por encima de las rocas, se frena en muros y cactus y derriba al cazador que toque si se lo ve (no sirve contra uno escondido). El cazador derribado cae y no vuelve en ese laberinto |
 | `scripts/cartelJaula.js` | el globo `spriteCartelJaula` (capa `Niebla`): sobre la jaula más cercana cuando el personaje manejado está a menos de 40 px y no puede abrirla, y sobre la llave que toca Dieguito manejado. Cada texto es una animación del globo: `solo_mafalda`, `necesita_llave` y `solo_mafalda_llave` |
@@ -37,12 +39,12 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 | `scripts/niebla.js` | el `Tilemap` **Niebla** (casillas de 32 px) tapa el mapa y se despeja para siempre alrededor de los personajes. `RADIO` cambia cuánto se ve |
 | `scripts/fichas.js` | sorteo de animales por laberinto y ficha del animal rescatado (ver [Sumar un animal](#sumar-un-animal)) |
 | `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
-| hoja `Inicio` | variable `REGION` (texto, `"puna"`); llama a `inicio.js` al empezar, en cada tick y con Enter/Espacio |
-| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS`, `FICHA`, `SONIDO` y `PERSONAJE` (texto: quién se maneja, `"Mafalda"` o `"Dieguito"`); llama a `personajes.js` y a `fichas.js` (X dispara la honda); las llaves las junta Mafalda si `PERSONAJE` = `"Mafalda"` (*Is overlapping*, así también la levanta si se cambia a ella estando encima); las jaulas igual, con `LLAVES` ≥ 1 (cada llave abre una sola jaula) |
+| hoja `Inicio` | variable `REGION` (texto, `"puna"`); llama a `inicio.js` al empezar, en cada tick y con Enter/Espacio; al empezar corta la música del laberinto |
+| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS`, `FICHA`, `GAMEOVER` (1 con la pantalla de GAME OVER: baja la música a -30 dB; vuelve a -12 dB al empezar el layout), `SONIDO` y `PERSONAJE` (texto: quién se maneja, `"Mafalda"` o `"Dieguito"`); llama a `personajes.js` y a `fichas.js` (X dispara la honda; Enter y Esc también manejan la pantalla de GAME OVER); las llaves las junta Mafalda si `PERSONAJE` = `"Mafalda"` (*Is overlapping*, así también la levanta si se cambia a ella estando encima); las jaulas igual, con `LLAVES` ≥ 1 (cada llave abre una sola jaula) |
 | hoja `Laberinto` | incluye `Event sheet 1`; variable `SEMILLA`; arma el laberinto al empezar y pasa a uno nuevo al abrir todas las jaulas |
-| layout `Laberinto` | 1792 × 1216. Capas: `BG` (fondo), `Layer 1` (`Tilemap` con **Solid**, personajes y moldes fuera de pantalla de `spriteHuida`, `spriteCazador` y `spritePiedrita`), `Niebla` (niebla y flecha) y `HUD` (paralaje 0: corazones y ficha) |
+| layout `Laberinto` | 1792 × 1216. Capas: `BG` (fondo), `Layer 1` (`Tilemap` con **Solid**, personajes y moldes fuera de pantalla de `spriteHuida`, `spriteCazador` y `spritePiedrita`), `Niebla` (niebla y flecha) y `HUD` (paralaje 0: corazones, ficha y GAME OVER) |
 
-Los objetos están ordenados en carpetas del panel *Project*: `inicio` (fondo, zona y botón de la pantalla de inicio), `personajes` (Mafalda, Dieguito y la piedrita de la honda), `muros_y_tiles` (muros, fondo, niebla, rocas y cactus), `animales_libres` (animación de huida y fichas de los animales), `cazadores`, `jaulas_y_metas` (jaulas, llave, cueva, portal) e `interfaz` (corazones, flecha, velo, cartel de la ficha, cartel de la honda y globo de las jaulas). En disco, cada objeto está en `objectTypes/<carpeta>/`. Las imágenes las maneja Construct en `images/` con el nombre del objeto; no se mueven a mano.
+Los objetos están ordenados en carpetas del panel *Project*: `inicio` (fondo, zona y botón de la pantalla de inicio), `personajes` (Mafalda, Dieguito y la piedrita de la honda), `muros_y_tiles` (muros, fondo, niebla, rocas y cactus), `animales_libres` (animación de huida y fichas de los animales), `cazadores`, `jaulas_y_metas` (jaulas, llave, cueva, portal) e `interfaz` (corazones, flecha, velo, cartel de la ficha, cartel de la honda, globo de las jaulas y pantalla de GAME OVER). En disco, cada objeto está en `objectTypes/<carpeta>/`. Las imágenes las maneja Construct en `images/` con el nombre del objeto; no se mueven a mano.
 
 ## Cambiar el laberinto
 

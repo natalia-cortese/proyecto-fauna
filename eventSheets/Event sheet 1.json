@@ -52,6 +52,16 @@
 			"sid": 205746922165986
 		},
 		{
+			"eventType": "variable",
+			"name": "GAMEOVER",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "1 mientras se muestra la pantalla de GAME OVER (se acabaron las vidas; el juego está en pausa).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 291946869987389
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
@@ -120,7 +130,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "cerrarFicha(runtime);"
+					"script": "reintentar(runtime) || cerrarFicha(runtime);"
 				}
 			],
 			"sid": 870252601469277
@@ -144,6 +154,26 @@
 				}
 			],
 			"sid": 692877398611272
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"sid": 690258365415535,
+					"parameters": {
+						"key": 27
+					}
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "volverAlInicio(runtime);"
+				}
+			],
+			"sid": 951756734601603
 		},
 		{
 			"eventType": "block",
@@ -330,9 +360,50 @@
 						"tag": "\"musica\"",
 						"state": "resume"
 					}
+				},
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 507967347175768,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-12"
+					}
 				}
 			],
 			"sid": 251448161016584
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 794576706940463,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "1"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 401090949531816
+				}
+			],
+			"actions": [
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 213353649159722,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-30"
+					}
+				}
+			],
+			"sid": 126724475454974
 		}
 	],
 	"sid": 424060678370981
