@@ -56,7 +56,7 @@
 			"name": "GAMEOVER",
 			"type": "number",
 			"initialValue": "0",
-			"comment": "1 mientras se muestra la pantalla de GAME OVER (se acabaron las vidas; el juego está en pausa).",
+			"comment": "1 mientras se muestra la pantalla de GAME OVER (se acabaron las vidas).",
 			"isStatic": false,
 			"isConstant": false,
 			"sid": 291946869987389
@@ -195,6 +195,16 @@
 						"comparison": 0,
 						"value": "\"Mafalda\""
 					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 999315156955132,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "0"
+					}
 				}
 			],
 			"actions": [
@@ -244,6 +254,16 @@
 						"variable": "LLAVES",
 						"comparison": 5,
 						"value": "1"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 700321418505901,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "0"
 					}
 				}
 			],
@@ -394,6 +414,19 @@
 			],
 			"actions": [
 				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 255381246701183,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "\"GameOver\"",
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"gameover\""
+					}
+				},
+				{
 					"id": "set-volume",
 					"objectClass": "Audio",
 					"sid": 213353649159722,
@@ -404,6 +437,46 @@
 				}
 			],
 			"sid": 126724475454974
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 142324350643790,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 164698137803329
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 772016866928979,
+					"parameters": {
+						"tag": "\"gameover\""
+					}
+				},
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 467803836258532,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-12"
+					}
+				}
+			],
+			"sid": 858870424625747
 		}
 	],
 	"sid": 424060678370981

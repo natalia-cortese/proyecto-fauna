@@ -1,6 +1,6 @@
 // Maneja a Mafalda y a Dieguito: con Espacio se elige a cuál se maneja con las flechas,
 // el otro lo sigue con Pathfinding. También el salto de rocas, los cactus, las vidas, la honda de Dieguito
-// y la pantalla de GAME OVER al quedarse sin vidas.
+// y la pantalla de DESAFÍO PERDIDO al quedarse sin vidas (scripts/gameOver.js).
 
 import { saltarRoca, estaSaltando, cancelarSalto, tocando } from "./saltoRoca.js";
 import { revelarNiebla } from "./niebla.js";
@@ -8,6 +8,7 @@ import { actualizarCazadores } from "./cazadores.js";
 import { reiniciarFichas, fichaAbierta, cerrarFicha } from "./fichas.js";
 import { reiniciarHonda, dispararHonda, actualizarHonda } from "./honda.js";
 import { actualizarCartelJaula } from "./cartelJaula.js";
+import { mostrarGameOver, ocultarGameOver, actualizarGameOver } from "./gameOver.js";
 
 export const VIDAS_MAXIMAS = 3;
 const SEGUIR_DESDE = 90;
@@ -43,7 +44,7 @@ export function iniciarPersonajes(runtime)
 	runtime.globalVars.LLAVES = 0;
 	reiniciarFichas(runtime);
 	reiniciarHonda(runtime);
-	mostrarGameOver(runtime, false);
+	ocultarGameOver(runtime);
 	aplicarControl(runtime);
 }
 
@@ -51,7 +52,9 @@ export function iniciarPersonajes(runtime)
 export function reintentar(runtime)
 {
 	if (!gameOver) return false;
-	runtime.timeScale = 1;
+	gameOver = false;
+	runtime.globalVars.GAMEOVER = 0;
+	ocultarGameOver(runtime);
 	runtime.goToLayout(runtime.layout.name);
 	return true;
 }
@@ -59,7 +62,9 @@ export function reintentar(runtime)
 export function volverAlInicio(runtime)
 {
 	if (!gameOver) return false;
-	runtime.timeScale = 1;
+	gameOver = false;
+	runtime.globalVars.GAMEOVER = 0;
+	ocultarGameOver(runtime);
 	runtime.goToLayout("Inicio");
 	return true;
 }
@@ -101,9 +106,14 @@ function aplicarControl(runtime)
 
 export function actualizarPersonajes(runtime)
 {
+	if (gameOver)
+	{
+		actualizarGameOver(runtime);
+		return;
+	}
 	const actual = personaje(runtime, activo);
 	const otro = personaje(runtime, otroNombre(activo));
-	if (!actual || fichaAbierta() || gameOver) return;
+	if (!actual || fichaAbierta()) return;
 
 	if (!inicio)
 		inicio = { mafalda: posicion(personaje(runtime, "spriteMafalda")), dieguito: posicion(personaje(runtime, "spriteDieguito")) };
@@ -177,7 +187,7 @@ function perderVida(runtime)
 	if (runtime.gameTime < invulnerableHasta) return;
 	runtime.globalVars.VIDAS -= 1;
 
-	if (runtime.globalVars.VIDAS <= 0 && runtime.objects.spriteGameOver?.getFirstInstance())
+	if (runtime.globalVars.VIDAS <= 0 && runtime.objects.spriteGameOverFondo?.getFirstInstance())
 	{
 		terminarPartida(runtime);
 		return;
@@ -205,19 +215,23 @@ function terminarPartida(runtime)
 {
 	gameOver = true;
 	runtime.globalVars.GAMEOVER = 1;
-	runtime.timeScale = 0;
+	// timeScale queda en 1 para que se anime spriteSinVidas; el flag gameOver frena el resto.
 	actualizarCorazones(runtime);
-	for (const nombre of ["spriteAyudaHonda", "spriteCartelJaula"])
+	for (const nombre of ["spriteMafalda", "spriteDieguito"])
+	{
+		const inst = personaje(runtime, nombre);
+		if (!inst) continue;
+		const b = inst.behaviors;
+		b["8Direction"]?.stop();
+		if (b["8Direction"]) b["8Direction"].isEnabled = false;
+		b.Pathfinding?.stop();
+		if (b.Pathfinding) b.Pathfinding.isEnabled = false;
+		if (b.ScrollTo) b.ScrollTo.isEnabled = false;
+	}
+	for (const nombre of ["spriteAyudaHonda", "spriteCartelJaula", "spriteMarcador"])
 		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
 			inst.isVisible = false;
-	mostrarGameOver(runtime, true);
-}
-
-function mostrarGameOver(runtime, visible)
-{
-	for (const nombre of ["spriteVelo", "spriteGameOver"])
-		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
-			inst.isVisible = visible;
+	mostrarGameOver(runtime, reintentar, volverAlInicio);
 }
 
 function posicion(inst)
