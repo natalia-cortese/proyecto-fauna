@@ -4,7 +4,7 @@ Cómo está armado el juego y qué tocar para cambiarlo.
 
 ## Recorrido del juego
 
-1. **`Inicio`** (*First layout*): pantalla de título **FAUNA** con el mapa de Argentina. Hay que escribir el **nombre** (`textNombre` → variable `JUGADOR`); sin nombre no se puede jugar. Solo la **Puna** está habilitada. Tocar la Puna, **JUGAR** o Enter/Espacio guarda `REGION` y pasa a `Laberinto`.
+1. **`Inicio`** (*First layout*): pantalla de título **FAUNA** con el mapa de Argentina. Hay que escribir el **nombre** (`textNombre` → variable `JUGADOR`); sin nombre no se puede jugar. Solo la **Puna** está habilitada. El mapa solo elige la región (`REGION`); el juego arranca al tocar **JUGAR**.
 2. **Álbum de fauna:** el botón pokédex (arriba a la derecha en Inicio y en el HUD del Laberinto) abre el álbum. Las cartas rescatadas se guardan en `localStorage` por jugador (`fauna_album_<nombre>`). Tocar una carta del álbum la reabre con su sonido; Esc cierra.
 3. **`Laberinto`**: suena de fondo, en loop, `SonidoMapa_NOA_loop` (carpeta `sounds`, a -12 dB, etiqueta `"musica"`; no se corta al perder vidas ni al pasar de laberinto, y queda en pausa mientras se muestra una ficha o el álbum). Cada partida arma un laberinto nuevo (28 × 19 casillas de 64 px) con niebla, llaves, jaulas, cactus, rocas y cazadores. Las jaulas guardan animales sorteados de la región elegida.
 4. Al abrir una jaula se ve la animación de huida y después la **ficha del animal** (se suma al álbum del jugador), con su sonido en loop, hasta Espacio o Enter.
@@ -37,13 +37,13 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 | `scripts/personajes.js` | movimiento, cambio de personaje con Espacio, el que sigue con *Pathfinding*, espejado según hacia dónde caminan, vidas (un cactus o un cazador resta una y los dos vuelven al portal, parpadeando 1,5 s sin poder perder otra), corazones del HUD y la pantalla de GAME OVER (`reintentar` y `volverAlInicio`). En `Layout 1`, que no tiene los sprites de GAME OVER, perder todas las vidas reinicia el layout |
 | `scripts/gameOver.js` | arma la pantalla de DESAFÍO PERDIDO: muestra/oculta fondo, cartel, animación y botones; los botones laten y se pueden tocar |
 | `scripts/cazadores.js` | cada cazador va y viene por un tramo corto de su pasillo; cada 3–6 s se esconde entre los setos y aparece en otro punto. Si el personaje manejado se le acerca a menos de 44 px mientras se ve, pierde una vida. Escondido no hace daño |
-| `scripts/honda.js` | la honda de Dieguito: la piedrita vuela hasta 420 px, pasa por encima de las rocas, se frena en muros y cactus y derriba al cazador que toque si se lo ve (no sirve contra uno escondido). El cazador derribado cae y no vuelve en ese laberinto |
+| `scripts/honda.js` | la honda de Dieguito: la piedrita vuela hasta 420 px, pasa por encima de las rocas, se frena en muros y cactus y derriba al cazador que toque si se lo ve (no sirve contra uno escondido). Al derribar suena `golpe_cazador`; el cazador cae y no vuelve en ese laberinto |
 | `scripts/cartelJaula.js` | el globo `spriteCartelJaula` (capa `Niebla`): sobre la jaula más cercana cuando el personaje manejado está a menos de 40 px y no puede abrirla, y sobre la llave que toca Dieguito manejado. Cada texto es una animación del globo: `solo_mafalda`, `necesita_llave` y `solo_mafalda_llave` |
 | `scripts/saltoRoca.js` | salto en arco de 0,4 s por encima de una roca |
 | `scripts/niebla.js` | el `Tilemap` **Niebla** (casillas de 32 px) tapa el mapa y se despeja para siempre alrededor de los personajes. `RADIO` cambia cuánto se ve |
 | `scripts/fichas.js` | sorteo de animales por laberinto y ficha del animal rescatado (ver [Sumar un animal](#sumar-un-animal)) |
 | `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
-| hoja `Inicio` | variables `REGION`, `JUGADOR`; llama a `inicio.js`; Enter/Espacio juegan (o cierran álbum); Esc cierra álbum; al empezar corta la música |
+| hoja `Inicio` | variables `REGION`, `JUGADOR`; llama a `inicio.js`; Enter/Espacio/Esc cierran álbum; solo JUGAR arranca; al empezar corta la música |
 | hoja `Event sheet 1` | variables `LLAVES`, `VIDAS`, `FICHA`, `ALBUM`, `GAMEOVER`, `SONIDO`, `PERSONAJE`; llama a `personajes.js` y `fichas.js`; Esc/Enter también manejan álbum y GAME OVER |
 | hoja `Laberinto` | incluye `Event sheet 1`; variable `SEMILLA`; arma el laberinto al empezar y pasa a uno nuevo al abrir todas las jaulas |
 | layout `Laberinto` | 1792 × 1216. Capas: `BG` (fondo), `Layer 1` (`Tilemap` con **Solid**, personajes y moldes fuera de pantalla de `spriteHuida`, `spriteCazador` y `spritePiedrita`), `Niebla` (niebla y flecha) y `HUD` (paralaje 0: corazones, ficha y pantalla de GAME OVER) |

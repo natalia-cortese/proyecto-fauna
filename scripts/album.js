@@ -12,13 +12,15 @@ export const ORDEN_ALBUM = [
 	null, null, null
 ];
 
-// Posiciones relativas al centro del spriteAlbum (fracción del ancho/alto).
+// Centros de cada "?" del sprite del álbum (fracción del ancho/alto respecto al centro).
 const SLOTS_REL = [
-	[-0.30, -0.18], [-0.18, -0.18], [-0.06, -0.18],
-	[-0.30, 0.18], [-0.18, 0.18], [-0.06, 0.18],
-	[0.08, -0.18], [0.20, -0.18], [0.32, -0.18],
-	[0.08, 0.18], [0.20, 0.18], [0.32, 0.18]
+	[-0.3822, -0.0701], [-0.2505, -0.0701], [-0.1188, -0.0701],
+	[-0.3822, 0.2440], [-0.2505, 0.2440], [-0.1188, 0.2440],
+	[0.1188, -0.0701], [0.2505, -0.0701], [0.3822, -0.0701],
+	[0.1188, 0.2440], [0.2505, 0.2440], [0.3822, 0.2440]
 ];
+const SLOT_ANCHO = 0.117;
+const SLOT_ALTO = 0.284;
 
 let jugador = "";
 let abierto = false;
@@ -220,8 +222,8 @@ function pintarSlots(runtime)
 	if (!album || slots.length < 12) return;
 
 	const col = coleccionActual();
-	const sw = album.width * 0.105;
-	const sh = album.height * 0.30;
+	const sw = album.width * SLOT_ANCHO;
+	const sh = album.height * SLOT_ALTO;
 
 	for (let i = 0; i < 12; i++)
 	{

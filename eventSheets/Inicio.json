@@ -23,7 +23,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Pantalla de inicio: elegir zona en el mapa (scripts/inicio.js). Solo la Puna está habilitada."
+			"text": "Pantalla de inicio: el mapa elige la región; solo JUGAR arranca (scripts/inicio.js). Solo la Puna está habilitada."
 		},
 		{
 			"eventType": "block",
@@ -82,7 +82,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "cerrarAlbumOFicha(runtime) || jugar(runtime);"
+					"script": "cerrarAlbumOFicha(runtime);"
 				}
 			],
 			"sid": 291455777187790
@@ -102,7 +102,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "cerrarAlbumOFicha(runtime) || jugar(runtime);"
+					"script": "cerrarAlbumOFicha(runtime);"
 				}
 			],
 			"sid": 625385254813543

@@ -7,6 +7,7 @@ const VELOCIDAD = 520;
 const ALCANCE = 420;
 const ESPERA = 0.5;
 const SALIDA = 28;
+const SONIDO_GOLPE = "golpe_cazador.webm";
 
 const FLECHAS = [
 	["ArrowRight", 1, 0],
@@ -18,6 +19,8 @@ const FLECHAS = [
 let mirada = [1, 0];
 let listoEn = 0;
 const vuelo = new WeakMap();
+let urlGolpe = null;
+let bufferGolpe = null;
 
 export function reiniciarHonda(runtime)
 {
@@ -63,6 +66,7 @@ export function actualizarHonda(runtime, tirador, manejado)
 		const cazador = cazadores.find(c => p.testOverlap(c));
 		if (cazador && golpearCazador(cazador))
 		{
+			sonarGolpe(runtime);
 			p.destroy();
 			continue;
 		}
@@ -70,4 +74,33 @@ export function actualizarHonda(runtime, tirador, manejado)
 		if (v.recorrido >= ALCANCE || (solido && solido.objectType.name !== "spriteRock"))
 			p.destroy();
 	}
+}
+
+function sonarGolpe(runtime)
+{
+	const audio = runtime.objects.Audio;
+	if (!audio || audio.isSilent) return;
+	void reproducirGolpe(audio, runtime);
+}
+
+async function reproducirGolpe(audio, runtime)
+{
+	try
+	{
+		const ctx = audio.audioContext;
+		if (!bufferGolpe)
+		{
+			urlGolpe ??= await runtime.assets.getProjectFileUrl(SONIDO_GOLPE);
+			const res = await fetch(urlGolpe);
+			bufferGolpe = await ctx.decodeAudioData(await res.arrayBuffer());
+		}
+		const src = ctx.createBufferSource();
+		src.buffer = bufferGolpe;
+		const ganancia = ctx.createGain();
+		ganancia.gain.value = 0.9;
+		src.connect(ganancia);
+		ganancia.connect(audio.destinationNode);
+		src.start(0);
+	}
+	catch {}
 }

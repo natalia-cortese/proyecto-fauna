@@ -1,7 +1,7 @@
 // Pantalla de inicio (layout Inicio): mapa de Argentina para elegir zona.
 // Hay que escribir el nombre (textNombre) para guardar el progreso del álbum.
-// Cada zona habilitada es un sprite recortado del fondo; tocarla, tocar JUGAR o apretar Enter/Espacio
-// guarda la región en REGION y pasa al laberinto. Las zonas con candado son parte del fondo.
+// El mapa solo selecciona la región; el juego empieza al tocar JUGAR.
+// Las zonas con candado son parte del fondo.
 
 import {
 	setJugador, cargarUltimoJugador, abrirAlbum, cerrarAlbum, albumAbierto,
@@ -18,6 +18,7 @@ let salida = -1;
 let base = new Map();
 let quitarEscucha = null;
 let avisoNombre = 0;
+let regionElegida = "puna";
 
 export function iniciarInicio(runtime)
 {
@@ -27,6 +28,9 @@ export function iniciarInicio(runtime)
 	base = new Map();
 	runtime.timeScale = 1;
 	if (runtime.globalVars.ALBUM !== undefined) runtime.globalVars.ALBUM = 0;
+
+	regionElegida = runtime.globalVars.REGION || "puna";
+	runtime.globalVars.REGION = regionElegida;
 
 	configurarAlbum(
 		(rt, id) => abrirFichaId(rt, id),
@@ -96,6 +100,15 @@ export function actualizarInicio(runtime)
 			inst.height = b.h * escala;
 			continue;
 		}
+		if (Object.prototype.hasOwnProperty.call(ZONAS, nombre))
+		{
+			const elegida = ZONAS[nombre] === regionElegida;
+			const escala = elegida ? 1 + 0.06 * Math.sin(tiempo * 4) : latido * 0.96;
+			inst.width = b.w * escala;
+			inst.height = b.h * escala;
+			inst.opacity = elegida ? 1 : 0.72;
+			continue;
+		}
 		let escala = nombre === "spriteBotonJugar" ? 1 + 0.04 * Math.sin(tiempo * 4 + 1.5) : latido;
 		if (salida >= 0) escala = 1 + 0.12 * Math.sin(Math.min(salida / DURACION_SALIDA, 1) * Math.PI);
 		inst.width = b.w * escala;
@@ -123,7 +136,7 @@ export function actualizarInicio(runtime)
 	}
 }
 
-export function jugar(runtime, region = runtime.globalVars.REGION)
+export function jugar(runtime, region = regionElegida || runtime.globalVars.REGION)
 {
 	if (salida >= 0 || albumAbierto()) return;
 	if (!tomarNombre(runtime))
@@ -131,10 +144,16 @@ export function jugar(runtime, region = runtime.globalVars.REGION)
 		avisoNombre = 1.2;
 		return;
 	}
-	runtime.globalVars.REGION = region;
+	runtime.globalVars.REGION = region || regionElegida || "puna";
 	runtime.globalVars.SEMILLA = 0;
 	quitarEscucha?.();
 	salida = 0;
+}
+
+function elegirRegion(runtime, region)
+{
+	regionElegida = region;
+	runtime.globalVars.REGION = region;
 }
 
 function tomarNombre(runtime)
@@ -166,7 +185,7 @@ function tocar(runtime, e)
 
 	for (const [nombre, region] of Object.entries(ZONAS))
 		if (runtime.objects[nombre]?.getAllInstances().some(i => i.containsPoint(x, y)))
-			return jugar(runtime, region);
+			return elegirRegion(runtime, region);
 
 	if (runtime.objects.spriteBotonJugar?.getAllInstances().some(i => i.containsPoint(x, y)))
 		jugar(runtime);

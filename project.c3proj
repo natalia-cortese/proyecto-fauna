@@ -354,6 +354,14 @@
 					}
 				},
 				{
+					"name": "golpe_cazador.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 734618302023560,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
 					"name": "SonidoMapa_NOA_loop.webm",
 					"type": "audio/webm; codecs=opus",
 					"sid": 450533717604147,
