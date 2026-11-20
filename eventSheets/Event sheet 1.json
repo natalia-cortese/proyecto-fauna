@@ -52,6 +52,16 @@
 			"sid": 205746922165986
 		},
 		{
+			"eventType": "variable",
+			"name": "GAMEOVER",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "1 mientras se muestra la pantalla de GAME OVER (se acabaron las vidas).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 291946869987389
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
@@ -120,7 +130,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "cerrarFicha(runtime);"
+					"script": "reintentar(runtime) || cerrarFicha(runtime);"
 				}
 			],
 			"sid": 870252601469277
@@ -149,6 +159,26 @@
 			"eventType": "block",
 			"conditions": [
 				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"sid": 690258365415535,
+					"parameters": {
+						"key": 27
+					}
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "volverAlInicio(runtime);"
+				}
+			],
+			"sid": 951756734601603
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
 					"id": "is-overlapping-another-object",
 					"objectClass": "Sprite2",
 					"sid": 952183387216505,
@@ -164,6 +194,16 @@
 						"variable": "PERSONAJE",
 						"comparison": 0,
 						"value": "\"Mafalda\""
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 999315156955132,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "0"
 					}
 				}
 			],
@@ -214,6 +254,16 @@
 						"variable": "LLAVES",
 						"comparison": 5,
 						"value": "1"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 700321418505901,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "0"
 					}
 				}
 			],
@@ -330,9 +380,103 @@
 						"tag": "\"musica\"",
 						"state": "resume"
 					}
+				},
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 507967347175768,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-12"
+					}
 				}
 			],
 			"sid": 251448161016584
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 794576706940463,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "1"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 401090949531816
+				}
+			],
+			"actions": [
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 255381246701183,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "\"GameOver\"",
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"gameover\""
+					}
+				},
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 213353649159722,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-30"
+					}
+				}
+			],
+			"sid": 126724475454974
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 142324350643790,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 164698137803329
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 772016866928979,
+					"parameters": {
+						"tag": "\"gameover\""
+					}
+				},
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 467803836258532,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-12"
+					}
+				}
+			],
+			"sid": 858870424625747
 		}
 	],
 	"sid": 424060678370981

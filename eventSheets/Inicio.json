@@ -28,6 +28,14 @@
 				{
 					"type": "script",
 					"script": "iniciarInicio(runtime);"
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 665973625996180,
+					"parameters": {
+						"tag": "\"musica\""
+					}
 				}
 			],
 			"sid": 718641458468862
