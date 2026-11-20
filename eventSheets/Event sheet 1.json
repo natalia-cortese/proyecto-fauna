@@ -72,6 +72,16 @@
 			"sid": 249061457278933
 		},
 		{
+			"eventType": "variable",
+			"name": "GOLPE_CAZADOR",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "1 al derribar un cazador: suena golpe_cazador y baja la música un instante.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 533572838082966
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
@@ -487,6 +497,107 @@
 				}
 			],
 			"sid": 858870424625747
+		},
+		{
+			"eventType": "comment",
+			"text": "Al derribar un cazador: efecto golpe_cazador y la música baja un momento (honda.js pone GOLPE_CAZADOR)."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 254058606525992,
+					"parameters": {
+						"variable": "GOLPE_CAZADOR",
+						"comparison": 0,
+						"value": "1"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 667123353293954
+				}
+			],
+			"actions": [
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 531701668608775,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "\"golpe_cazador\"",
+						"loop": "not-looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"golpe\""
+					}
+				},
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 637698986744498,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-28"
+					}
+				}
+			],
+			"sid": 902429831050472
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 889206121969751,
+					"parameters": {
+						"variable": "GOLPE_CAZADOR",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 110115404695868,
+					"parameters": {
+						"variable": "GAMEOVER",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 238385450253914,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 926018540363411
+				}
+			],
+			"actions": [
+				{
+					"id": "set-volume",
+					"objectClass": "Audio",
+					"sid": 958940843952288,
+					"parameters": {
+						"tag": "\"musica\"",
+						"db": "-12"
+					}
+				}
+			],
+			"sid": 260458525346634
 		}
 	],
 	"sid": 424060678370981

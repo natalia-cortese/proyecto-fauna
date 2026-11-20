@@ -2,12 +2,12 @@
 // La piedrita vuela por encima de las rocas, se frena en muros y cactus, y derriba al cazador que toque.
 
 import { golpearCazador } from "./cazadores.js";
+import { avisarGolpeCazador } from "./sonido.js";
 
 const VELOCIDAD = 520;
 const ALCANCE = 420;
 const ESPERA = 0.5;
 const SALIDA = 28;
-const SONIDO_GOLPE = "golpe_cazador.webm";
 
 const FLECHAS = [
 	["ArrowRight", 1, 0],
@@ -19,13 +19,14 @@ const FLECHAS = [
 let mirada = [1, 0];
 let listoEn = 0;
 const vuelo = new WeakMap();
-let urlGolpe = null;
-let bufferGolpe = null;
+let restaurarGolpeEn = 0;
 
 export function reiniciarHonda(runtime)
 {
 	mirada = [1, 0];
 	listoEn = 0;
+	restaurarGolpeEn = 0;
+	if (runtime.globalVars.GOLPE_CAZADOR !== undefined) runtime.globalVars.GOLPE_CAZADOR = 0;
 	for (const p of runtime.objects.spritePiedrita?.getAllInstances() ?? [])
 		p.destroy();
 }
@@ -45,6 +46,12 @@ export function dispararHonda(runtime, tirador)
 // Actualiza hacia dónde mira Dieguito (si se lo maneja) y mueve las piedritas en vuelo.
 export function actualizarHonda(runtime, tirador, manejado)
 {
+	if (restaurarGolpeEn && runtime.gameTime >= restaurarGolpeEn)
+	{
+		restaurarGolpeEn = 0;
+		if (runtime.globalVars.GOLPE_CAZADOR !== undefined) runtime.globalVars.GOLPE_CAZADOR = 0;
+	}
+
 	if (tirador && manejado && runtime.keyboard)
 	{
 		const apretada = FLECHAS.find(([tecla]) => runtime.keyboard.isKeyDown(tecla));
@@ -66,7 +73,8 @@ export function actualizarHonda(runtime, tirador, manejado)
 		const cazador = cazadores.find(c => p.testOverlap(c));
 		if (cazador && golpearCazador(cazador))
 		{
-			sonarGolpe(runtime);
+			avisarGolpeCazador(runtime);
+			restaurarGolpeEn = runtime.gameTime + 0.4;
 			p.destroy();
 			continue;
 		}
@@ -74,33 +82,4 @@ export function actualizarHonda(runtime, tirador, manejado)
 		if (v.recorrido >= ALCANCE || (solido && solido.objectType.name !== "spriteRock"))
 			p.destroy();
 	}
-}
-
-function sonarGolpe(runtime)
-{
-	const audio = runtime.objects.Audio;
-	if (!audio || audio.isSilent) return;
-	void reproducirGolpe(audio, runtime);
-}
-
-async function reproducirGolpe(audio, runtime)
-{
-	try
-	{
-		const ctx = audio.audioContext;
-		if (!bufferGolpe)
-		{
-			urlGolpe ??= await runtime.assets.getProjectFileUrl(SONIDO_GOLPE);
-			const res = await fetch(urlGolpe);
-			bufferGolpe = await ctx.decodeAudioData(await res.arrayBuffer());
-		}
-		const src = ctx.createBufferSource();
-		src.buffer = bufferGolpe;
-		const ganancia = ctx.createGain();
-		ganancia.gain.value = 0.9;
-		src.connect(ganancia);
-		ganancia.connect(audio.destinationNode);
-		src.start(0);
-	}
-	catch {}
 }

@@ -171,8 +171,10 @@
 					"spriteAlbumSlot",
 					"spriteAyudaHonda",
 					"spriteBotonAlbum",
+					"spriteBotonCerrarAlbum",
 					"spriteBotonInicio",
 					"spriteBotonReintentar",
+					"spriteBotonSonido",
 					"spriteCartelJaula",
 					"spriteCorazon",
 					"spriteDesafioPerdido",
@@ -316,6 +318,14 @@
 					"name": "album.js",
 					"type": "application/javascript",
 					"sid": 238573868849208,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sonido.js",
+					"type": "application/javascript",
+					"sid": 718294561203847,
 					"script-info": {
 						"purpose": "none"
 					}

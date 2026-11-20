@@ -1,5 +1,6 @@
 // Álbum de fauna: colección de cartas por jugador (localStorage).
 // Botón pokédex en Inicio y Laberinto; al rescatar se guarda region_animal.
+// Flecha spriteBotonCerrarAlbum para salir (también Esc o tocar fuera).
 
 const PREFIJO = "fauna_album_";
 const ULTIMO = "fauna_ultimo_jugador";
@@ -149,6 +150,7 @@ export function abrirAlbum(runtime)
 
 	ocultarBotonAlbum(runtime, true);
 	ocultarNombre(runtime, true);
+	colocarCerrar(runtime, true);
 	pintarSlots(runtime);
 
 	quitarEscucha?.();
@@ -166,6 +168,7 @@ export function cerrarAlbum(runtime, forzar = false)
 		alCerrarFichaAlbum?.(runtime);
 		fichaDesdeAlbum = false;
 		ocultarPiezasAlbum(runtime, false);
+		colocarCerrar(runtime, true);
 		pintarSlots(runtime);
 		return true;
 	}
@@ -178,6 +181,7 @@ export function cerrarAlbum(runtime, forzar = false)
 			inst.isVisible = false;
 	for (const slot of runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])
 		slot.isVisible = false;
+	colocarCerrar(runtime, false);
 
 	ocultarBotonAlbum(runtime, false);
 	ocultarNombre(runtime, false);
@@ -191,14 +195,34 @@ function ocultarBotonAlbum(runtime, ocultar)
 		inst.isVisible = !ocultar;
 }
 
+function colocarCerrar(runtime, mostrar)
+{
+	const btn = runtime.objects.spriteBotonCerrarAlbum?.getFirstInstance();
+	const album = runtime.objects.spriteAlbum?.getFirstInstance();
+	if (!btn) return;
+	if (!mostrar || !album)
+	{
+		btn.isVisible = false;
+		return;
+	}
+	btn.isVisible = true;
+	btn.width = 64;
+	btn.height = 64;
+	btn.x = album.x - album.width * 0.5 + 36;
+	btn.y = album.y - album.height * 0.5 + 36;
+}
+
 function ocultarPiezasAlbum(runtime, ocultar)
 {
 	for (const nombre of ["spriteAlbumFondo", "spriteAlbum"])
 		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
 			inst.isVisible = !ocultar;
 	if (ocultar)
+	{
 		for (const slot of runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])
 			slot.isVisible = false;
+		colocarCerrar(runtime, false);
+	}
 }
 
 function ocultarNombre(runtime, ocultar)
@@ -256,6 +280,10 @@ function tocarAlbum(runtime, e)
 	const capa = runtime.layout.getLayer(runtime.layout.name === "Inicio" ? "Inicio" : "HUD");
 	if (!capa) return;
 	const [x, y] = capa.cssPxToLayer(e.clientX, e.clientY);
+
+	const cerrar = runtime.objects.spriteBotonCerrarAlbum?.getFirstInstance();
+	if (cerrar?.isVisible && cerrar.containsPoint(x, y))
+		return void cerrarAlbum(runtime);
 
 	const slots = [...(runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])]
 		.sort((a, b) => a.uid - b.uid);

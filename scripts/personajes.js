@@ -13,6 +13,7 @@ import {
 	abrirAlbum, cerrarAlbum, albumAbierto, fichaAlbumAbierta, tocarBotonAlbum,
 	configurarAlbum, getJugador, setJugador
 } from "./album.js";
+import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
 
 export const VIDAS_MAXIMAS = 3;
 const SEGUIR_DESDE = 90;
@@ -56,6 +57,7 @@ export function iniciarPersonajes(runtime)
 	reiniciarHonda(runtime);
 	ocultarGameOver(runtime);
 	cerrarAlbum(runtime, true);
+	iniciarSonido(runtime);
 	aplicarControl(runtime);
 	escucharAlbumHud(runtime);
 }
@@ -139,10 +141,13 @@ function escucharAlbumHud(runtime)
 	quitarAlbumHud?.();
 	const alTocar = e => {
 		if (runtime.layout.name !== "Laberinto") return quitarAlbumHud?.();
-		if (gameOver || fichaAbierta() || albumAbierto()) return;
+		if (gameOver || fichaAbierta()) return;
 		const capa = runtime.layout.getLayer("HUD");
 		if (!capa) return;
 		const [x, y] = capa.cssPxToLayer(e.clientX, e.clientY);
+		if (tocarBotonSonido(runtime, x, y))
+			return void alternarSonido(runtime);
+		if (albumAbierto()) return;
 		if (tocarBotonAlbum(runtime, x, y) && getJugador())
 		{
 			abrirAlbum(runtime);

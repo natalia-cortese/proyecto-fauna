@@ -8,6 +8,7 @@ import {
 	tocarBotonAlbum, configurarAlbum, fichaAlbumAbierta
 } from "./album.js";
 import { abrirFichaId, cerrarFicha } from "./fichas.js";
+import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
 
 const ZONAS = { spriteZonaPuna: "puna" };
 const LAYOUT_JUEGO = "Laberinto";
@@ -67,6 +68,7 @@ export function iniciarInicio(runtime)
 	}
 	if (ultimo) setJugador(ultimo);
 
+	iniciarSonido(runtime);
 	cerrarAlbum(runtime, true);
 
 	quitarEscucha?.();
@@ -171,6 +173,9 @@ function tocar(runtime, e)
 	const [x, y] = capa.cssPxToLayer(e.clientX, e.clientY);
 
 	if (albumAbierto()) return;
+
+	if (tocarBotonSonido(runtime, x, y))
+		return void alternarSonido(runtime);
 
 	if (tocarBotonAlbum(runtime, x, y))
 	{
