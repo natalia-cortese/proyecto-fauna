@@ -18,8 +18,11 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 
 ## Controles (resumen)
 
+- En **Inicio**: escribir el **nombre** (guarda el álbum), elegir zona en el mapa y tocar **JUGAR** para empezar
 - **Flechas** mover · **Espacio** cambiar Mafalda/Dieguito · **X** honda (Dieguito)
+- **Pokédex**: álbum de cartas; flecha atrás / Esc / tocar fuera para cerrar
+- **Parlante**: apaga/enciende el sonido del juego
 - Solo **Mafalda** junta llaves y abre jaulas
-- Al perder las 3 vidas: pantalla **DESAFÍO PERDIDO**
+- Al perder las 3 vidas: **DESAFÍO PERDIDO**
 
 Detalle completo: `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.

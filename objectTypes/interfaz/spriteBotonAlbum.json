@@ -1,0 +1,40 @@
+{
+	"name": "spriteBotonAlbum",
+	"plugin-id": "Sprite",
+	"sid": 772429923856079,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 401,
+						"height": 352,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9080575,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 697880661516205,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}

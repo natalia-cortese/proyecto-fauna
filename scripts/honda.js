@@ -2,6 +2,7 @@
 // La piedrita vuela por encima de las rocas, se frena en muros y cactus, y derriba al cazador que toque.
 
 import { golpearCazador } from "./cazadores.js";
+import { avisarGolpeCazador } from "./sonido.js";
 
 const VELOCIDAD = 520;
 const ALCANCE = 420;
@@ -18,11 +19,14 @@ const FLECHAS = [
 let mirada = [1, 0];
 let listoEn = 0;
 const vuelo = new WeakMap();
+let restaurarGolpeEn = 0;
 
 export function reiniciarHonda(runtime)
 {
 	mirada = [1, 0];
 	listoEn = 0;
+	restaurarGolpeEn = 0;
+	if (runtime.globalVars.GOLPE_CAZADOR !== undefined) runtime.globalVars.GOLPE_CAZADOR = 0;
 	for (const p of runtime.objects.spritePiedrita?.getAllInstances() ?? [])
 		p.destroy();
 }
@@ -42,6 +46,12 @@ export function dispararHonda(runtime, tirador)
 // Actualiza hacia dónde mira Dieguito (si se lo maneja) y mueve las piedritas en vuelo.
 export function actualizarHonda(runtime, tirador, manejado)
 {
+	if (restaurarGolpeEn && runtime.gameTime >= restaurarGolpeEn)
+	{
+		restaurarGolpeEn = 0;
+		if (runtime.globalVars.GOLPE_CAZADOR !== undefined) runtime.globalVars.GOLPE_CAZADOR = 0;
+	}
+
 	if (tirador && manejado && runtime.keyboard)
 	{
 		const apretada = FLECHAS.find(([tecla]) => runtime.keyboard.isKeyDown(tecla));
@@ -63,6 +73,8 @@ export function actualizarHonda(runtime, tirador, manejado)
 		const cazador = cazadores.find(c => p.testOverlap(c));
 		if (cazador && golpearCazador(cazador))
 		{
+			avisarGolpeCazador(runtime);
+			restaurarGolpeEn = runtime.gameTime + 0.4;
 			p.destroy();
 			continue;
 		}
