@@ -89,6 +89,13 @@
 			"name": "Solid",
 			"author": "Scirra",
 			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "TextBox",
+			"name": "Text input",
+			"author": "Scirra",
+			"bundled": false
 		}
 	],
 	"uniqueId": "4ns69k6xgj2",
@@ -159,7 +166,11 @@
 			},
 			{
 				"items": [
+					"spriteAlbum",
+					"spriteAlbumFondo",
+					"spriteAlbumSlot",
 					"spriteAyudaHonda",
+					"spriteBotonAlbum",
 					"spriteBotonInicio",
 					"spriteBotonReintentar",
 					"spriteCartelJaula",
@@ -178,7 +189,9 @@
 				"items": [
 					"spriteInicioFondo",
 					"spriteZonaPuna",
-					"spriteBotonJugar"
+					"spriteBotonJugar",
+					"spriteEtiquetaNombre",
+					"textNombre"
 				],
 				"subfolders": [],
 				"name": "inicio"
@@ -295,6 +308,14 @@
 					"name": "saltoRoca.js",
 					"type": "application/javascript",
 					"sid": 778221041102597,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "album.js",
+					"type": "application/javascript",
+					"sid": 238573868849208,
 					"script-info": {
 						"purpose": "none"
 					}

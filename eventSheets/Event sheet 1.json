@@ -62,6 +62,16 @@
 			"sid": 291946869987389
 		},
 		{
+			"eventType": "variable",
+			"name": "ALBUM",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "1 mientras el álbum de fauna está abierto (pausa el laberinto).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 249061457278933
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
@@ -130,7 +140,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "reintentar(runtime) || cerrarFicha(runtime);"
+					"script": "manejarEnter(runtime);"
 				}
 			],
 			"sid": 870252601469277
@@ -170,7 +180,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "volverAlInicio(runtime);"
+					"script": "manejarEscape(runtime);"
 				}
 			],
 			"sid": 951756734601603

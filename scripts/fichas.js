@@ -8,6 +8,8 @@
 // Al abrirse la ficha suena el sonido del animal: el archivo sprite_sfx_NOA_<animal> de la carpeta sounds
 // (la hoja de eventos lo reproduce con la variable SONIDO). SONIDOS sirve para un animal cuyo archivo se llama distinto.
 
+import { agregarAnimal } from "./album.js";
+
 export const ANIMALES = {
 	puna: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
 	chaco: ["quirquincho_bola"]
@@ -29,12 +31,10 @@ export function reiniciarFichas(runtime)
 	runtime.globalVars.FICHA = 0;
 	runtime.timeScale = 1;
 	mostrarHud(runtime, false);
-	// La huida que está en el layout es solo el modelo para crear las demás: si terminara su animación abriría una ficha.
 	for (const huida of runtime.objects.spriteHuida?.getAllInstances() ?? [])
 		huida.destroy();
 }
 
-// Sortea un animal distinto por jaula. Si la región tiene menos animales que jaulas, avisa en la consola y se repiten.
 export function elegirAnimales(nuevaRegion, semilla, jaulas)
 {
 	if (!ANIMALES[nuevaRegion]?.length) throw new RangeError(`No hay animales para la región "${nuevaRegion}"`);
@@ -55,15 +55,24 @@ export function fichaAbierta()
 
 export function mostrarFicha(runtime)
 {
-	const ficha = runtime.objects.spriteFichaAnimal?.getFirstInstance();
-	if (!ficha) return;
 	const animal = orden[rescatados % orden.length];
-	ficha.setAnimation(`${region}_${animal}`);
-	runtime.globalVars.SONIDO = `sprite_sfx_NOA_${SONIDOS[animal] ?? animal}`;
+	const id = `${region}_${animal}`;
 	rescatados++;
+	agregarAnimal(region, animal);
+	abrirFichaId(runtime, id);
+}
+
+// Abre una ficha por id (puna_vicuna). Sirve al rescatar y al releer desde el álbum.
+export function abrirFichaId(runtime, id)
+{
+	const ficha = runtime.objects.spriteFichaAnimal?.getFirstInstance();
+	if (!ficha || !id) return;
+	const animalKey = id.includes("_") ? id.slice(id.indexOf("_") + 1) : id;
+	ficha.setAnimation(id);
+	runtime.globalVars.SONIDO = `sprite_sfx_NOA_${SONIDOS[animalKey] ?? animalKey}`;
 	abierta = true;
 	runtime.globalVars.FICHA = 1;
-	runtime.timeScale = 0;
+	if (runtime.globalVars.ALBUM !== 1) runtime.timeScale = 0;
 	mostrarHud(runtime, true);
 }
 
@@ -72,7 +81,7 @@ export function cerrarFicha(runtime)
 	if (!abierta) return false;
 	abierta = false;
 	runtime.globalVars.FICHA = 0;
-	runtime.timeScale = 1;
+	if (runtime.globalVars.ALBUM !== 1) runtime.timeScale = 1;
 	mostrarHud(runtime, false);
 	return true;
 }
@@ -86,7 +95,6 @@ function mostrarHud(runtime, visible)
 
 function aleatorio(semilla)
 {
-	// Distinto del generador del laberinto, para que el sorteo no copie sus decisiones.
 	let a = (semilla ^ 0x9E3779B9) >>> 0;
 	return () => {
 		a = (a + 0x6D2B79F5) >>> 0;

@@ -5,10 +5,14 @@
 import { saltarRoca, estaSaltando, cancelarSalto, tocando } from "./saltoRoca.js";
 import { revelarNiebla } from "./niebla.js";
 import { actualizarCazadores } from "./cazadores.js";
-import { reiniciarFichas, fichaAbierta, cerrarFicha } from "./fichas.js";
+import { reiniciarFichas, fichaAbierta, cerrarFicha, abrirFichaId } from "./fichas.js";
 import { reiniciarHonda, dispararHonda, actualizarHonda } from "./honda.js";
 import { actualizarCartelJaula } from "./cartelJaula.js";
 import { mostrarGameOver, ocultarGameOver, actualizarGameOver } from "./gameOver.js";
+import {
+	abrirAlbum, cerrarAlbum, albumAbierto, fichaAlbumAbierta, tocarBotonAlbum,
+	configurarAlbum, getJugador, setJugador
+} from "./album.js";
 
 export const VIDAS_MAXIMAS = 3;
 const SEGUIR_DESDE = 90;
@@ -40,12 +44,20 @@ export function iniciarPersonajes(runtime)
 	proximaBusqueda = 0;
 	gameOver = false;
 	runtime.globalVars.GAMEOVER = 0;
+	if (runtime.globalVars.ALBUM !== undefined) runtime.globalVars.ALBUM = 0;
 	runtime.globalVars.VIDAS = VIDAS_MAXIMAS;
 	runtime.globalVars.LLAVES = 0;
+	if (runtime.globalVars.JUGADOR) setJugador(runtime.globalVars.JUGADOR);
+	configurarAlbum(
+		(rt, id) => abrirFichaId(rt, id),
+		(rt) => cerrarFicha(rt)
+	);
 	reiniciarFichas(runtime);
 	reiniciarHonda(runtime);
 	ocultarGameOver(runtime);
+	cerrarAlbum(runtime, true);
 	aplicarControl(runtime);
+	escucharAlbumHud(runtime);
 }
 
 // Con la pantalla de GAME OVER: Espacio o Enter vuelven a jugar el mismo laberinto y Esc vuelve al mapa de Inicio.
@@ -71,7 +83,10 @@ export function volverAlInicio(runtime)
 
 export function cambiarPersonaje(runtime)
 {
-	if (reintentar(runtime) || cerrarFicha(runtime)) return;
+	if (reintentar(runtime)) return;
+	if (fichaAlbumAbierta()) { cerrarAlbum(runtime); return; }
+	if (albumAbierto()) return;
+	if (cerrarFicha(runtime)) return;
 	const actual = personaje(runtime, activo);
 	const otro = personaje(runtime, otroNombre(activo));
 	if (!actual || !otro || estaSaltando(actual)) return;
@@ -82,8 +97,21 @@ export function cambiarPersonaje(runtime)
 export function disparar(runtime)
 {
 	const dieguito = personaje(runtime, "spriteDieguito");
-	if (gameOver || fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
+	if (gameOver || albumAbierto() || fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
 	dispararHonda(runtime, dieguito);
+}
+
+export function manejarEscape(runtime)
+{
+	if (fichaAlbumAbierta() || albumAbierto()) return cerrarAlbum(runtime);
+	return volverAlInicio(runtime);
+}
+
+export function manejarEnter(runtime)
+{
+	if (reintentar(runtime)) return;
+	if (fichaAlbumAbierta()) { cerrarAlbum(runtime); return; }
+	cerrarFicha(runtime);
 }
 
 function aplicarControl(runtime)
@@ -104,6 +132,27 @@ function aplicarControl(runtime)
 	}
 }
 
+let quitarAlbumHud = null;
+
+function escucharAlbumHud(runtime)
+{
+	quitarAlbumHud?.();
+	const alTocar = e => {
+		if (runtime.layout.name !== "Laberinto") return quitarAlbumHud?.();
+		if (gameOver || fichaAbierta() || albumAbierto()) return;
+		const capa = runtime.layout.getLayer("HUD");
+		if (!capa) return;
+		const [x, y] = capa.cssPxToLayer(e.clientX, e.clientY);
+		if (tocarBotonAlbum(runtime, x, y) && getJugador())
+		{
+			abrirAlbum(runtime);
+			runtime.timeScale = 0;
+		}
+	};
+	runtime.addEventListener("pointerdown", alTocar);
+	quitarAlbumHud = () => { runtime.removeEventListener("pointerdown", alTocar); quitarAlbumHud = null; };
+}
+
 export function actualizarPersonajes(runtime)
 {
 	if (gameOver)
@@ -111,6 +160,7 @@ export function actualizarPersonajes(runtime)
 		actualizarGameOver(runtime);
 		return;
 	}
+	if (albumAbierto()) return;
 	const actual = personaje(runtime, activo);
 	const otro = personaje(runtime, otroNombre(activo));
 	if (!actual || fichaAbierta()) return;
@@ -228,9 +278,10 @@ function terminarPartida(runtime)
 		if (b.Pathfinding) b.Pathfinding.isEnabled = false;
 		if (b.ScrollTo) b.ScrollTo.isEnabled = false;
 	}
-	for (const nombre of ["spriteAyudaHonda", "spriteCartelJaula", "spriteMarcador"])
+	for (const nombre of ["spriteAyudaHonda", "spriteCartelJaula", "spriteMarcador", "spriteBotonAlbum"])
 		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
 			inst.isVisible = false;
+	if (albumAbierto()) cerrarAlbum(runtime, true);
 	mostrarGameOver(runtime, reintentar, volverAlInicio);
 }
 

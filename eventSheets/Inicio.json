@@ -12,6 +12,16 @@
 			"sid": 124261788222372
 		},
 		{
+			"eventType": "variable",
+			"name": "JUGADOR",
+			"type": "string",
+			"initialValue": "",
+			"comment": "Nombre del jugador; el álbum guarda las cartas bajo este nombre.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 266913106628703
+		},
+		{
 			"eventType": "comment",
 			"text": "Pantalla de inicio: elegir zona en el mapa (scripts/inicio.js). Solo la Puna está habilitada."
 		},
@@ -72,7 +82,7 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "jugar(runtime);"
+					"script": "cerrarAlbumOFicha(runtime) || jugar(runtime);"
 				}
 			],
 			"sid": 291455777187790
@@ -92,10 +102,30 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "jugar(runtime);"
+					"script": "cerrarAlbumOFicha(runtime) || jugar(runtime);"
 				}
 			],
 			"sid": 625385254813543
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-key-pressed",
+					"objectClass": "Keyboard",
+					"parameters": {
+						"key": 27
+					},
+					"sid": 864704672639279
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "cerrarAlbumOFicha(runtime);"
+				}
+			],
+			"sid": 505875502498514
 		}
 	],
 	"sid": 513630808100713

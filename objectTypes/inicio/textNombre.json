@@ -1,0 +1,9 @@
+{
+	"name": "textNombre",
+	"plugin-id": "TextBox",
+	"sid": 424680013846439,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": []
+}

@@ -1,0 +1,265 @@
+{
+	"name": "spriteAlbumSlot",
+	"plugin-id": "Sprite",
+	"sid": 564373295558165,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9324150,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 827426984221419,
+				"name": "vacio",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 5640780,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 186144010608725,
+				"name": "puna_vicuna",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 4724662,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 394624088683341,
+				"name": "puna_zorro_andino",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 4157564,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 598919705725895,
+				"name": "puna_condor",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 1620949,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 729717317149284,
+				"name": "puna_flamenco",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8047676,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 553882839480197,
+				"name": "puna_gato_andino",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 4839981,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 816769003812706,
+				"name": "puna_guanaco",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 8206275,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 958106099008053,
+				"name": "puna_puma",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 7685063,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 802815935182806,
+				"name": "puna_taruca",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 90,
+						"height": 135,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 3032329,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 420170855259060,
+				"name": "chaco_quirquincho_bola",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}
