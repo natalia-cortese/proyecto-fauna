@@ -58,10 +58,10 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 512,
-						"y": 547,
-						"width": 977,
-						"height": 435,
+						"x": 514,
+						"y": 538,
+						"width": 1007.9999999999999,
+						"height": 470,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -88,14 +88,20 @@
 					"tags": "",
 					"instanceVariables": {},
 					"behaviors": {},
+					"effects": {
+						"Overlay": {
+							"isEnabled": false,
+							"parameters": {}
+						}
+					},
 					"materialSurfaceType": "smooth",
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 760,
-						"y": 723,
-						"width": 260,
-						"height": 80,
+						"x": 781,
+						"y": 954,
+						"width": 254,
+						"height": 67,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
