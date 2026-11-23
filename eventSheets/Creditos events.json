@@ -1,0 +1,77 @@
+{
+	"name": "Creditos events",
+	"events": [
+		{
+			"eventType": "comment",
+			"text": "Créditos: INICIO vuelve a Home (historia)."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 712948305617284
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "iniciarCreditos(runtime);"
+				}
+			],
+			"sid": 829104756392018
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-touched-object",
+					"objectClass": "Touch",
+					"sid": 391857204619375,
+					"parameters": {
+						"object": "spriteBtnCreditos",
+						"type": "start"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 582910374651028,
+					"parameters": {
+						"tag": "\"endgame\""
+					}
+				},
+				{
+					"id": "go-to-layout",
+					"objectClass": "System",
+					"sid": 674829103857261,
+					"parameters": {
+						"layout": "Home"
+					}
+				}
+			],
+			"sid": 910283746501928
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 384756291038475
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "actualizarCinematica(runtime);"
+				}
+			],
+			"sid": 495867102938475
+		}
+	],
+	"sid": 986888439803432
+}

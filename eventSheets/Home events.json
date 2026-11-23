@@ -1,0 +1,135 @@
+{
+	"name": "Home events",
+	"events": [
+		{
+			"eventType": "comment",
+			"text": "Historia de apertura. CONTINUAR → Inicio; CRÉDITOS → Creditos."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 256983628320682
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 814203956172384,
+					"parameters": {
+						"tag": "\"musica\""
+					}
+				},
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 191317462870652,
+					"parameters": {
+						"audio-file": {
+							"path": "sprite_music_historia"
+						},
+						"loop": "looping",
+						"volume": "-10",
+						"stereo-pan": "0",
+						"tag-optional": "\"historia\""
+					}
+				},
+				{
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"iniciarHome(runtime);"
+					]
+				}
+			],
+			"sid": 421328335125165
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-touched-object",
+					"objectClass": "Touch",
+					"sid": 693801976850146,
+					"parameters": {
+						"object": "sprite_btn_inicio",
+						"type": "start"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 392847561029384,
+					"parameters": {
+						"tag": "\"historia\""
+					}
+				},
+				{
+					"id": "go-to-layout",
+					"objectClass": "System",
+					"sid": 918075293334728,
+					"parameters": {
+						"layout": "Inicio"
+					}
+				}
+			],
+			"sid": 109787802014300
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-touched-object",
+					"objectClass": "Touch",
+					"sid": 284719305618473,
+					"parameters": {
+						"object": "spriteBtnHomeCreditos",
+						"type": "start"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 573920184657392,
+					"parameters": {
+						"tag": "\"historia\""
+					}
+				},
+				{
+					"id": "go-to-layout",
+					"objectClass": "System",
+					"sid": 684029183756201,
+					"parameters": {
+						"layout": "Creditos"
+					}
+				}
+			],
+			"sid": 791028364550192
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 847291036501112
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "actualizarCinematica(runtime);"
+				}
+			],
+			"sid": 918273645501928
+		}
+	],
+	"sid": 494802843742469
+}

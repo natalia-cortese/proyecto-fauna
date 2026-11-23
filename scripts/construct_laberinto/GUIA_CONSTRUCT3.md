@@ -4,12 +4,13 @@ Cómo está armado el juego y qué tocar para cambiarlo.
 
 ## Recorrido del juego
 
-1. **`Inicio`** (*First layout*): pantalla de título **FAUNA** con el mapa de Argentina. Hay que escribir el **nombre** (`textNombre` → variable `JUGADOR`); sin nombre no se puede jugar. Solo la **Puna** está habilitada. El mapa solo elige la región (`REGION`); el juego arranca al tocar **JUGAR**.
-2. **Álbum de fauna:** el botón pokédex (arriba a la derecha en Inicio y en el HUD del Laberinto) abre el álbum. Las cartas rescatadas se guardan en `localStorage` por jugador (`fauna_album_<nombre>`). Tocar una carta del álbum la reabre con su sonido; la flecha atrás, Esc o tocar fuera cierran. El parlante (junto al pokédex) apaga/enciende todo el audio y guarda la preferencia.
-3. **`Laberinto`**: suena de fondo, en loop, `SonidoMapa_NOA_loop` (carpeta `sounds`, a -12 dB, etiqueta `"musica"`; no se corta al perder vidas ni al pasar de laberinto, y queda en pausa mientras se muestra una ficha o el álbum). Cada partida arma un laberinto nuevo (28 × 19 casillas de 64 px) con niebla, llaves, jaulas, cactus, rocas y cazadores. Las jaulas guardan animales sorteados de la región elegida.
-4. Al abrir una jaula se ve la animación de huida y después la **ficha del animal** (se suma al álbum del jugador), con su sonido en loop, hasta Espacio o Enter.
-5. Al abrir todas las jaulas y cerrar la última ficha, sale un laberinto nuevo.
-6. Al perder las 3 vidas aparece **DESAFÍO PERDIDO**. **Espacio/Enter o «VOLVER A INTENTARLO»** reintentan; **Esc o «INICIO»** vuelven al mapa.
+1. **`Home`** (*First layout*): historia de cómo Mafalda y Dieguito salen al juego, sobre el mismo fondo del mapa (`spriteInicioFondo` + `sprite_img_historia` + música `sprite_music_historia`). **CONTINUAR** pasa a `Inicio`; **CRÉDITOS** abre los créditos.
+2. **`Inicio`**: pantalla de título **FAUNA** con el mapa de Argentina. Hay que escribir el **nombre** (`textNombre` → variable `JUGADOR`); sin nombre no se puede jugar. Solo la **Puna** está habilitada. El mapa solo elige la región (`REGION`); el juego arranca al tocar **JUGAR**.
+3. **Álbum de fauna:** el botón pokédex (arriba a la derecha en Inicio y en el HUD del Laberinto) abre el álbum. Las cartas rescatadas se guardan en `localStorage` por jugador (`fauna_album_<nombre>`). Tocar una carta del álbum la reabre con su sonido; la flecha atrás, Esc o tocar fuera cierran. El parlante (junto al pokédex) apaga/enciende todo el audio y guarda la preferencia.
+4. **`Laberinto`**: suena de fondo, en loop, `SonidoMapa_NOA_loop` (carpeta `sounds`, a -12 dB, etiqueta `"musica"`; no se corta al perder vidas ni al pasar de laberinto, y queda en pausa mientras se muestra una ficha o el álbum). Cada partida arma un laberinto nuevo (28 × 19 casillas de 64 px) con niebla, llaves, jaulas, cactus, rocas y cazadores. Las jaulas guardan animales sorteados de la región elegida.
+5. Al abrir una jaula se ve la animación de huida y después la **ficha del animal** (se suma al álbum del jugador), con su sonido en loop, hasta Espacio o Enter.
+6. Al abrir todas las jaulas y cerrar la última ficha: si el álbum ya tiene **todos** los animales de la región → `EndGame` (títulos + `sprite_music_endGame`); si no, otro laberinto. Desde `EndGame` el botón pasa a `Creditos` (fondo del mapa + nombres); **INICIO** vuelve al mapa.
+7. Al perder las 3 vidas aparece **DESAFÍO PERDIDO**. **Espacio/Enter o «VOLVER A INTENTARLO»** reintentan; **Esc o «INICIO»** vuelven al mapa.
 
 Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F5): arranca en el layout abierto. El juego exportado arranca siempre en `Inicio`.
 
@@ -42,14 +43,16 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 | `scripts/cartelJaula.js` | el globo `spriteCartelJaula` (capa `Niebla`): sobre la jaula más cercana cuando el personaje manejado está a menos de 40 px y no puede abrirla, y sobre la llave que toca Dieguito manejado. Cada texto es una animación del globo: `solo_mafalda`, `necesita_llave` y `solo_mafalda_llave` |
 | `scripts/saltoRoca.js` | salto en arco de 0,4 s por encima de una roca |
 | `scripts/niebla.js` | el `Tilemap` **Niebla** (casillas de 32 px) tapa el mapa y se despeja para siempre alrededor de los personajes. `RADIO` cambia cuánto se ve |
-| `scripts/fichas.js` | sorteo de animales por laberinto y ficha del animal rescatado (ver [Sumar un animal](#sumar-un-animal)) |
+| `scripts/fichas.js` | sorteo de animales por laberinto, ficha del animal rescatado y `alCompletarLaberinto` (ver [Sumar un animal](#sumar-un-animal)) |
 | `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
 | hoja `Inicio` | variables `REGION`, `JUGADOR`; llama a `inicio.js`; Enter/Espacio/Esc cierran álbum; solo JUGAR arranca; al empezar corta la música |
 | hoja `Event sheet 1` | variables `LLAVES`, `VIDAS`, `FICHA`, `ALBUM`, `GAMEOVER`, `GOLPE_CAZADOR`, `SONIDO`, `PERSONAJE`; llama a `personajes.js` y `fichas.js`; Esc/Enter también manejan álbum y GAME OVER |
-| hoja `Laberinto` | incluye `Event sheet 1`; variable `SEMILLA`; arma el laberinto al empezar y pasa a uno nuevo al abrir todas las jaulas |
+| hoja `Laberinto` | incluye `Event sheet 1`; variable `SEMILLA`; arma el laberinto al empezar; al abrir todas las jaulas llama `alCompletarLaberinto` (otro laberinto o `EndGame`) |
+| hoja `Home events` / `EndGame events` | música de historia/títulos y botones Touch hacia `Inicio` |
 | layout `Laberinto` | 1792 × 1216. Capas: `BG` (fondo), `Layer 1` (`Tilemap` con **Solid**, personajes y moldes fuera de pantalla de `spriteHuida`, `spriteCazador` y `spritePiedrita`), `Niebla` (niebla y flecha) y `HUD` (paralaje 0: corazones, ficha y pantalla de GAME OVER) |
+| layouts `Home` / `EndGame` / `Creditos` | 1024 × 1024; objetos en carpeta `cinematica` (historia, títulos y créditos) |
 
-Los objetos están ordenados en carpetas del panel *Project*: `inicio` (fondo, zona, botón jugar, nombre y etiqueta), `personajes`, `muros_y_tiles`, `animales_libres`, `cazadores`, `jaulas_y_metas` e `interfaz` (HUD, GAME OVER y álbum: `spriteBotonAlbum`, `spriteBotonSonido`, `spriteBotonCerrarAlbum`, `spriteAlbumFondo`, `spriteAlbum`, `spriteAlbumSlot`). En disco, cada objeto está en `objectTypes/<carpeta>/`.
+Los objetos van en carpetas del panel *Project*: `inicio`, `cinematica` (historia y títulos: `sprite_img_historia`, `sprite_btn_inicio`, `sprite_img_endgame`, `sprite_btn_endgame`), `personajes`, `muros_y_tiles`, `animales_libres`, `cazadores`, `jaulas_y_metas` e `interfaz` (HUD, GAME OVER y álbum). En disco: `objectTypes/<carpeta>/`.
 
 ## Cambiar el laberinto
 
