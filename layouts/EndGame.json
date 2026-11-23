@@ -88,12 +88,18 @@
 					"tags": "",
 					"instanceVariables": {},
 					"behaviors": {},
+					"effects": {
+						"Overlay": {
+							"isEnabled": false,
+							"parameters": {}
+						}
+					},
 					"materialSurfaceType": "smooth",
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 739,
-						"y": 720,
+						"x": 480,
+						"y": 923,
 						"width": 320,
 						"height": 98,
 						"originX": 0.5,
