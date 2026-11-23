@@ -31,7 +31,15 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "const JAULAS = 3;\nif (!runtime.globalVars.SEMILLA)\n\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;\nconst mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });\nconstruirLaberinto(runtime, mapa);\nelegirAnimales(runtime.globalVars.REGION, runtime.globalVars.SEMILLA, JAULAS);"
+					"language": "javascript",
+					"script": [
+						"const JAULAS = 3;",
+						"if (!runtime.globalVars.SEMILLA)",
+						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
+						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
+						"construirLaberinto(runtime, mapa);",
+						"elegirAnimales(runtime.globalVars.REGION, runtime.globalVars.SEMILLA, JAULAS);"
+					]
 				}
 			],
 			"sid": 875703824961286
@@ -52,10 +60,10 @@
 					"id": "is-tag-playing",
 					"objectClass": "Audio",
 					"sid": 805441103818410,
-					"isInverted": true,
 					"parameters": {
 						"tag": "\"musica\""
-					}
+					},
+					"isInverted": true
 				}
 			],
 			"actions": [
@@ -116,18 +124,11 @@
 			],
 			"actions": [
 				{
-					"id": "set-eventvar-value",
-					"objectClass": "System",
-					"sid": 241880366033243,
-					"parameters": {
-						"variable": "SEMILLA",
-						"value": "0"
-					}
-				},
-				{
-					"id": "restart-layout",
-					"objectClass": "System",
-					"sid": 792632498221094
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"alCompletarLaberinto(runtime);"
+					]
 				}
 			],
 			"sid": 198501111745510

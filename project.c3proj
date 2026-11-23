@@ -36,6 +36,13 @@
 		},
 		{
 			"type": "plugin",
+			"id": "TextBox",
+			"name": "Text input",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
 			"id": "TiledBg",
 			"name": "Tiled Background",
 			"author": "Scirra",
@@ -45,6 +52,13 @@
 			"type": "plugin",
 			"id": "Tilemap",
 			"name": "Tilemap",
+			"author": "Scirra",
+			"bundled": false
+		},
+		{
+			"type": "plugin",
+			"id": "Touch",
+			"name": "Touch",
 			"author": "Scirra",
 			"bundled": false
 		},
@@ -91,9 +105,9 @@
 			"bundled": false
 		},
 		{
-			"type": "plugin",
-			"id": "TextBox",
-			"name": "Text input",
+			"type": "effect",
+			"id": "overlay",
+			"name": "Overlay",
 			"author": "Scirra",
 			"bundled": false
 		}
@@ -103,7 +117,8 @@
 		"items": [
 			"Audio",
 			"Keyboard",
-			"Mouse"
+			"Mouse",
+			"Touch"
 		],
 		"subfolders": [
 			{
@@ -197,6 +212,20 @@
 				],
 				"subfolders": [],
 				"name": "inicio"
+			},
+			{
+				"items": [
+					"spriteBtnCreditos",
+					"spriteBtnHomeCreditos",
+					"spriteCreditosFondo",
+					"spriteCreditosPanel",
+					"sprite_btn_endgame",
+					"sprite_btn_inicio",
+					"sprite_img_endgame",
+					"sprite_img_historia"
+				],
+				"subfolders": [],
+				"name": "cinematica"
 			}
 		]
 	},
@@ -209,9 +238,12 @@
 	},
 	"layouts": {
 		"items": [
+			"Home",
 			"Inicio",
 			"Layout 1",
-			"Laberinto"
+			"Laberinto",
+			"EndGame",
+			"Creditos"
 		],
 		"subfolders": []
 	},
@@ -219,13 +251,24 @@
 		"items": [
 			"Inicio",
 			"Event sheet 1",
-			"Laberinto"
+			"Laberinto",
+			"Home events",
+			"EndGame events",
+			"Creditos events"
 		],
 		"subfolders": []
 	},
 	"rootFileFolders": {
 		"script": {
 			"items": [
+				{
+					"name": "album.js",
+					"type": "application/javascript",
+					"sid": 238573868849208,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
 				{
 					"name": "cartelJaula.js",
 					"type": "application/javascript",
@@ -275,6 +318,14 @@
 					}
 				},
 				{
+					"name": "home.js",
+					"type": "application/javascript",
+					"sid": 525032751722084,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
 					"name": "honda.js",
 					"type": "application/javascript",
 					"sid": 605445745925425,
@@ -310,14 +361,6 @@
 					"name": "saltoRoca.js",
 					"type": "application/javascript",
 					"sid": 778221041102597,
-					"script-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "album.js",
-					"type": "application/javascript",
-					"sid": 238573868849208,
 					"script-info": {
 						"purpose": "none"
 					}
@@ -455,7 +498,24 @@
 			"subfolders": []
 		},
 		"music": {
-			"items": [],
+			"items": [
+				{
+					"name": "sprite_music_historia.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 879215676271463,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_music_endGame.webm",
+					"type": "audio/webm; codecs=opus",
+					"sid": 175063811689471,
+					"file-info": {
+						"purpose": "none"
+					}
+				}
+			],
 			"subfolders": []
 		},
 		"video": {
@@ -611,5 +671,5 @@
 	},
 	"viewportWidth": 1024,
 	"viewportHeight": 1024,
-	"firstLayout": "Inicio"
+	"firstLayout": "Home"
 }

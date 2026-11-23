@@ -70,6 +70,13 @@ export function coleccionActual()
 	catch { return new Set(); }
 }
 
+export function tieneTodos(ids)
+{
+	if (!ids?.length) return false;
+	const set = coleccionActual();
+	return ids.every(id => set.has(id));
+}
+
 function guardarColeccion(set)
 {
 	if (!jugador) return;

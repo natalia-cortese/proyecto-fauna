@@ -1,17 +1,5 @@
 {
 	"name": "Inicio",
-	"sid": 490048021474654,
-	"nonworld-instances": [],
-	"effectTypes": [],
-	"width": 1024,
-	"height": 1024,
-	"unboundedScrolling": false,
-	"sampling": "auto",
-	"ambientLight": 0.03,
-	"vpX": 0.5,
-	"vpY": 0.5,
-	"projection": "perspective",
-	"eventSheet": "Inicio",
 	"layers": [
 		{
 			"name": "Inicio",
@@ -38,8 +26,8 @@
 					"world": {
 						"x": 512,
 						"y": 512,
-						"width": 1024,
-						"height": 1024,
+						"width": 1026,
+						"height": 1026,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -70,8 +58,8 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 470.0,
-						"y": 254.0,
+						"x": 470,
+						"y": 254,
 						"width": 240,
 						"height": 212,
 						"originX": 0.5,
@@ -104,10 +92,10 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 512.0,
-						"y": 987.0,
-						"width": 152,
-						"height": 58,
+						"x": 512,
+						"y": 987,
+						"width": 240,
+						"height": 73,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -314,7 +302,7 @@
 					"type": "textNombre",
 					"properties": {
 						"text": "",
-						"placeholder": "Escrib\u00ed tu nombre",
+						"placeholder": "Escribí tu nombre",
 						"tooltip": "",
 						"initially-visible": true,
 						"enabled": true,
@@ -330,7 +318,6 @@
 					"tags": "",
 					"instanceVariables": {},
 					"behaviors": {},
-					"materialSurfaceType": "smooth",
 					"showing": true,
 					"locked": false,
 					"world": {
@@ -345,9 +332,7 @@
 							1,
 							1,
 							1
-						],
-						"z": 0,
-						"angle": 0
+						]
 					}
 				},
 				{
@@ -1061,5 +1046,17 @@
 			"zElevation": 0,
 			"global": false
 		}
-	]
+	],
+	"sid": 490048021474654,
+	"nonworld-instances": [],
+	"effectTypes": [],
+	"width": 1024,
+	"height": 1024,
+	"unboundedScrolling": false,
+	"sampling": "auto",
+	"ambientLight": 0.03,
+	"vpX": 0.5,
+	"vpY": 0.5,
+	"projection": "perspective",
+	"eventSheet": "Inicio"
 }

@@ -8,7 +8,7 @@
 // Al abrirse la ficha suena el sonido del animal: el archivo sprite_sfx_NOA_<animal> de la carpeta sounds
 // (la hoja de eventos lo reproduce con la variable SONIDO). SONIDOS sirve para un animal cuyo archivo se llama distinto.
 
-import { agregarAnimal } from "./album.js";
+import { agregarAnimal, tieneTodos } from "./album.js";
 
 export const ANIMALES = {
 	puna: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
@@ -112,4 +112,17 @@ function mezclar(lista, rnd)
 		[lista[i], lista[k]] = [lista[k], lista[i]];
 	}
 	return lista;
+}
+
+// Al abrir todas las jaulas: si el álbum ya tiene todos los animales de la región → títulos;
+// si no, otro laberinto.
+export function alCompletarLaberinto(runtime)
+{
+	runtime.globalVars.SEMILLA = 0;
+	const reg = runtime.globalVars.REGION || region;
+	const ids = (ANIMALES[reg] ?? []).map(a => `${reg}_${a}`);
+	if (tieneTodos(ids))
+		runtime.goToLayout("EndGame");
+	else
+		runtime.goToLayout("Laberinto");
 }

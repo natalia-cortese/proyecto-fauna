@@ -37,7 +37,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "iniciarInicio(runtime);"
+					"language": "javascript",
+					"script": [
+						"iniciarInicio(runtime);"
+					]
 				},
 				{
 					"id": "stop",
@@ -45,6 +48,30 @@
 					"sid": 665973625996180,
 					"parameters": {
 						"tag": "\"musica\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 384756192038475,
+					"parameters": {
+						"tag": "\"historia\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 293847561029183,
+					"parameters": {
+						"tag": "\"endgame\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 847291036501928,
+					"parameters": {
+						"tag": "\"creditos\""
 					}
 				}
 			],
@@ -62,7 +89,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "actualizarInicio(runtime);"
+					"language": "javascript",
+					"script": [
+						"actualizarInicio(runtime);"
+					]
 				}
 			],
 			"sid": 558740363440464
@@ -73,16 +103,19 @@
 				{
 					"id": "on-key-pressed",
 					"objectClass": "Keyboard",
+					"sid": 312201988083333,
 					"parameters": {
 						"key": 13
-					},
-					"sid": 312201988083333
+					}
 				}
 			],
 			"actions": [
 				{
 					"type": "script",
-					"script": "cerrarAlbumOFicha(runtime);"
+					"language": "javascript",
+					"script": [
+						"cerrarAlbumOFicha(runtime);"
+					]
 				}
 			],
 			"sid": 291455777187790
@@ -93,16 +126,19 @@
 				{
 					"id": "on-key-pressed",
 					"objectClass": "Keyboard",
+					"sid": 260861059350108,
 					"parameters": {
 						"key": 32
-					},
-					"sid": 260861059350108
+					}
 				}
 			],
 			"actions": [
 				{
 					"type": "script",
-					"script": "cerrarAlbumOFicha(runtime);"
+					"language": "javascript",
+					"script": [
+						"cerrarAlbumOFicha(runtime);"
+					]
 				}
 			],
 			"sid": 625385254813543
@@ -113,16 +149,19 @@
 				{
 					"id": "on-key-pressed",
 					"objectClass": "Keyboard",
+					"sid": 864704672639279,
 					"parameters": {
 						"key": 27
-					},
-					"sid": 864704672639279
+					}
 				}
 			],
 			"actions": [
 				{
 					"type": "script",
-					"script": "cerrarAlbumOFicha(runtime);"
+					"language": "javascript",
+					"script": [
+						"cerrarAlbumOFicha(runtime);"
+					]
 				}
 			],
 			"sid": 505875502498514

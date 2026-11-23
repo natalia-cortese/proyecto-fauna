@@ -93,7 +93,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "iniciarPersonajes(runtime);"
+					"language": "javascript",
+					"script": [
+						"iniciarPersonajes(runtime);"
+					]
 				}
 			],
 			"sid": 649972387766088
@@ -110,7 +113,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "actualizarPersonajes(runtime);"
+					"language": "javascript",
+					"script": [
+						"actualizarPersonajes(runtime);"
+					]
 				}
 			],
 			"sid": 339824692206836
@@ -130,7 +136,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "cambiarPersonaje(runtime);"
+					"language": "javascript",
+					"script": [
+						"cambiarPersonaje(runtime);"
+					]
 				}
 			],
 			"sid": 950283946951935
@@ -150,7 +159,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "manejarEnter(runtime);"
+					"language": "javascript",
+					"script": [
+						"manejarEnter(runtime);"
+					]
 				}
 			],
 			"sid": 870252601469277
@@ -170,7 +182,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "disparar(runtime);"
+					"language": "javascript",
+					"script": [
+						"disparar(runtime);"
+					]
 				}
 			],
 			"sid": 692877398611272
@@ -190,7 +205,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "manejarEscape(runtime);"
+					"language": "javascript",
+					"script": [
+						"manejarEscape(runtime);"
+					]
 				}
 			],
 			"sid": 951756734601603
@@ -337,7 +355,10 @@
 				},
 				{
 					"type": "script",
-					"script": "mostrarFicha(runtime);"
+					"language": "javascript",
+					"script": [
+						"mostrarFicha(runtime);"
+					]
 				},
 				{
 					"id": "play-by-name",

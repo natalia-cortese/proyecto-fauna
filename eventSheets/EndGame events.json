@@ -1,0 +1,102 @@
+{
+	"name": "EndGame events",
+	"events": [
+		{
+			"eventType": "comment",
+			"text": "Títulos sobre el fondo del mapa. El botón pasa a Creditos."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 482806918684065
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 728394016582731,
+					"parameters": {
+						"tag": "\"musica\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 618293746501284,
+					"parameters": {
+						"tag": "\"historia\""
+					}
+				},
+				{
+					"id": "play",
+					"objectClass": "Audio",
+					"sid": 266823432869195,
+					"parameters": {
+						"audio-file": {
+							"path": "sprite_music_endGame"
+						},
+						"loop": "looping",
+						"volume": "-10",
+						"stereo-pan": "0",
+						"tag-optional": "\"endgame\""
+					}
+				},
+				{
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"iniciarEndGame(runtime);"
+					]
+				}
+			],
+			"sid": 345946834612036
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-touched-object",
+					"objectClass": "Touch",
+					"sid": 871728858577822,
+					"parameters": {
+						"object": "sprite_btn_endgame",
+						"type": "start"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "go-to-layout",
+					"objectClass": "System",
+					"sid": 600786948251090,
+					"parameters": {
+						"layout": "Creditos"
+					}
+				}
+			],
+			"sid": 447291836501928
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 562839401756283
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"script": "actualizarCinematica(runtime);"
+				}
+			],
+			"sid": 673948201857364
+		}
+	],
+	"sid": 705603210907071
+}
