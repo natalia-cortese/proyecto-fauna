@@ -63,6 +63,16 @@
 		},
 		{
 			"eventType": "variable",
+			"name": "HUIDA",
+			"type": "string",
+			"initialValue": "Huida",
+			"comment": "Animación de spriteHuida según la región (sprites.huida en regiones.js).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 205746922165988
+		},
+		{
+			"eventType": "variable",
 			"name": "GAMEOVER",
 			"type": "number",
 			"initialValue": "0",
@@ -350,7 +360,7 @@
 					"objectClass": "spriteHuida",
 					"sid": 729305684129573,
 					"parameters": {
-						"animation": "\"Huida\"",
+						"animation": "HUIDA",
 						"from": "beginning"
 					}
 				},
@@ -375,7 +385,7 @@
 					"objectClass": "spriteHuida",
 					"sid": 743284171414824,
 					"parameters": {
-						"animation": "\"Huida\""
+						"animation": "HUIDA"
 					}
 				}
 			],

@@ -27,4 +27,4 @@ Material que todavía no está cableado en el juego, **ordenado por región**.
 - Mapa: `sounds/<region>/SonidoMapa_<region>_loop.webm`
 - Comunes: `sounds/comun/` (`GameOver`, `golpe_cazador`, …)
 
-Sumá el animal a `ANIMALES` en `scripts/fichas.js`, el layout en `scripts/regiones.js` si es región nueva, y seguí «Sumar un animal» / «Habilitar otra zona» en `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.
+Sumá el animal a `animales` de su región en `scripts/regiones.js`. Si es región nueva, seguí «Sumar un animal» / «Sumar una región» en `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.

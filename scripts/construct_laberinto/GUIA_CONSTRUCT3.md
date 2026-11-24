@@ -34,7 +34,7 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 | `scripts/inicio.js` | pantalla de inicio: nombre obligatorio, zona y botón laten, pokédex abre el álbum, pasa al laberinto. Zonas en `ZONAS` |
 | `scripts/album.js` | álbum de fauna: progreso por jugador en `localStorage`, abrir/cerrar, ranuras y releer fichas |
 | `scripts/generadorLaberinto.js` | `generarMapa(opciones)`: arma el laberinto como texto (ver [El mapa como texto](#el-mapa-como-texto)) |
-| `scripts/construirLaberinto.js` | `construirLaberinto(runtime, mapa)`: pinta los muros en el `Tilemap`, crea los objetos de cada letra con su tamaño, pone a Mafalda y a Dieguito delante del portal y regenera el mapa del *Pathfinding* |
+| `scripts/construirLaberinto.js` | `construirLaberinto(runtime, mapa)`: pinta los muros, crea los objetos de cada letra y aplica los sprites de `regiones.js` (personajes, fondo, rocas, cactus, cazadores) |
 | `scripts/personajes.js` | movimiento, cambio de personaje con Espacio, el que sigue con *Pathfinding*, espejado según hacia dónde caminan, vidas (un cactus o un cazador resta una y los dos vuelven al portal, parpadeando 1,5 s sin poder perder otra), corazones del HUD y la pantalla de GAME OVER (`reintentar` y `volverAlInicio`). En `Layout 1`, que no tiene los sprites de GAME OVER, perder todas las vidas reinicia el layout |
 | `scripts/gameOver.js` | arma la pantalla de DESAFÍO PERDIDO: muestra/oculta fondo, cartel, animación y botones; los botones laten y se pueden tocar |
 | `scripts/cazadores.js` | cada cazador va y viene por un tramo corto de su pasillo; cada 3–6 s se esconde entre los setos y aparece en otro punto. Si el personaje manejado se le acerca a menos de 44 px mientras se ve, pierde una vida. Escondido no hace daño |
@@ -43,11 +43,11 @@ Para probar en el editor, abrí el layout que quieras ver y apretá *Preview* (F
 | `scripts/cartelJaula.js` | el globo `spriteCartelJaula` (capa `Niebla`): sobre la jaula más cercana cuando el personaje manejado está a menos de 40 px y no puede abrirla, y sobre la llave que toca Dieguito manejado. Cada texto es una animación del globo: `solo_mafalda`, `necesita_llave` y `solo_mafalda_llave` |
 | `scripts/saltoRoca.js` | salto en arco de 0,4 s por encima de una roca |
 | `scripts/niebla.js` | el `Tilemap` **Niebla** (casillas de 32 px) tapa el mapa y se despeja para siempre alrededor de los personajes. `RADIO` cambia cuánto se ve |
-| `scripts/fichas.js` | sorteo de animales por laberinto (prioriza los que faltan en el álbum), ficha y `alCompletarLaberinto` (ver [Sumar un animal](#sumar-un-animal)) |
-| `scripts/regiones.js` | mapa región → layout / carpeta de sonidos / loop de mapa |
+| `scripts/fichas.js` | sorteo de animales (`animales` de `regiones.js`), ficha y `alCompletarLaberinto` (ver [Sumar un animal](#sumar-un-animal)) |
+| `scripts/regiones.js` | cada región: layout, sonidos, animales y sprites (ver [Sumar una región](#sumar-una-región)) |
 | `scripts/importsForEvents.js` | nombre especial de Construct: lo que importa se puede usar en los bloques de script de las hojas de eventos |
 | hoja `Inicio` | variables `REGION`, `JUGADOR`; llama a `inicio.js`; Enter/Espacio/Esc cierran álbum; solo JUGAR arranca; al empezar corta la música |
-| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS`, `FICHA`, `ALBUM`, `GAMEOVER`, `GOLPE_CAZADOR`, `SONIDO`, `SONIDO_CARPETA`, `PERSONAJE`; compartida por todos los laberintos |
+| hoja `Event sheet 1` | variables `LLAVES`, `VIDAS`, `FICHA`, `ALBUM`, `GAMEOVER`, `GOLPE_CAZADOR`, `SONIDO`, `SONIDO_CARPETA`, `HUIDA`, `PERSONAJE`; compartida por todos los laberintos |
 | hoja `LaberintoPuna` | incluye `Event sheet 1`; `SEMILLA` / `NIVEL`; arma la Puna, cartel de nivel; al liberar habilita la cueva → `alCompletarLaberinto` |
 | `scripts/nivel.js` | cartel **NIVEL N — REGIÓN** al empezar cada laberinto |
 | hoja `Home events` / `EndGame events` | música de historia/títulos y botones Touch hacia `Inicio` |
@@ -128,7 +128,7 @@ En `guia_indices.png` está el número de cada tile.
 Cada ficha es una animación de `spriteFichaAnimal` llamada **`region_animal`**, en minúscula y sin tildes (`puna_vicuna`, `puna_zorro_andino`, `chaco_quirquincho_bola`). Las fichas miden 1024 × 1536. La Puna tiene 8: vicuña, zorro andino, cóndor, flamenco, gato andino, guanaco, puma y taruca.
 
 1. Traé la carta desde `assets/pendientes/cartas/<region>/` (o una nueva), copiala a `images/` como `spritefichaanimal-region_animal-000.png` e importala en Construct en una animación nueva de `spriteFichaAnimal` (por ejemplo `puna_suri`). Las PNGs del juego quedan planas en `images/` (requisito de Construct).
-2. Sumá `"suri"` a la lista de su región en `ANIMALES` (`scripts/fichas.js`).
+2. Sumá `"suri"` a `animales` de su región en `scripts/regiones.js`.
 3. **Sonido:** mové o creá `sounds/<region>/sprite_sfx_suri.webm` (WebM Opus) y registralo en *Sounds › subcarpeta de la región*. Si el archivo se llama distinto del animal, agregalo a `SONIDOS` en `fichas.js` (como `quirquincho_bola: "quirquincho"`).
 
 Cuando se abre la ficha, `fichas.js` pone `SONIDO` = `sprite_sfx_<animal>` y `SONIDO_CARPETA` = la región; el evento de la huida reproduce con *Audio › Play (by name)* esa carpeta, en loop, etiqueta `"animal"`, y pausa la música (`"musica"`). Al cerrar la ficha corta el animal y reanuda la música. *Timescale audio* está apagado.
@@ -145,12 +145,85 @@ Cada laberinto **prioriza animales de su región que aún no están en el álbum
 
 `music/` sigue con la historia y los títulos (`sprite_music_historia`, `sprite_music_endGame`).
 
-## Habilitar otra zona
+## Sumar una región
 
-En la pantalla de inicio, cada zona habilitada es un sprite recortado del fondo (`spriteZonaPuna`) puesto justo encima de su lugar en el mapa; las zonas con candado son parte del dibujo de `spriteInicioFondo`.
+Cada región tiene una clave en minúscula y sin tildes (`puna`, `chaco`). Esa clave se usa en la variable `REGION`, en `scripts/regiones.js`, en las animaciones de las fichas (`puna_vicuna`) y en la carpeta de sonidos. El archivo `regiones.js` es el lugar donde se describe la región: layout, audio, animales y **qué sprites usa**. Los pasos de abajo usan el Chaco como ejemplo (ya tiene entrada y carteles de nivel).
 
-1. Recortá la zona del fondo (sin candado) en un sprite nuevo, por ejemplo `spriteZonaChaco`, y ponelo en el layout `Inicio` encima de su lugar.
-2. Sumalo a `ZONAS` en `scripts/inicio.js`: `spriteZonaChaco: "chaco"`.
-3. Sumá los animales a `ANIMALES` en `scripts/fichas.js` y la entrada en `scripts/regiones.js` (`layout`, `sonidos`, `mapaLoop`, `titulo`).
-4. Duplicá el layout/hoja `LaberintoPuna` → `LaberintoChaco` (misma estructura; en *On start* usá `"chaco"` y el loop `sounds/chaco/SonidoMapa_chaco_loop`). Registrate ambos en `project.c3proj`.
-5. Poné los SFX en `sounds/chaco/` y las cartas pendientes en `assets/pendientes/cartas/chaco/`.
+### 1. Datos en `scripts/regiones.js`
+
+```js
+chaco: {
+	layout: "LaberintoChaco",
+	sonidos: "chaco",
+	mapaLoop: "SonidoMapa_chaco_loop",
+	titulo: "CHACO",
+	animales: ["quirquincho_bola", "tapir"],
+	sprites: {
+		personajes: { spriteMafalda: "Animation 1", spriteDieguito: "Animation 1" },
+		huida: "Huida",
+		fondo: "TiledBackground",
+		obstaculos: ["Default"],
+		enemigos: ["Cazador1", "Cazador2"],
+		danio: ["Default"]
+	}
+}
+```
+
+| Campo | Qué es |
+|---|---|
+| `layout` | layout al que van **JUGAR** y la cueva al pasar de laberinto |
+| `sonidos` | subcarpeta de *Sounds* de los SFX de los animales |
+| `mapaLoop` | archivo del loop de mapa |
+| `titulo` | texto del cartel **NIVEL N — REGIÓN** |
+| `animales` | lista de las jaulas y del álbum de esa región (sin el prefijo `chaco_`) |
+| `sprites.personajes` | animación de `spriteMafalda` y `spriteDieguito` |
+| `sprites.huida` | animación de `spriteHuida` al abrir una jaula (variable `HUIDA`) |
+| `sprites.fondo` | objeto de la capa `BG` que se muestra; los fondos de las otras regiones se ocultan |
+| `sprites.obstaculos` | animaciones de `spriteRock` (se saltan); se elige una al azar por roca |
+| `sprites.enemigos` | animaciones de `spriteCazador`; se elige una al azar por cazador |
+| `sprites.danio` | animaciones de `spriteSaguaro` (quitan una vida); se elige una al azar por cactus |
+
+Los **objetos de Construct son los mismos** en todas las regiones (`spriteRock`, `spriteCazador`, `spriteSaguaro`, …). Lo que cambia es el nombre de la **animación**. Para un dibujo nuevo:
+
+1. Importá la imagen en Construct como animación del objeto que ya existe (por ejemplo `RocaChaco` en `spriteRock`, `CazadorChaco1` en `spriteCazador`, `Cardon` en `spriteSaguaro`).
+2. Poné ese nombre en `sprites` de la región. Tiene que coincidir exactamente; si no existe, el sprite se queda con la animación anterior.
+3. Un fondo nuevo es un **objeto** de la capa `BG` (no una animación). Creá p. ej. `FondoChaco`, ponelo en el layout del laberinto y usá `fondo: "FondoChaco"`.
+
+Con eso alcanza para personalizar el aspecto. El resto de esta sección es para que la región se pueda **elegir y jugar**.
+
+### 2. Animales y álbum
+
+1. La lista `animales` de arriba alimenta las jaulas. Conviene que tenga **al menos tantos nombres como jaulas** (3); si no, se repiten en el mismo laberinto.
+2. Por cada animal, seguí [Sumar un animal](#sumar-un-animal): ficha `chaco_<animal>` en `spriteFichaAnimal` y su sonido.
+3. **Álbum:** `images/spritealbumslot-chaco_<animal>-000.png`, animación `chaco_<animal>` en `spriteAlbumSlot` y el id en `ORDEN_ALBUM` (`scripts/album.js`), reemplazando un `null`. El álbum tiene 12 ranuras dibujadas; si no alcanzan, hay que cambiar el dibujo y `SLOTS_REL`.
+
+### 3. Sonidos
+
+1. Creá `sounds/chaco/` con `sprite_sfx_<animal>.webm` (WebM Opus) y `SonidoMapa_chaco_loop.webm`.
+2. Importalos en Construct en *Sounds › chaco* (el nombre de la subcarpeta = `sonidos` en `regiones.js`).
+
+Los pendientes `sprite_sfx_NOA_<animal>` hay que renombrarlos a `sprite_sfx_<animal>` o agregarlos a `SONIDOS` en `fichas.js`.
+
+### 4. Cartel de nivel
+
+Ocho animaciones de `spriteCartelNivel`: `chaco_1` … `chaco_8` (`images/spritecartelnivel-chaco_N-000.png`). Si faltan, se muestra `puna_1`.
+
+### 5. Layout y hoja del laberinto
+
+1. Duplicá en Construct el layout `LaberintoPuna` y la hoja `LaberintoPuna`, y renombralos `LaberintoChaco` (el mismo `layout` de `regiones.js`). Al guardar se registran en `project.c3proj`.
+2. En el layout `LaberintoChaco`, elegí la hoja `LaberintoChaco` como *Event sheet*. Conservá las capas y objetos de `LaberintoPuna` (`Tilemap` **Solid**, **Niebla**, HUD, ficha, álbum, GAME OVER, `spriteCartelNivel` y el fondo de `sprites.fondo`).
+3. En *On start of layout* de la hoja nueva:
+   - *Audio › Play (by name)*: carpeta `chaco`, archivo `"SonidoMapa_chaco_loop"`.
+   - En el script: `runtime.globalVars.REGION = "chaco";` y `elegirAnimales("chaco", runtime.globalVars.SEMILLA, JAULAS);`.
+   - Opcional: muros propios en `generarMapa`, por ejemplo `estilos: "YYF#"` (ver [Cambiar el laberinto](#cambiar-el-laberinto)).
+
+### 6. Zona en Inicio
+
+Cada zona habilitada es un recorte del fondo (`spriteZonaPuna`) encima de su lugar en el mapa; las zonas con candado son parte de `spriteInicioFondo`.
+
+1. Recortá la zona (sin candado) en un sprite `spriteZonaChaco` (carpeta `inicio`) y ponelo en el layout `Inicio`.
+2. Sumalo a `ZONAS` en `scripts/inicio.js`: `{ spriteZonaPuna: "puna", spriteZonaChaco: "chaco" }`.
+
+### 7. Probar
+
+Escribí un nombre, tocá la zona y **JUGAR**. Tiene que abrir `LaberintoChaco`, sonar su loop, mostrar **NIVEL 1 — CHACO**, usar los sprites de esa región y llenar las jaulas solo con sus animales. Con el álbum de la región completo, la cueva lleva a `EndGame`.

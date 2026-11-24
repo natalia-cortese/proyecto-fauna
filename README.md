@@ -28,4 +28,4 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 - Tras liberar a los animales, **entrar a la cueva** para el siguiente laberinto (cartel **NIVEL N — REGIÓN**); con el álbum completo: **EndGame** → **Creditos** → **INICIO**
 - Al perder las 3 vidas: **DESAFÍO PERDIDO**
 
-Detalle completo: `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.
+Detalle completo: `scripts/construct_laberinto/GUIA_CONSTRUCT3.md` (incluye cómo sumar una región y sus sprites).
