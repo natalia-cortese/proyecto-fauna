@@ -27,7 +27,7 @@
 					}
 				],
 				"sid": 122154448456616,
-				"name": "Cazador1",
+				"name": "CazadorPuna",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -52,7 +52,7 @@
 					}
 				],
 				"sid": 201330539017686,
-				"name": "Cazador2",
+				"name": "CazadorPuna2",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,

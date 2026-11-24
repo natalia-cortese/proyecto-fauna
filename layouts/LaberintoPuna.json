@@ -7,7 +7,7 @@
 			"subLayers": [],
 			"instances": [
 				{
-					"type": "TiledBackground",
+					"type": "TiledBackgroundPuna",
 					"properties": {
 						"initially-visible": true,
 						"origin": "top-left",
@@ -151,7 +151,7 @@
 					"type": "spriteMafalda",
 					"properties": {
 						"initially-visible": true,
-						"initial-animation": "Animation 1",
+						"initial-animation": "AnimationPuna",
 						"initial-frame": 0,
 						"enable-collisions": true,
 						"live-preview": false
@@ -233,7 +233,7 @@
 					"type": "spriteDieguito",
 					"properties": {
 						"initially-visible": true,
-						"initial-animation": "Animation 1",
+						"initial-animation": "AnimationPuna",
 						"initial-frame": 0,
 						"enable-collisions": true,
 						"live-preview": false
@@ -341,7 +341,7 @@
 					"type": "spriteCazador",
 					"properties": {
 						"initially-visible": true,
-						"initial-animation": "Cazador1",
+						"initial-animation": "CazadorPuna",
 						"initial-frame": 0,
 						"enable-collisions": true,
 						"live-preview": false

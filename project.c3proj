@@ -132,7 +132,7 @@
 			},
 			{
 				"items": [
-					"TiledBackground",
+					"TiledBackgroundPuna",
 					"Tilemap",
 					"Niebla",
 					"spriteRock",

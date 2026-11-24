@@ -110,7 +110,7 @@ node scripts/construct_laberinto/generador/vista_previa.mjs [semilla] [jaulas]
 | `G` | portal de inicio | `spritePortal` | 176 × 190 |
 | `J` | jaula | `spriteJaula` | 96 × 92 |
 | `L` | llave | `Sprite2` | 70 × 76 |
-| `H` | cazador (`Cazador1` o `Cazador2` al azar) | `spriteCazador` | 48 × 72 |
+| `H` | cazador (`CazadorPuna` o `CazadorPuna2` al azar) | `spriteCazador` | 48 × 72 |
 | `E` `N` | Mafalda y Dieguito (se mueven, no se crean) | `spriteMafalda`, `spriteDieguito` | los del layout |
 
 Los tamaños están en `OBJETOS`, al principio de `construirLaberinto.js`: un objeto creado por script usa el tamaño de su imagen, y las imágenes tienen tamaños muy distintos.
@@ -159,11 +159,11 @@ chaco: {
 	titulo: "CHACO",
 	animales: ["quirquincho_bola", "tapir"],
 	sprites: {
-		personajes: { spriteMafalda: "Animation 1", spriteDieguito: "Animation 1" },
+		personajes: { spriteMafalda: "AnimationPuna", spriteDieguito: "AnimationPuna" },
 		huida: "Huida",
-		fondo: "TiledBackground",
+		fondo: "TiledBackgroundPuna",
 		obstaculos: ["Default"],
-		enemigos: ["Cazador1", "Cazador2"],
+		enemigos: ["CazadorPuna", "CazadorPuna2"],
 		danio: ["Default"]
 	}
 }

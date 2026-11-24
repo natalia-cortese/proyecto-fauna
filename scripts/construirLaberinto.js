@@ -68,7 +68,7 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 				else if (letra === "K") ponerAnimacion(inst, alAzar(sprites.danio));
 				else if (letra === "H")
 				{
-					ponerAnimacion(inst, alAzar(sprites.enemigos) || "Cazador1");
+					ponerAnimacion(inst, alAzar(sprites.enemigos) || "CazadorPuna");
 					prepararCazador(inst, filas, x, y);
 				}
 			}
