@@ -8,7 +8,8 @@
 // Al abrirse la ficha suena el sonido del animal: el archivo sprite_sfx_NOA_<animal> de la carpeta sounds
 // (la hoja de eventos lo reproduce con la variable SONIDO). SONIDOS sirve para un animal cuyo archivo se llama distinto.
 
-import { agregarAnimal, tieneTodos } from "./album.js";
+import { agregarAnimal, tieneTodos, coleccionActual } from "./album.js";
+import { avanzarNivel } from "./nivel.js";
 
 export const ANIMALES = {
 	puna: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
@@ -43,13 +44,21 @@ export function reiniciarFichas(runtime)
 export function elegirAnimales(nuevaRegion, semilla, jaulas)
 {
 	if (!ANIMALES[nuevaRegion]?.length) throw new RangeError(`No hay animales para la región "${nuevaRegion}"`);
-	if (ANIMALES[nuevaRegion].length < jaulas)
-		console.warn(`La región "${nuevaRegion}" tiene ${ANIMALES[nuevaRegion].length} animales para ${jaulas} jaulas: se van a repetir.`);
 	region = nuevaRegion;
 	const rnd = aleatorio(semilla);
-	orden = [];
+	const todos = [...ANIMALES[region]];
+	const ya = coleccionActual();
+	// Primero los que faltan en el álbum (mezclados); si no alcanzan, completar sin repetir en este laberinto.
+	const faltan = mezclar(todos.filter(a => !ya.has(`${region}_${a}`)), rnd);
+	const conocidos = mezclar(todos.filter(a => ya.has(`${region}_${a}`)), rnd);
+	orden = faltan.slice(0, jaulas);
+	for (const a of conocidos)
+	{
+		if (orden.length >= jaulas) break;
+		if (!orden.includes(a)) orden.push(a);
+	}
 	while (orden.length < jaulas)
-		orden.push(...mezclar([...ANIMALES[region]], rnd));
+		orden.push(...mezclar([...todos], rnd));
 	orden.length = jaulas;
 }
 
@@ -167,5 +176,8 @@ export function alCompletarLaberinto(runtime)
 	if (tieneTodos(ids))
 		runtime.goToLayout("EndGame");
 	else
+	{
+		avanzarNivel();
 		runtime.goToLayout("Laberinto");
+	}
 }

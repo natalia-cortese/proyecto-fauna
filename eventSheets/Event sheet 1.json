@@ -328,6 +328,28 @@
 					}
 				},
 				{
+					"id": "set-visible",
+					"objectClass": "spriteHuida",
+					"sid": 618294573018462,
+					"parameters": {
+						"visibility": "visible"
+					}
+				},
+				{
+					"id": "set-animation",
+					"objectClass": "spriteHuida",
+					"sid": 729305684129573,
+					"parameters": {
+						"animation": "\"Huida\"",
+						"from": "beginning"
+					}
+				},
+				{
+					"id": "move-to-top",
+					"objectClass": "spriteHuida",
+					"sid": 830416795230684
+				},
+				{
 					"id": "destroy",
 					"objectClass": "spriteJaula",
 					"sid": 136921089565940

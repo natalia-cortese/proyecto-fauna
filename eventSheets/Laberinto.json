@@ -12,6 +12,16 @@
 			"sid": 728245628018761
 		},
 		{
+			"eventType": "variable",
+			"name": "NIVEL",
+			"type": "number",
+			"initialValue": "1",
+			"comment": "Número de laberinto de la partida (cartel NIVEL N — REGIÓN).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 839356739129872
+		},
+		{
 			"eventType": "include",
 			"includeSheet": "Event sheet 1"
 		},
@@ -78,7 +88,8 @@
 						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
 						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
 						"construirLaberinto(runtime, mapa);",
-						"elegirAnimales(region, runtime.globalVars.SEMILLA, JAULAS);"
+						"elegirAnimales(region, runtime.globalVars.SEMILLA, JAULAS);",
+						"mostrarCartelNivel(runtime);"
 					]
 				}
 			],

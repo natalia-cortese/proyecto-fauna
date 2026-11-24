@@ -9,6 +9,7 @@ import {
 } from "./album.js";
 import { abrirFichaId, cerrarFicha } from "./fichas.js";
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
+import { reiniciarNivel } from "./nivel.js";
 
 const ZONAS = { spriteZonaPuna: "puna" };
 const LAYOUT_JUEGO = "Laberinto";
@@ -148,6 +149,8 @@ export function jugar(runtime, region = regionElegida || runtime.globalVars.REGI
 	}
 	runtime.globalVars.REGION = region || regionElegida || "puna";
 	runtime.globalVars.SEMILLA = 0;
+	reiniciarNivel();
+	if (runtime.globalVars.NIVEL !== undefined) runtime.globalVars.NIVEL = 1;
 	quitarEscucha?.();
 	salida = 0;
 }

@@ -14,6 +14,7 @@ import {
 	configurarAlbum, getJugador, setJugador
 } from "./album.js";
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
+import { cartelNivelActivo, actualizarCartelNivel } from "./nivel.js";
 
 export const VIDAS_MAXIMAS = 3;
 const SEGUIR_DESDE = 90;
@@ -86,6 +87,7 @@ export function volverAlInicio(runtime)
 export function cambiarPersonaje(runtime)
 {
 	if (reintentar(runtime)) return;
+	if (cartelNivelActivo()) return;
 	if (fichaAlbumAbierta()) { cerrarAlbum(runtime); return; }
 	if (albumAbierto()) return;
 	if (cerrarFicha(runtime)) return;
@@ -99,7 +101,7 @@ export function cambiarPersonaje(runtime)
 export function disparar(runtime)
 {
 	const dieguito = personaje(runtime, "spriteDieguito");
-	if (gameOver || albumAbierto() || fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
+	if (gameOver || cartelNivelActivo() || albumAbierto() || fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
 	dispararHonda(runtime, dieguito);
 }
 
@@ -160,12 +162,14 @@ function escucharAlbumHud(runtime)
 
 export function actualizarPersonajes(runtime)
 {
+	actualizarCartelNivel(runtime);
 	if (gameOver)
 	{
 		actualizarGameOver(runtime);
 		return;
 	}
 	if (albumAbierto()) return;
+	if (cartelNivelActivo()) return;
 	const actual = personaje(runtime, activo);
 	const otro = personaje(runtime, otroNombre(activo));
 	if (!actual || fichaAbierta()) return;
