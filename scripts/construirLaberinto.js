@@ -3,6 +3,7 @@
 
 import { prepararCazador } from "./cazadores.js";
 import { reiniciarNiebla } from "./niebla.js";
+import { REGIONES, spritesDeRegion } from "./regiones.js";
 
 const CASILLA = 64;
 const ESTILOS = "#FSYPR";
@@ -25,6 +26,9 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 	// Si el layout no se limpia del todo al reiniciar, los sólidos viejos tapan la cueva.
 	limpiarObjetosMapa(runtime);
 	reiniciarNiebla(runtime);
+
+	const sprites = spritesDeRegion(runtime.globalVars.REGION);
+	aplicarSpritesRegion(runtime, sprites);
 
 	const filas = mapa.split("|");
 	const estilo = (x, y) => ESTILOS.indexOf(filas[y]?.[x] ?? ".");
@@ -60,9 +64,11 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 				inst.height = objeto.alto;
 				// El origin está en el centro: se baja para que quede apoyado en el borde de abajo de la casilla.
 				inst.y = (y + 1) * CASILLA - objeto.alto / 2;
-				if (letra === "H")
+				if (letra === "O") ponerAnimacion(inst, alAzar(sprites.obstaculos));
+				else if (letra === "K") ponerAnimacion(inst, alAzar(sprites.danio));
+				else if (letra === "H")
 				{
-					inst.setAnimation(Math.random() < 0.5 ? "Cazador1" : "Cazador2");
+					ponerAnimacion(inst, alAzar(sprites.enemigos) || "Cazador1");
 					prepararCazador(inst, filas, x, y);
 				}
 			}
@@ -84,4 +90,30 @@ function limpiarObjetosMapa(runtime)
 	for (const nombre of NOMBRES_MAPA)
 		for (const inst of [...(runtime.objects[nombre]?.getAllInstances() ?? [])])
 			inst.destroy();
+}
+
+function aplicarSpritesRegion(runtime, sprites)
+{
+	ponerAnimacion(runtime.objects.spriteMafalda?.getFirstInstance(), sprites.personajes?.spriteMafalda);
+	ponerAnimacion(runtime.objects.spriteDieguito?.getFirstInstance(), sprites.personajes?.spriteDieguito);
+	ponerAnimacion(runtime.objects.spriteHuida?.getFirstInstance(), sprites.huida);
+	if (runtime.globalVars.HUIDA !== undefined)
+		runtime.globalVars.HUIDA = sprites.huida || "Huida";
+
+	const fondos = [...new Set(Object.values(REGIONES).map(r => r.sprites?.fondo).filter(Boolean))];
+	for (const nombre of fondos)
+		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
+			inst.isVisible = nombre === sprites.fondo;
+}
+
+function ponerAnimacion(inst, nombre)
+{
+	if (!inst || !nombre) return;
+	try { inst.setAnimation(nombre); } catch {}
+}
+
+function alAzar(lista)
+{
+	if (!lista?.length) return;
+	return lista[Math.floor(Math.random() * lista.length)];
 }
