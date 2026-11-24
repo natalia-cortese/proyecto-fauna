@@ -2,20 +2,19 @@
 // El juego queda en pausa hasta que se aprieta Espacio o Enter.
 //
 // Cada ficha es una animación de spriteFichaAnimal llamada region_animal, en minúscula y sin tildes
-// (por ejemplo puna_vicuna). Para sumar un animal: agregá la animación en Construct y su nombre acá,
-// en la lista de su región. Cada laberinto sortea, según su semilla, qué animales de su región están en sus jaulas.
+// (por ejemplo puna_vicuna). Para sumar un animal: agregá la animación en Construct y su nombre en
+// animales de su región (scripts/regiones.js). Cada laberinto sortea, según su semilla, qué animales de su región están en sus jaulas.
 //
 // Al abrirse la ficha suena el SFX en sounds/<región>/sprite_sfx_<animal> (variable SONIDO + SONIDO_CARPETA).
 // SONIDOS sirve para un animal cuyo archivo se llama distinto (quirquincho_bola → quirquincho).
 
 import { agregarAnimal, tieneTodos, coleccionActual } from "./album.js";
-import { layoutDeRegion, infoRegion } from "./regiones.js";
+import { layoutDeRegion, infoRegion, REGIONES } from "./regiones.js";
 import { avanzarNivel } from "./nivel.js";
 
-export const ANIMALES = {
-	puna: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
-	chaco: ["quirquincho_bola"]
-};
+export const ANIMALES = Object.fromEntries(
+	Object.entries(REGIONES).map(([clave, info]) => [clave, info.animales ?? []])
+);
 
 const SONIDOS = {
 	quirquincho_bola: "quirquincho"
