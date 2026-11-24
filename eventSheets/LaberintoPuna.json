@@ -68,7 +68,7 @@
 					"objectClass": "Audio",
 					"sid": 554587945856731,
 					"parameters": {
-						"folder": "puna",
+						"folder": "sounds",
 						"audio-file-name": "\"SonidoMapa_puna_loop\"",
 						"loop": "looping",
 						"volume": "-12",

@@ -125,7 +125,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "actualizarCinematica(runtime);"
+					"language": "javascript",
+					"script": [
+						"actualizarCinematica(runtime);"
+					]
 				}
 			],
 			"sid": 918273645501928

@@ -92,7 +92,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "actualizarCinematica(runtime);"
+					"language": "javascript",
+					"script": [
+						"actualizarCinematica(runtime);"
+					]
 				}
 			],
 			"sid": 673948201857364

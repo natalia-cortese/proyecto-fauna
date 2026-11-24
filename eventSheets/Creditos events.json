@@ -17,7 +17,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "iniciarCreditos(runtime);"
+					"language": "javascript",
+					"script": [
+						"iniciarCreditos(runtime);"
+					]
 				}
 			],
 			"sid": 829104756392018
@@ -67,7 +70,10 @@
 			"actions": [
 				{
 					"type": "script",
-					"script": "actualizarCinematica(runtime);"
+					"language": "javascript",
+					"script": [
+						"actualizarCinematica(runtime);"
+					]
 				}
 			],
 			"sid": 495867102938475
