@@ -5,7 +5,7 @@
 import { saltarRoca, estaSaltando, cancelarSalto, tocando } from "./saltoRoca.js";
 import { revelarNiebla } from "./niebla.js";
 import { actualizarCazadores } from "./cazadores.js";
-import { reiniciarFichas, fichaAbierta, cerrarFicha, abrirFichaId } from "./fichas.js";
+import { reiniciarFichas, fichaAbierta, cerrarFicha, abrirFichaId, actualizarSalidaLaberinto } from "./fichas.js";
 import { reiniciarHonda, dispararHonda, actualizarHonda } from "./honda.js";
 import { actualizarCartelJaula } from "./cartelJaula.js";
 import { mostrarGameOver, ocultarGameOver, actualizarGameOver } from "./gameOver.js";
@@ -206,6 +206,7 @@ export function actualizarPersonajes(runtime)
 	for (const ayuda of runtime.objects.spriteAyudaHonda?.getAllInstances() ?? [])
 		ayuda.isVisible = activo === "spriteDieguito";
 	revelarNiebla(runtime, [actual, otro].filter(Boolean));
+	actualizarSalidaLaberinto(runtime);
 }
 
 function seguir(runtime, inst, destino)

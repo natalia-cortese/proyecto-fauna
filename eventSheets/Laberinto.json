@@ -17,7 +17,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Arma un laberinto con generarMapa() (scripts/generadorLaberinto.js). Chocar un cactus reinicia el mismo laberinto; abrir todas las jaulas pasa a uno nuevo."
+			"text": "Arma un laberinto con generarMapa() (scripts/generadorLaberinto.js). Chocar un cactus reinicia el mismo laberinto; al liberar a todos los animales hay que entrar a la cueva para el siguiente."
 		},
 		{
 			"eventType": "block",
@@ -30,43 +30,29 @@
 			],
 			"actions": [
 				{
-					"type": "script",
-					"language": "javascript",
-					"script": [
-						"const JAULAS = 3;",
-						"if (!runtime.globalVars.SEMILLA)",
-						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
-						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
-						"construirLaberinto(runtime, mapa);",
-						"elegirAnimales(runtime.globalVars.REGION, runtime.globalVars.SEMILLA, JAULAS);"
-					]
-				}
-			],
-			"sid": 875703824961286
-		},
-		{
-			"eventType": "comment",
-			"text": "Música de fondo del laberinto, en loop. No se reinicia al perder vidas ni al pasar a otro laberinto. Mientras se muestra una ficha queda en pausa (Event sheet 1)."
-		},
-		{
-			"eventType": "block",
-			"conditions": [
-				{
-					"id": "on-start-of-layout",
-					"objectClass": "System",
-					"sid": 620677584802375
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 381947205618374,
+					"parameters": {
+						"tag": "\"animal\""
+					}
 				},
 				{
-					"id": "is-tag-playing",
+					"id": "stop",
 					"objectClass": "Audio",
-					"sid": 805441103818410,
+					"sid": 492058316729485,
 					"parameters": {
 						"tag": "\"musica\""
-					},
-					"isInverted": true
-				}
-			],
-			"actions": [
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 503169427830596,
+					"parameters": {
+						"tag": "\"endgame\""
+					}
+				},
 				{
 					"id": "play-by-name",
 					"objectClass": "Audio",
@@ -79,9 +65,28 @@
 						"stereo-pan": "0",
 						"tag-optional": "\"musica\""
 					}
+				},
+				{
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"runtime.timeScale = 1;",
+						"const JAULAS = 3;",
+						"const region = runtime.globalVars.REGION || \"puna\";",
+						"runtime.globalVars.REGION = region;",
+						"if (!runtime.globalVars.SEMILLA)",
+						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
+						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
+						"construirLaberinto(runtime, mapa);",
+						"elegirAnimales(region, runtime.globalVars.SEMILLA, JAULAS);"
+					]
 				}
 			],
-			"sid": 464315297230666
+			"sid": 875703824961286
+		},
+		{
+			"eventType": "comment",
+			"text": "Al liberar a todos: habilita la cueva. Entrar a la cueva llama alCompletarLaberinto (otro laberinto o EndGame)."
 		},
 		{
 			"eventType": "block",
@@ -127,7 +132,7 @@
 					"type": "script",
 					"language": "javascript",
 					"script": [
-						"alCompletarLaberinto(runtime);"
+						"marcarListoParaCueva(runtime);"
 					]
 				}
 			],

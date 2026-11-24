@@ -23,11 +23,16 @@ let region = "puna";
 let orden = [...ANIMALES.puna];
 let rescatados = 0;
 let abierta = false;
+// Tras abrir todas las jaulas hay que entrar a la cueva para pasar de laberinto.
+let listoParaCueva = false;
+let saliendo = false;
 
 export function reiniciarFichas(runtime)
 {
 	rescatados = 0;
 	abierta = false;
+	listoParaCueva = false;
+	saliendo = false;
 	runtime.globalVars.FICHA = 0;
 	runtime.timeScale = 1;
 	mostrarHud(runtime, false);
@@ -114,11 +119,49 @@ function mezclar(lista, rnd)
 	return lista;
 }
 
-// Al abrir todas las jaulas: si el álbum ya tiene todos los animales de la región → títulos;
-// si no, otro laberinto.
+// Cuando ya no quedan jaulas ni huidas y la ficha está cerrada: habilita la cueva como salida.
+export function marcarListoParaCueva(runtime)
+{
+	if (listoParaCueva || saliendo || rescatados < 1) return;
+	listoParaCueva = true;
+	runtime.timeScale = 1;
+}
+
+export function laberintoListoParaCueva()
+{
+	return listoParaCueva;
+}
+
+// Cada tick: si el laberinto está completo y un personaje toca la cueva → siguiente pantalla.
+export function actualizarSalidaLaberinto(runtime)
+{
+	if (!listoParaCueva || saliendo || abierta || runtime.globalVars.FICHA === 1) return;
+	if (runtime.globalVars.GAMEOVER === 1 || runtime.globalVars.ALBUM === 1) return;
+
+	const cueva = runtime.objects.spriteCueva?.getFirstInstance();
+	if (!cueva) return;
+
+	for (const nombre of ["spriteMafalda", "spriteDieguito"])
+	{
+		const quien = runtime.objects[nombre]?.getFirstInstance();
+		if (quien && quien.testOverlap(cueva))
+		{
+			alCompletarLaberinto(runtime);
+			return;
+		}
+	}
+}
+
+// Al entrar a la cueva: si el álbum ya tiene todos los animales de la región → títulos;
+// si no, otro laberinto. Reinicia la música para no acumular pistas ni tasas raras.
 export function alCompletarLaberinto(runtime)
 {
+	if (saliendo) return;
+	saliendo = true;
+	listoParaCueva = false;
+	runtime.timeScale = 1;
 	runtime.globalVars.SEMILLA = 0;
+
 	const reg = runtime.globalVars.REGION || region;
 	const ids = (ANIMALES[reg] ?? []).map(a => `${reg}_${a}`);
 	if (tieneTodos(ids))

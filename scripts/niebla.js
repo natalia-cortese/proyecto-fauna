@@ -6,6 +6,17 @@ const BORDE = 48;
 
 const niveles = new WeakMap();
 
+export function reiniciarNiebla(runtime)
+{
+	const niebla = runtime.objects.Niebla?.getFirstInstance();
+	if (!niebla) return;
+	const { mapWidth: ancho, mapHeight: alto } = niebla;
+	niveles.set(niebla, new Uint8Array(ancho * alto).fill(3));
+	for (let y = 0; y < alto; y++)
+		for (let x = 0; x < ancho; x++)
+			niebla.setTileAt(x, y, 1);
+}
+
 export function revelarNiebla(runtime, personajes)
 {
 	const niebla = runtime.objects.Niebla?.getFirstInstance();

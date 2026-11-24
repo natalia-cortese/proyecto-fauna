@@ -306,7 +306,7 @@
 				{
 					"type": "spriteHuida",
 					"properties": {
-						"initially-visible": true,
+						"initially-visible": false,
 						"initial-animation": "Huida",
 						"initial-frame": 0,
 						"enable-collisions": false,
