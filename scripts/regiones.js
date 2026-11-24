@@ -19,11 +19,11 @@ export const REGIONES = {
 		titulo: "PUNA",
 		animales: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
 		sprites: {
-			personajes: { spriteMafalda: "Animation 1", spriteDieguito: "Animation 1" },
+			personajes: { spriteMafalda: "AnimationPuna", spriteDieguito: "AnimationPuna" },
 			huida: "Huida",
-			fondo: "TiledBackground",
+			fondo: "TiledBackgroundPuna",
 			obstaculos: ["Default"],
-			enemigos: ["Cazador1", "Cazador2"],
+			enemigos: ["CazadorPuna", "CazadorPuna2"],
 			danio: ["Default"]
 		}
 	},
@@ -34,11 +34,11 @@ export const REGIONES = {
 		titulo: "CHACO",
 		animales: ["quirquincho_bola"],
 		sprites: {
-			personajes: { spriteMafalda: "Animation 1", spriteDieguito: "Animation 1" },
+			personajes: { spriteMafalda: "AnimationPuna", spriteDieguito: "AnimationPuna" },
 			huida: "Huida",
-			fondo: "TiledBackground",
+			fondo: "TiledBackgroundPuna",
 			obstaculos: ["Default"],
-			enemigos: ["Cazador1", "Cazador2"],
+			enemigos: ["CazadorPuna", "CazadorPuna2"],
 			danio: ["Default"]
 		}
 	}
