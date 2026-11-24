@@ -61,7 +61,7 @@
 						"x": 514,
 						"y": 538,
 						"width": 1007.9999999999999,
-						"height": 470,
+						"height": 470.00000000000006,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -99,9 +99,9 @@
 					"locked": false,
 					"world": {
 						"x": 781,
-						"y": 954,
+						"y": 959,
 						"width": 320,
-						"height": 98,
+						"height": 88,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [

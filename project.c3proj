@@ -191,6 +191,7 @@
 					"spriteBotonReintentar",
 					"spriteBotonSonido",
 					"spriteCartelJaula",
+					"spriteCartelNivel",
 					"spriteCorazon",
 					"spriteDesafioPerdido",
 					"spriteGameOverFondo",
@@ -345,6 +346,14 @@
 					"name": "niebla.js",
 					"type": "application/javascript",
 					"sid": 706509522441095,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "nivel.js",
+					"type": "application/javascript",
+					"sid": 619384756102938,
 					"script-info": {
 						"purpose": "none"
 					}

@@ -2,6 +2,7 @@
 // y crea o mueve los objetos de cada letra (ver scripts/construct_laberinto/GUIA_CONSTRUCT3.md).
 
 import { prepararCazador } from "./cazadores.js";
+import { reiniciarNiebla } from "./niebla.js";
 
 const CASILLA = 64;
 const ESTILOS = "#FSYPR";
@@ -17,8 +18,14 @@ const OBJETOS = {
 	H: { nombre: "spriteCazador", ancho: 48, alto: 72 }
 };
 
+const NOMBRES_MAPA = [...new Set(Object.values(OBJETOS).map(o => o.nombre))];
+
 export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 {
+	// Si el layout no se limpia del todo al reiniciar, los sólidos viejos tapan la cueva.
+	limpiarObjetosMapa(runtime);
+	reiniciarNiebla(runtime);
+
 	const filas = mapa.split("|");
 	const estilo = (x, y) => ESTILOS.indexOf(filas[y]?.[x] ?? ".");
 	const esMuro = (x, y) => estilo(x, y) >= 0;
@@ -70,4 +77,11 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 	// El Pathfinding calcula los obstáculos al arrancar, antes de que existan los muros.
 	mafalda?.behaviors.Pathfinding?.map.regenerateMap();
 	dieguito?.behaviors.Pathfinding?.map.regenerateMap();
+}
+
+function limpiarObjetosMapa(runtime)
+{
+	for (const nombre of NOMBRES_MAPA)
+		for (const inst of [...(runtime.objects[nombre]?.getAllInstances() ?? [])])
+			inst.destroy();
 }
