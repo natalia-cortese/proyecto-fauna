@@ -1,5 +1,5 @@
 {
-	"name": "Laberinto",
+	"name": "LaberintoPuna",
 	"events": [
 		{
 			"eventType": "variable",
@@ -27,7 +27,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Arma un laberinto con generarMapa() (scripts/generadorLaberinto.js). Chocar un cactus reinicia el mismo laberinto; al liberar a todos los animales hay que entrar a la cueva para el siguiente."
+			"text": "Laberinto de la Puna. Al liberar a todos hay que entrar a la cueva; alCompletarLaberinto pasa al siguiente laberinto de esta región o a EndGame."
 		},
 		{
 			"eventType": "block",
@@ -68,8 +68,8 @@
 					"objectClass": "Audio",
 					"sid": 554587945856731,
 					"parameters": {
-						"folder": "sounds",
-						"audio-file-name": "\"SonidoMapa_NOA_loop\"",
+						"folder": "puna",
+						"audio-file-name": "\"SonidoMapa_puna_loop\"",
 						"loop": "looping",
 						"volume": "-12",
 						"stereo-pan": "0",
@@ -81,14 +81,13 @@
 					"language": "javascript",
 					"script": [
 						"runtime.timeScale = 1;",
+						"runtime.globalVars.REGION = \"puna\";",
 						"const JAULAS = 3;",
-						"const region = runtime.globalVars.REGION || \"puna\";",
-						"runtime.globalVars.REGION = region;",
 						"if (!runtime.globalVars.SEMILLA)",
 						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
 						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
 						"construirLaberinto(runtime, mapa);",
-						"elegirAnimales(region, runtime.globalVars.SEMILLA, JAULAS);",
+						"elegirAnimales(\"puna\", runtime.globalVars.SEMILLA, JAULAS);",
 						"mostrarCartelNivel(runtime);"
 					]
 				}
@@ -97,7 +96,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Al liberar a todos: habilita la cueva. Entrar a la cueva llama alCompletarLaberinto (otro laberinto o EndGame)."
+			"text": "Al liberar a todos: habilita la cueva. Entrar a la cueva llama alCompletarLaberinto (otro laberinto de la región o EndGame)."
 		},
 		{
 			"eventType": "block",

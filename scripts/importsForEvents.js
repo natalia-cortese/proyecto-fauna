@@ -4,4 +4,5 @@ import { iniciarPersonajes, actualizarPersonajes, cambiarPersonaje, disparar, re
 import { mostrarFicha, cerrarFicha, elegirAnimales, alCompletarLaberinto, marcarListoParaCueva, actualizarSalidaLaberinto } from "./fichas.js";
 import { iniciarInicio, actualizarInicio, jugar, cerrarAlbumOFicha } from "./inicio.js";
 import { iniciarHome, iniciarEndGame, iniciarCreditos, actualizarCinematica } from "./home.js";
+import { layoutDeRegion, infoRegion } from "./regiones.js";
 import { mostrarCartelNivel, actualizarCartelNivel, reiniciarNivel, avanzarNivel } from "./nivel.js";

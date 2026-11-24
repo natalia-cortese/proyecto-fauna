@@ -1,5 +1,5 @@
 {
-	"name": "Laberinto",
+	"name": "LaberintoPuna",
 	"layers": [
 		{
 			"name": "BG",
@@ -1661,5 +1661,5 @@
 	"vpX": 0.5,
 	"vpY": 0.5,
 	"projection": "perspective",
-	"eventSheet": "Laberinto"
+	"eventSheet": "LaberintoPuna"
 }
