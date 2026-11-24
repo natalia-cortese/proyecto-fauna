@@ -145,12 +145,60 @@ Cada laberinto **prioriza animales de su región que aún no están en el álbum
 
 `music/` sigue con la historia y los títulos (`sprite_music_historia`, `sprite_music_endGame`).
 
-## Habilitar otra zona
+## Sumar una región
+
+Cada región tiene su clave en minúscula y sin tildes (`puna`, `chaco`), y esa clave se repite en todos lados: la variable `REGION`, `scripts/regiones.js`, `ANIMALES`, las animaciones de las fichas y los carteles, y la carpeta de sonidos. Los pasos usan el Chaco como ejemplo; el Chaco ya tiene su entrada en `regiones.js` y sus carteles de nivel.
+
+### 1. Datos de la región
+
+En `scripts/regiones.js`, sumá la región a `REGIONES`:
+
+```js
+chaco: {
+	layout: "LaberintoChaco",
+	sonidos: "chaco",
+	mapaLoop: "SonidoMapa_chaco_loop",
+	titulo: "CHACO"
+}
+```
+
+`layout` es el layout al que va **JUGAR** y la cueva al pasar de laberinto; `sonidos` es la subcarpeta de *Sounds* de donde salen los SFX de los animales.
+
+### 2. Animales
+
+1. Sumá la lista a `ANIMALES` en `scripts/fichas.js`, por ejemplo `chaco: ["quirquincho_bola", "tapir", "coati", "tucan"]`. Conviene que tenga **al menos tantos animales como jaulas** (3); si no, se repiten en el mismo laberinto.
+2. Por cada animal, seguí [Sumar un animal](#sumar-un-animal): ficha `chaco_<animal>` en `spriteFichaAnimal` y su sonido.
+3. **Álbum:** agregá la imagen `images/spritealbumslot-chaco_<animal>-000.png`, la animación `chaco_<animal>` en `spriteAlbumSlot` y el id en `ORDEN_ALBUM` de `scripts/album.js` (reemplazando un `null`). El álbum tiene 12 ranuras dibujadas; si no alcanzan, hay que cambiar el dibujo del álbum y agregar las posiciones en `SLOTS_REL`.
+
+### 3. Sonidos
+
+1. Creá `sounds/chaco/` con los `sprite_sfx_<animal>.webm` (WebM Opus) y el loop de mapa `SonidoMapa_chaco_loop.webm`.
+2. Importalos en Construct dentro de *Sounds › chaco* (la subcarpeta tiene que llamarse igual que `sonidos` en `regiones.js`).
+
+Los archivos pendientes se llaman `sprite_sfx_NOA_<animal>`: renombralos a `sprite_sfx_<animal>` o agregá el nombre a `SONIDOS` en `fichas.js`.
+
+### 4. Cartel de nivel
+
+El cartel **NIVEL N — REGIÓN** son 8 animaciones de `spriteCartelNivel`: `chaco_1` … `chaco_8` (imágenes `images/spritecartelnivel-chaco_N-000.png`). Si la región no las tiene, se muestra `puna_1`.
+
+### 5. Layout y hoja del laberinto
+
+1. En Construct, duplicá el layout `LaberintoPuna` y la hoja `LaberintoPuna`, y renombralos `LaberintoChaco` (el nombre tiene que ser el `layout` de `regiones.js`). Al guardar, Construct los registra en `project.c3proj`.
+2. En las propiedades del layout `LaberintoChaco`, elegí la hoja `LaberintoChaco` como *Event sheet*.
+3. En *On start of layout* de la hoja nueva, cambiá la región en tres lugares:
+   - *Audio › Play (by name)*: carpeta `chaco`, archivo `"SonidoMapa_chaco_loop"`.
+   - En el script: `runtime.globalVars.REGION = "chaco";` y `elegirAnimales("chaco", runtime.globalVars.SEMILLA, JAULAS);`.
+   - Opcional: muros propios en `generarMapa`, por ejemplo `estilos: "YYF#"` (ver [Cambiar el laberinto](#cambiar-el-laberinto)).
+
+El layout duplicado tiene que conservar las capas y objetos de `LaberintoPuna` (`Tilemap` **Solid**, **Niebla**, HUD, ficha, álbum, GAME OVER y `spriteCartelNivel`).
+
+### 6. Zona en Inicio
 
 En la pantalla de inicio, cada zona habilitada es un sprite recortado del fondo (`spriteZonaPuna`) puesto justo encima de su lugar en el mapa; las zonas con candado son parte del dibujo de `spriteInicioFondo`.
 
-1. Recortá la zona del fondo (sin candado) en un sprite nuevo, por ejemplo `spriteZonaChaco`, y ponelo en el layout `Inicio` encima de su lugar.
-2. Sumalo a `ZONAS` en `scripts/inicio.js`: `spriteZonaChaco: "chaco"`.
-3. Sumá los animales a `ANIMALES` en `scripts/fichas.js` y la entrada en `scripts/regiones.js` (`layout`, `sonidos`, `mapaLoop`, `titulo`).
-4. Duplicá el layout/hoja `LaberintoPuna` → `LaberintoChaco` (misma estructura; en *On start* usá `"chaco"` y el loop `sounds/chaco/SonidoMapa_chaco_loop`). Registrate ambos en `project.c3proj`.
-5. Poné los SFX en `sounds/chaco/` y las cartas pendientes en `assets/pendientes/cartas/chaco/`.
+1. Recortá la zona del fondo (sin candado) en un sprite nuevo, `spriteZonaChaco`, en la carpeta `inicio`, y ponelo en el layout `Inicio` encima de su lugar.
+2. Sumalo a `ZONAS` en `scripts/inicio.js`: `{ spriteZonaPuna: "puna", spriteZonaChaco: "chaco" }`.
+
+### 7. Probar
+
+Escribí un nombre en `Inicio`, tocá la zona nueva y **JUGAR**. Tiene que abrir `LaberintoChaco`, sonar su loop, mostrar **NIVEL 1 — CHACO** y llenar las jaulas solo con animales del Chaco. Al completar el álbum de la región, la cueva lleva a `EndGame`.
