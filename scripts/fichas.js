@@ -8,7 +8,8 @@
 // Al abrirse la ficha suena el sonido del animal: el archivo sprite_sfx_NOA_<animal> de la carpeta sounds
 // (la hoja de eventos lo reproduce con la variable SONIDO). SONIDOS sirve para un animal cuyo archivo se llama distinto.
 
-import { agregarAnimal, tieneTodos } from "./album.js";
+import { agregarAnimal, tieneTodos, coleccionActual } from "./album.js";
+import { avanzarNivel } from "./nivel.js";
 
 export const ANIMALES = {
 	puna: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
@@ -23,11 +24,16 @@ let region = "puna";
 let orden = [...ANIMALES.puna];
 let rescatados = 0;
 let abierta = false;
+// Tras abrir todas las jaulas hay que entrar a la cueva para pasar de laberinto.
+let listoParaCueva = false;
+let saliendo = false;
 
 export function reiniciarFichas(runtime)
 {
 	rescatados = 0;
 	abierta = false;
+	listoParaCueva = false;
+	saliendo = false;
 	runtime.globalVars.FICHA = 0;
 	runtime.timeScale = 1;
 	mostrarHud(runtime, false);
@@ -38,13 +44,21 @@ export function reiniciarFichas(runtime)
 export function elegirAnimales(nuevaRegion, semilla, jaulas)
 {
 	if (!ANIMALES[nuevaRegion]?.length) throw new RangeError(`No hay animales para la región "${nuevaRegion}"`);
-	if (ANIMALES[nuevaRegion].length < jaulas)
-		console.warn(`La región "${nuevaRegion}" tiene ${ANIMALES[nuevaRegion].length} animales para ${jaulas} jaulas: se van a repetir.`);
 	region = nuevaRegion;
 	const rnd = aleatorio(semilla);
-	orden = [];
+	const todos = [...ANIMALES[region]];
+	const ya = coleccionActual();
+	// Primero los que faltan en el álbum (mezclados); si no alcanzan, completar sin repetir en este laberinto.
+	const faltan = mezclar(todos.filter(a => !ya.has(`${region}_${a}`)), rnd);
+	const conocidos = mezclar(todos.filter(a => ya.has(`${region}_${a}`)), rnd);
+	orden = faltan.slice(0, jaulas);
+	for (const a of conocidos)
+	{
+		if (orden.length >= jaulas) break;
+		if (!orden.includes(a)) orden.push(a);
+	}
 	while (orden.length < jaulas)
-		orden.push(...mezclar([...ANIMALES[region]], rnd));
+		orden.push(...mezclar([...todos], rnd));
 	orden.length = jaulas;
 }
 
@@ -114,15 +128,56 @@ function mezclar(lista, rnd)
 	return lista;
 }
 
-// Al abrir todas las jaulas: si el álbum ya tiene todos los animales de la región → títulos;
-// si no, otro laberinto.
+// Cuando ya no quedan jaulas ni huidas y la ficha está cerrada: habilita la cueva como salida.
+export function marcarListoParaCueva(runtime)
+{
+	if (listoParaCueva || saliendo || rescatados < 1) return;
+	listoParaCueva = true;
+	runtime.timeScale = 1;
+}
+
+export function laberintoListoParaCueva()
+{
+	return listoParaCueva;
+}
+
+// Cada tick: si el laberinto está completo y un personaje toca la cueva → siguiente pantalla.
+export function actualizarSalidaLaberinto(runtime)
+{
+	if (!listoParaCueva || saliendo || abierta || runtime.globalVars.FICHA === 1) return;
+	if (runtime.globalVars.GAMEOVER === 1 || runtime.globalVars.ALBUM === 1) return;
+
+	const cueva = runtime.objects.spriteCueva?.getFirstInstance();
+	if (!cueva) return;
+
+	for (const nombre of ["spriteMafalda", "spriteDieguito"])
+	{
+		const quien = runtime.objects[nombre]?.getFirstInstance();
+		if (quien && quien.testOverlap(cueva))
+		{
+			alCompletarLaberinto(runtime);
+			return;
+		}
+	}
+}
+
+// Al entrar a la cueva: si el álbum ya tiene todos los animales de la región → títulos;
+// si no, otro laberinto. Reinicia la música para no acumular pistas ni tasas raras.
 export function alCompletarLaberinto(runtime)
 {
+	if (saliendo) return;
+	saliendo = true;
+	listoParaCueva = false;
+	runtime.timeScale = 1;
 	runtime.globalVars.SEMILLA = 0;
+
 	const reg = runtime.globalVars.REGION || region;
 	const ids = (ANIMALES[reg] ?? []).map(a => `${reg}_${a}`);
 	if (tieneTodos(ids))
 		runtime.goToLayout("EndGame");
 	else
+	{
+		avanzarNivel();
 		runtime.goToLayout("Laberinto");
+	}
 }

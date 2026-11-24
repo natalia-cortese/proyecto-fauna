@@ -25,7 +25,7 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 - **Pokédex**: álbum de cartas; flecha atrás / Esc / tocar fuera para cerrar
 - **Parlante**: apaga/enciende el sonido del juego
 - Solo **Mafalda** junta llaves y abre jaulas
-- Al completar todos los animales de la región: **EndGame** → **Creditos** → **INICIO**
+- Tras liberar a los animales, **entrar a la cueva** para el siguiente laberinto (cartel **NIVEL N — REGIÓN**); con el álbum completo: **EndGame** → **Creditos** → **INICIO**
 - Al perder las 3 vidas: **DESAFÍO PERDIDO**
 
 Detalle completo: `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.
