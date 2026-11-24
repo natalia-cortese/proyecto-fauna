@@ -9,9 +9,9 @@ import {
 } from "./album.js";
 import { abrirFichaId, cerrarFicha } from "./fichas.js";
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
+import { layoutDeRegion } from "./regiones.js";
 
 const ZONAS = { spriteZonaPuna: "puna" };
-const LAYOUT_JUEGO = "Laberinto";
 const DURACION_SALIDA = 0.3;
 
 let tiempo = 0;
@@ -134,7 +134,8 @@ export function actualizarInicio(runtime)
 	if (salida >= 0)
 	{
 		salida += runtime.dt;
-		if (salida >= DURACION_SALIDA) runtime.goToLayout(LAYOUT_JUEGO);
+		if (salida >= DURACION_SALIDA)
+			runtime.goToLayout(layoutDeRegion(runtime.globalVars.REGION || regionElegida));
 	}
 }
 

@@ -5,10 +5,11 @@
 // (por ejemplo puna_vicuna). Para sumar un animal: agregá la animación en Construct y su nombre acá,
 // en la lista de su región. Cada laberinto sortea, según su semilla, qué animales de su región están en sus jaulas.
 //
-// Al abrirse la ficha suena el sonido del animal: el archivo sprite_sfx_NOA_<animal> de la carpeta sounds
-// (la hoja de eventos lo reproduce con la variable SONIDO). SONIDOS sirve para un animal cuyo archivo se llama distinto.
+// Al abrirse la ficha suena el SFX en sounds/<región>/sprite_sfx_<animal> (variable SONIDO + SONIDO_CARPETA).
+// SONIDOS sirve para un animal cuyo archivo se llama distinto (quirquincho_bola → quirquincho).
 
-import { agregarAnimal, tieneTodos } from "./album.js";
+import { agregarAnimal, tieneTodos, coleccionActual } from "./album.js";
+import { layoutDeRegion, infoRegion } from "./regiones.js";
 
 export const ANIMALES = {
 	puna: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
@@ -38,13 +39,21 @@ export function reiniciarFichas(runtime)
 export function elegirAnimales(nuevaRegion, semilla, jaulas)
 {
 	if (!ANIMALES[nuevaRegion]?.length) throw new RangeError(`No hay animales para la región "${nuevaRegion}"`);
-	if (ANIMALES[nuevaRegion].length < jaulas)
-		console.warn(`La región "${nuevaRegion}" tiene ${ANIMALES[nuevaRegion].length} animales para ${jaulas} jaulas: se van a repetir.`);
 	region = nuevaRegion;
 	const rnd = aleatorio(semilla);
-	orden = [];
+	const todos = [...ANIMALES[region]];
+	const ya = coleccionActual();
+	// Primero los que faltan en el álbum; si no alcanzan, completar sin repetir en este laberinto.
+	const faltan = mezclar(todos.filter(a => !ya.has(`${region}_${a}`)), rnd);
+	const conocidos = mezclar(todos.filter(a => ya.has(`${region}_${a}`)), rnd);
+	orden = faltan.slice(0, jaulas);
+	for (const a of conocidos)
+	{
+		if (orden.length >= jaulas) break;
+		if (!orden.includes(a)) orden.push(a);
+	}
 	while (orden.length < jaulas)
-		orden.push(...mezclar([...ANIMALES[region]], rnd));
+		orden.push(...mezclar([...todos], rnd));
 	orden.length = jaulas;
 }
 
@@ -67,9 +76,13 @@ export function abrirFichaId(runtime, id)
 {
 	const ficha = runtime.objects.spriteFichaAnimal?.getFirstInstance();
 	if (!ficha || !id) return;
+	const regKey = id.includes("_") ? id.slice(0, id.indexOf("_")) : region;
 	const animalKey = id.includes("_") ? id.slice(id.indexOf("_") + 1) : id;
 	ficha.setAnimation(id);
-	runtime.globalVars.SONIDO = `sprite_sfx_NOA_${SONIDOS[animalKey] ?? animalKey}`;
+	const info = infoRegion(regKey);
+	runtime.globalVars.SONIDO = `sprite_sfx_${SONIDOS[animalKey] ?? animalKey}`;
+	if (runtime.globalVars.SONIDO_CARPETA !== undefined)
+		runtime.globalVars.SONIDO_CARPETA = info.sonidos;
 	abierta = true;
 	runtime.globalVars.FICHA = 1;
 	if (runtime.globalVars.ALBUM !== 1) runtime.timeScale = 0;
@@ -115,7 +128,7 @@ function mezclar(lista, rnd)
 }
 
 // Al abrir todas las jaulas: si el álbum ya tiene todos los animales de la región → títulos;
-// si no, otro laberinto.
+// si no, otro laberinto de la misma región.
 export function alCompletarLaberinto(runtime)
 {
 	runtime.globalVars.SEMILLA = 0;
@@ -124,5 +137,5 @@ export function alCompletarLaberinto(runtime)
 	if (tieneTodos(ids))
 		runtime.goToLayout("EndGame");
 	else
-		runtime.goToLayout("Laberinto");
+		runtime.goToLayout(layoutDeRegion(reg));
 }

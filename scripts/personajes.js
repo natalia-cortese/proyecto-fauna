@@ -140,7 +140,7 @@ function escucharAlbumHud(runtime)
 {
 	quitarAlbumHud?.();
 	const alTocar = e => {
-		if (runtime.layout.name !== "Laberinto") return quitarAlbumHud?.();
+		if (!String(runtime.layout.name || "").startsWith("Laberinto")) return quitarAlbumHud?.();
 		if (gameOver || fichaAbierta()) return;
 		const capa = runtime.layout.getLayer("HUD");
 		if (!capa) return;

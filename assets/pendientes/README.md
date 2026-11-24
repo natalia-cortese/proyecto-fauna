@@ -1,9 +1,30 @@
 # Pendientes
 
-Material que todavía no está cableado en el juego.
+Material que todavía no está cableado en el juego, **ordenado por región**.
 
-- `cartas/` — fichas `sprite_card_NOA_*.png` de animales de otras regiones (o sin sonido).
-- `sonidos/` — `sprite_sfx_NOA_*.webm` de animales que aún no están en `ANIMALES` (`scripts/fichas.js`).
-- `fuentes/` — originales (por ejemplo el MP3 de Game Over; el juego usa `sounds/GameOver.webm`).
+## Carpetas
 
-Para sumar un animal: seguí la sección «Sumar un animal» de `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.
+| Carpeta | Contenido |
+|---|---|
+| `cartas/puna/` | fichas de la Puna aún no en el juego (o borradores) |
+| `cartas/chaco/` | fichas del Chaco pendientes |
+| `cartas/otras/` | otras regiones / sin región definida |
+| `sonidos/puna/` | SFX de la Puna pendientes |
+| `sonidos/chaco/` | SFX del Chaco pendientes |
+| `sonidos/otras/` | SFX de otras regiones |
+| `fuentes/` | originales (p. ej. MP3); el juego usa WebM Opus en `sounds/` |
+
+## Convención al cablear
+
+**Imágenes del juego** (Construct exige `images/` plano):
+
+- Ficha: `images/spritefichaanimal-<region>_<animal>-000.png` + animación `<region>_<animal>` en `spriteFichaAnimal`
+- Slot de álbum: `images/spritealbumslot-<region>_<animal>-000.png`
+
+**Sonidos del juego** (subcarpetas en Sounds):
+
+- `sounds/<region>/sprite_sfx_<animal>.webm`
+- Mapa: `sounds/<region>/SonidoMapa_<region>_loop.webm`
+- Comunes: `sounds/comun/` (`GameOver`, `golpe_cazador`, …)
+
+Sumá el animal a `ANIMALES` en `scripts/fichas.js`, el layout en `scripts/regiones.js` si es región nueva, y seguí «Sumar un animal» / «Habilitar otra zona» en `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.

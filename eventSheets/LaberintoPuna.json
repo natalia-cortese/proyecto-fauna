@@ -1,5 +1,5 @@
 {
-	"name": "Laberinto",
+	"name": "LaberintoPuna",
 	"events": [
 		{
 			"eventType": "variable",
@@ -17,7 +17,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Arma un laberinto con generarMapa() (scripts/generadorLaberinto.js). Chocar un cactus reinicia el mismo laberinto; abrir todas las jaulas pasa a uno nuevo."
+			"text": "Laberinto de la Puna. Arma el mapa con generarMapa(); al abrir todas las jaulas llama alCompletarLaberinto (otro laberinto de esta región o EndGame)."
 		},
 		{
 			"eventType": "block",
@@ -33,12 +33,13 @@
 					"type": "script",
 					"language": "javascript",
 					"script": [
+						"runtime.globalVars.REGION = runtime.globalVars.REGION || \"puna\";",
 						"const JAULAS = 3;",
 						"if (!runtime.globalVars.SEMILLA)",
 						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
 						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
 						"construirLaberinto(runtime, mapa);",
-						"elegirAnimales(runtime.globalVars.REGION, runtime.globalVars.SEMILLA, JAULAS);"
+						"elegirAnimales(\"puna\", runtime.globalVars.SEMILLA, JAULAS);"
 					]
 				}
 			],
@@ -46,7 +47,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Música de fondo del laberinto, en loop. No se reinicia al perder vidas ni al pasar a otro laberinto. Mientras se muestra una ficha queda en pausa (Event sheet 1)."
+			"text": "Música de mapa de la Puna (sounds/puna). No se reinicia si ya suena; pausa con la ficha (Event sheet 1)."
 		},
 		{
 			"eventType": "block",
@@ -72,8 +73,8 @@
 					"objectClass": "Audio",
 					"sid": 554587945856731,
 					"parameters": {
-						"folder": "sounds",
-						"audio-file-name": "\"SonidoMapa_NOA_loop\"",
+						"folder": "puna",
+						"audio-file-name": "\"SonidoMapa_puna_loop\"",
 						"loop": "looping",
 						"volume": "-12",
 						"stereo-pan": "0",

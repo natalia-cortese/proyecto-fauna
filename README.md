@@ -8,14 +8,14 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 
 | Carpeta | Contenido |
 |---|---|
-| `layouts/` | `Home` (historia), `Inicio`, `Laberinto`, `EndGame` (títulos), `Creditos`; `Layout 1` es molde a mano: no borrar |
-| `eventSheets/` | hojas de eventos |
+| `layouts/` | `Home`, `Inicio`, `LaberintoPuna` (un layout por región), `EndGame`, `Creditos`; `Layout 1` es molde: no borrar |
+| `eventSheets/` | hojas de eventos (`LaberintoPuna`, `Event sheet 1` compartida, …) |
 | `objectTypes/` | objetos por carpeta (`personajes`, `interfaz`, `inicio`, `cinematica`, …) |
-| `scripts/` | lógica del juego; la guía está en `scripts/construct_laberinto/GUIA_CONSTRUCT3.md` |
-| `images/` | sprites que usa Construct |
-| `sounds/` | efectos (WebM Opus) |
+| `scripts/` | lógica; regiones en `scripts/regiones.js`; guía en `scripts/construct_laberinto/GUIA_CONSTRUCT3.md` |
+| `images/` | sprites (planos; prefijo `region_animal` en fichas/slots) |
+| `sounds/` | efectos por región: `comun/`, `puna/`, `chaco/` (WebM Opus) |
 | `music/` | música de historia y títulos |
-| `assets/pendientes/` | cartas, sonidos y fuentes todavía no cableados |
+| `assets/pendientes/` | cartas y sonidos pendientes, por región |
 
 ## Controles (resumen)
 
@@ -25,7 +25,7 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 - **Pokédex**: álbum de cartas; flecha atrás / Esc / tocar fuera para cerrar
 - **Parlante**: apaga/enciende el sonido del juego
 - Solo **Mafalda** junta llaves y abre jaulas
-- Al completar todos los animales de la región: **EndGame** → **Creditos** → **INICIO**
+- Laberintos de la región hasta completar el álbum → **EndGame** → **Creditos** → **INICIO**
 - Al perder las 3 vidas: **DESAFÍO PERDIDO**
 
 Detalle completo: `scripts/construct_laberinto/GUIA_CONSTRUCT3.md`.

@@ -46,10 +46,20 @@
 			"name": "SONIDO",
 			"type": "string",
 			"initialValue": "",
-			"comment": "Sonido del animal de la ficha abierta (archivo de la carpeta sounds, sin la extensión).",
+			"comment": "Sonido del animal de la ficha abierta (archivo en sounds/<región>, sin la extensión).",
 			"isStatic": false,
 			"isConstant": false,
 			"sid": 205746922165986
+		},
+		{
+			"eventType": "variable",
+			"name": "SONIDO_CARPETA",
+			"type": "string",
+			"initialValue": "puna",
+			"comment": "Subcarpeta de Sounds para el SFX del animal (puna, chaco, …).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 205746922165987
 		},
 		{
 			"eventType": "variable",
@@ -365,7 +375,7 @@
 					"objectClass": "Audio",
 					"sid": 639008389897037,
 					"parameters": {
-						"folder": "sounds",
+						"folder": "SONIDO_CARPETA",
 						"audio-file-name": "SONIDO",
 						"loop": "looping",
 						"volume": "0",
@@ -459,7 +469,7 @@
 					"objectClass": "Audio",
 					"sid": 255381246701183,
 					"parameters": {
-						"folder": "sounds",
+						"folder": "comun",
 						"audio-file-name": "\"GameOver\"",
 						"loop": "not-looping",
 						"volume": "0",
@@ -548,7 +558,7 @@
 					"objectClass": "Audio",
 					"sid": 531701668608775,
 					"parameters": {
-						"folder": "sounds",
+						"folder": "comun",
 						"audio-file-name": "\"golpe_cazador\"",
 						"loop": "not-looping",
 						"volume": "0",

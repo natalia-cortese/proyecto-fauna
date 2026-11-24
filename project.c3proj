@@ -241,7 +241,7 @@
 			"Home",
 			"Inicio",
 			"Layout 1",
-			"Laberinto",
+			"LaberintoPuna",
 			"EndGame",
 			"Creditos"
 		],
@@ -251,7 +251,7 @@
 		"items": [
 			"Inicio",
 			"Event sheet 1",
-			"Laberinto",
+			"LaberintoPuna",
 			"Home events",
 			"EndGame events",
 			"Creditos events"
@@ -358,6 +358,14 @@
 					}
 				},
 				{
+					"name": "regiones.js",
+					"type": "application/javascript",
+					"sid": 619384756102939,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
 					"name": "saltoRoca.js",
 					"type": "application/javascript",
 					"sid": 778221041102597,
@@ -397,105 +405,123 @@
 			]
 		},
 		"sound": {
-			"items": [
+			"items": [],
+			"subfolders": [
 				{
-					"name": "GameOver.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 767473127177942,
-					"file-info": {
-						"purpose": "none"
-					}
+					"items": [
+						{
+							"name": "GameOver.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 767473127177942,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "golpe_cazador.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 734618302023560,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "comun"
 				},
 				{
-					"name": "golpe_cazador.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 734618302023560,
-					"file-info": {
-						"purpose": "none"
-					}
+					"items": [
+						{
+							"name": "SonidoMapa_puna_loop.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 450533717604147,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_condor.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 243549464146799,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_flamenco.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 868149738094160,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_gato_andino.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 673448580734065,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_guanaco.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 445378040924953,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_puma.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 150328553675303,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_taruca.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 555778963138427,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_vicuna.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 588170218789368,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_zorro_andino.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 367046469357239,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "puna"
 				},
 				{
-					"name": "SonidoMapa_NOA_loop.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 450533717604147,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_condor.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 243549464146799,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_flamenco.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 868149738094160,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_gato_andino.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 673448580734065,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_guanaco.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 445378040924953,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_puma.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 150328553675303,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_quirquincho.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 572821798755407,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_taruca.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 555778963138427,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_vicuna.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 588170218789368,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_sfx_NOA_zorro_andino.webm",
-					"type": "audio/webm; codecs=opus",
-					"sid": 367046469357239,
-					"file-info": {
-						"purpose": "none"
-					}
+					"items": [
+						{
+							"name": "sprite_sfx_quirquincho.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 572821798755407,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "chaco"
 				}
-			],
-			"subfolders": []
+			]
 		},
 		"music": {
 			"items": [
