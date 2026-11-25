@@ -5,7 +5,6 @@
 // animación al objeto en Construct y poné su nombre acá. Las listas sortean una animación por objeto creado.
 //
 //   personajes  animación de spriteMafalda y spriteDieguito
-//   tamanoPersonajes  [ancho, alto] opcional de cada personaje (si no, queda el tamaño del layout)
 //   huida       animación de spriteHuida (el animal que escapa de la jaula); las fichas son region_animal
 //   fondo       objeto del fondo (capa BG) que se muestra; los fondos de las otras regiones se ocultan
 //   obstaculos  animaciones de spriteObstaculo (se saltan)
@@ -36,7 +35,6 @@ const SPRITES_OCEANO = {
 
 const SPRITES_PATAGONIA = {
 	personajes: { spriteMafalda: "AnimationPatagonia", spriteDieguito: "AnimationPatagonia" },
-	tamanoPersonajes: { spriteMafalda: [53, 100], spriteDieguito: [72, 100] },
 	huida: "Huida",
 	fondo: "TiledBackgroundPatagonia",
 	obstaculos: ["Default"],

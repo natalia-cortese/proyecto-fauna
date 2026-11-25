@@ -115,13 +115,11 @@ function aplicarSpritesRegion(runtime, sprites)
 	for (const nombre of ["spriteMafalda", "spriteDieguito"])
 	{
 		const inst = runtime.objects[nombre]?.getFirstInstance();
-		animarSinCambiarTamano(inst, sprites.personajes?.[nombre]);
-		const tamano = sprites.tamanoPersonajes?.[nombre];
-		if (inst && tamano)
-		{
-			inst.width = Math.sign(inst.width || 1) * tamano[0];
-			inst.height = tamano[1];
-		}
+		ponerAnimacion(inst, sprites.personajes?.[nombre]);
+		if (!inst) continue;
+		const [ancho, alto] = tamanoPersonaje(inst.imageWidth, inst.imageHeight);
+		inst.width = Math.sign(inst.width || 1) * ancho;
+		inst.height = alto;
 	}
 	animarSinCambiarTamano(runtime.objects.spriteHuida?.getFirstInstance(), sprites.huida);
 	if (runtime.globalVars.HUIDA !== undefined)
@@ -137,6 +135,18 @@ function ponerAnimacion(inst, nombre)
 {
 	if (!inst || !nombre) return;
 	try { inst.setAnimation(nombre); } catch {}
+}
+
+// Mafalda y Dieguito miden lo mismo en todas las regiones y niveles: misma altura, sin deformar el dibujo.
+// El ancho tiene tope para dibujos apaisados (Dieguito en bote).
+export const ALTO_PERSONAJE = 96;
+export const ANCHO_MAX_PERSONAJE = 110;
+
+export function tamanoPersonaje(imagenAncho, imagenAlto)
+{
+	const proporcion = (imagenAncho || 1) / (imagenAlto || 1);
+	const ancho = Math.min(ALTO_PERSONAJE * proporcion, ANCHO_MAX_PERSONAJE);
+	return [Math.round(ancho), Math.round(ancho / proporcion)];
 }
 
 function animarSinCambiarTamano(inst, nombre)

@@ -259,8 +259,8 @@
 					"world": {
 						"x": 96,
 						"y": 1056,
-						"width": 53,
-						"height": 100,
+						"width": 51,
+						"height": 96,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -333,8 +333,8 @@
 					"world": {
 						"x": 160,
 						"y": 1056,
-						"width": 72,
-						"height": 100,
+						"width": 69,
+						"height": 96,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
