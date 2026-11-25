@@ -145,6 +145,8 @@ Cada laberinto **prioriza animales de su región que aún no están en el álbum
 
 `music/` sigue con la historia y los títulos (`sprite_music_historia`, `sprite_music_endGame`).
 
+Para no perder referencias al mover archivos: `npm test` (`tests/sonidos.test.mjs` y `tests/sprites.test.mjs`). En cada PR lo corre GitHub Actions.
+
 ## Sumar una región
 
 Cada región tiene una clave en minúscula y sin tildes (`puna`, `chaco`). Esa clave se usa en la variable `REGION`, en `scripts/regiones.js`, en las animaciones de las fichas (`puna_vicuna`) y en la carpeta de sonidos. El archivo `regiones.js` es el lugar donde se describe la región: layout, audio, animales y **qué sprites usa**. Los pasos de abajo usan el Chaco como ejemplo (ya tiene entrada y carteles de nivel).

@@ -29,3 +29,7 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 - Al perder las 3 vidas: **DESAFÍO PERDIDO**
 
 Detalle completo: `scripts/construct_laberinto/GUIA_CONSTRUCT3.md` (incluye cómo sumar una región y sus sprites).
+
+## Tests
+
+`npm test` comprueba que sonidos y sprites no pierdan archivo ni referencia en Construct. En GitHub corre en cada PR (`.github/workflows/test.yml`).
