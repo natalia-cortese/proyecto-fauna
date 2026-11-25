@@ -133,6 +133,7 @@
 			{
 				"items": [
 					"TiledBackgroundPuna",
+					"TiledBackgroundChaco",
 					"Tilemap",
 					"Niebla",
 					"spriteRock",
@@ -208,6 +209,7 @@
 				"items": [
 					"spriteInicioFondo",
 					"spriteZonaPuna",
+					"spriteZonaChaco",
 					"spriteBotonJugar",
 					"spriteEtiquetaNombre",
 					"textNombre"
@@ -244,6 +246,7 @@
 			"Inicio",
 			"Layout 1",
 			"LaberintoPuna",
+			"LaberintoChaco",
 			"EndGame",
 			"Creditos"
 		],
@@ -254,6 +257,7 @@
 			"Inicio",
 			"Event sheet 1",
 			"LaberintoPuna",
+			"LaberintoChaco",
 			"Home events",
 			"EndGame events",
 			"Creditos events"
@@ -523,6 +527,14 @@
 							"name": "sprite_sfx_quirquincho.webm",
 							"type": "audio/webm; codecs=opus",
 							"sid": 572821798755407,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "SonidoMapa_chaco_loop.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 572821798755408,
 							"file-info": {
 								"purpose": "none"
 							}

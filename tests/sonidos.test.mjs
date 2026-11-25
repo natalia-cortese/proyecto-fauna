@@ -182,6 +182,13 @@ test("LaberintoPuna reproduce el loop de regiones.puna", () => {
 	assert.equal(literalAudio(play.nombre), esperado);
 });
 
+test("LaberintoChaco reproduce el loop de regiones.chaco", () => {
+	const esperado = `${REGIONES.chaco.sonidos}/${REGIONES.chaco.mapaLoop}`;
+	const play = plays.find(p => p.hoja.includes("LaberintoChaco") && String(p.tag ?? "").includes("musica"));
+	assert.ok(play, "LaberintoChaco tiene que reproducir el loop con tag musica");
+	assert.equal(literalAudio(play.nombre), esperado);
+});
+
 test("el golpe al cazador y el game over están cableados a comun/", () => {
 	const golpe = plays.find(p => String(p.nombre).includes("golpe_cazador"));
 	const gameover = plays.find(p => String(p.nombre).includes("GameOver"));
