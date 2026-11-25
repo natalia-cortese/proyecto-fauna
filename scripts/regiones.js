@@ -33,13 +33,19 @@ const SPRITES_OCEANO = {
 	jaula: "Oceano"
 };
 
+const numeradas = (prefijo, cantidad) =>
+	Array.from({ length: cantidad }, (_, i) => prefijo + String(i + 1).padStart(2, "0"));
+
 const SPRITES_PATAGONIA = {
 	personajes: { spriteMafalda: "AnimationPatagonia", spriteDieguito: "AnimationPatagonia" },
 	huida: "Huida",
 	fondo: "TiledBackgroundPatagonia",
 	obstaculos: ["Default"],
 	enemigos: ["CazadorPuna", "CazadorPuna2"],
-	danio: ["Default"]
+	danio: ["Default"],
+	// En vez de los setos del Tilemap (que sigue como muro sólido, invisible) cada casilla de muro
+	// lleva una roca y algunas una planta encima.
+	muros: { objeto: "spriteMuroPatagonia", rocas: numeradas("Roca", 16), plantas: numeradas("Planta", 19) }
 };
 
 const ETAPA_OCEANO = {
