@@ -1,6 +1,8 @@
 // Cartel "NIVEL N — REGIÓN" al empezar cada laberinto.
 
-const DURACION_MS = 2600;
+import { claveRegion } from "./regiones.js";
+
+const DURACION = 2.6;
 
 let nivel = 1;
 let cartelHasta = 0;
@@ -28,7 +30,7 @@ export function avanzarNivel()
 
 export function cartelNivelActivo()
 {
-	return cartelHasta > 0 && performance.now() < cartelHasta;
+	return cartelHasta > 0;
 }
 
 function setMovimiento(runtime, habilitado)
@@ -53,19 +55,38 @@ function setMovimiento(runtime, habilitado)
 	frenado = !habilitado;
 }
 
+function ponerAnimacionCartel(cartel, nombres)
+{
+	for (const nombre of nombres)
+	{
+		if (!nombre) continue;
+		try
+		{
+			cartel.setAnimation(nombre);
+			return nombre;
+		}
+		catch {}
+	}
+	return "";
+}
+
 export function mostrarCartelNivel(runtime)
 {
-	const reg = String(runtime.globalVars.REGION || "puna").toLowerCase();
-	const anim = `${reg}_${Math.min(8, Math.max(1, nivel))}`;
+	const reg = claveRegion(runtime.globalVars.REGION || "puna");
+	const n = Math.min(8, Math.max(1, nivel));
 	const cartel = runtime.objects.spriteCartelNivel?.getFirstInstance();
 	if (!cartel) return;
 
-	try { cartel.setAnimation(anim); }
-	catch { try { cartel.setAnimation("puna_1"); } catch { return; } }
+	const anim = ponerAnimacionCartel(cartel, [`${reg}_${n}`, `patagonia_${n}`]);
+	if (!anim)
+	{
+		cartel.isVisible = false;
+		cartelHasta = 0;
+		return;
+	}
 
 	cartel.isVisible = true;
 	cartel.opacity = 1;
-	// HUD (parallax 0): centro del viewport 1024×1024
 	cartel.x = 512;
 	cartel.y = 430;
 	cartel.width = 720;
@@ -75,7 +96,7 @@ export function mostrarCartelNivel(runtime)
 	cartel.moveToTop();
 
 	if (runtime.globalVars.NIVEL !== undefined) runtime.globalVars.NIVEL = nivel;
-	cartelHasta = performance.now() + DURACION_MS;
+	cartelHasta = runtime.gameTime + DURACION;
 	setMovimiento(runtime, false);
 }
 
@@ -83,9 +104,8 @@ export function actualizarCartelNivel(runtime)
 {
 	if (!cartelHasta) return;
 	const cartel = runtime.objects.spriteCartelNivel?.getFirstInstance();
-	const ahora = performance.now();
 
-	if (ahora >= cartelHasta)
+	if (runtime.gameTime >= cartelHasta)
 	{
 		cartelHasta = 0;
 		if (cartel) cartel.isVisible = false;
@@ -93,10 +113,8 @@ export function actualizarCartelNivel(runtime)
 		return;
 	}
 
-	setMovimiento(runtime, false);
-
 	if (!cartel?.isVisible) return;
-	const t = 1 - (cartelHasta - ahora) / DURACION_MS;
+	const t = 1 - (cartelHasta - runtime.gameTime) / DURACION;
 	let escala = 1;
 	let op = 1;
 	if (t < 0.18) escala = 0.85 + 0.15 * (t / 0.18);

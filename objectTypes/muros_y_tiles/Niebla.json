@@ -17,7 +17,7 @@
 		"exportQuality": 0.8,
 		"fileType": "image/png",
 		"imageSpriteId": 7171043,
-		"useCollisionPoly": true,
+		"useCollisionPoly": false,
 		"tag": ""
 	},
 	"tile-collision-polys": {}

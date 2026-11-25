@@ -7,10 +7,11 @@
 //
 // Al abrirse la ficha suena el SFX en sounds/<región>/sprite_sfx_<animal> (variable SONIDO + SONIDO_CARPETA).
 // SONIDOS sirve para un animal cuyo archivo se llama distinto (quirquincho_bola → quirquincho).
+// SIN_SONIDO lista las fichas que todavía no tienen archivo: se abren en silencio.
 
 import { agregarAnimal, tieneTodos, coleccionActual } from "./album.js";
-import { layoutDeRegion, infoRegion, REGIONES } from "./regiones.js";
-import { avanzarNivel } from "./nivel.js";
+import { layoutDeRegion, etapaDe, claveRegion, REGIONES, idsDeRegion, carpetaSonidosDe } from "./regiones.js";
+import { avanzarNivel, getNivel } from "./nivel.js";
 
 export const ANIMALES = Object.fromEntries(
 	Object.entries(REGIONES).map(([clave, info]) => [clave, info.animales ?? []])
@@ -19,6 +20,12 @@ export const ANIMALES = Object.fromEntries(
 const SONIDOS = {
 	quirquincho_bola: "quirquincho"
 };
+
+export const SIN_SONIDO = new Set([
+	"patagonia_oceano_pinguino",
+	"patagonia_huemul", "patagonia_pudu", "patagonia_huillin", "patagonia_carpintero",
+	"patagonia_chinchillon", "patagonia_cauquen", "patagonia_maca", "patagonia_cisne"
+]);
 
 let region = "puna";
 let orden = [...ANIMALES.puna];
@@ -43,10 +50,16 @@ export function reiniciarFichas(runtime)
 
 export function elegirAnimales(nuevaRegion, semilla, jaulas)
 {
-	if (!ANIMALES[nuevaRegion]?.length) throw new RangeError(`No hay animales para la región "${nuevaRegion}"`);
-	region = nuevaRegion;
+	const etapa = etapaDe(nuevaRegion, getNivel());
+	region = etapa.fichaPrefijo || etapa.clave || nuevaRegion;
+	const todosBase = etapa.animales ?? ANIMALES[region] ?? [];
+	if (!todosBase.length)
+	{
+		orden = [];
+		return;
+	}
 	const rnd = aleatorio(semilla);
-	const todos = [...ANIMALES[region]];
+	const todos = [...todosBase];
 	const ya = coleccionActual();
 	// Primero los que faltan en el álbum; si no alcanzan, completar sin repetir en este laberinto.
 	const faltan = mezclar(todos.filter(a => !ya.has(`${region}_${a}`)), rnd);
@@ -81,17 +94,29 @@ export function abrirFichaId(runtime, id)
 {
 	const ficha = runtime.objects.spriteFichaAnimal?.getFirstInstance();
 	if (!ficha || !id) return;
-	const regKey = id.includes("_") ? id.slice(0, id.indexOf("_")) : region;
-	const animalKey = id.includes("_") ? id.slice(id.indexOf("_") + 1) : id;
 	ficha.setAnimation(id);
-	const info = infoRegion(regKey);
-	runtime.globalVars.SONIDO = `sprite_sfx_${SONIDOS[animalKey] ?? animalKey}`;
+	const sonido = sonidoDeFicha(id);
+	runtime.globalVars.SONIDO = sonido.archivo;
 	if (runtime.globalVars.SONIDO_CARPETA !== undefined)
-		runtime.globalVars.SONIDO_CARPETA = info.sonidos;
+		runtime.globalVars.SONIDO_CARPETA = sonido.carpeta;
 	abierta = true;
 	runtime.globalVars.FICHA = 1;
 	if (runtime.globalVars.ALBUM !== 1) runtime.timeScale = 0;
 	mostrarHud(runtime, true);
+}
+
+// El prefijo puede tener guion bajo (patagonia_oceano_ballena), así que se busca el prefijo conocido más largo.
+export function sonidoDeFicha(id)
+{
+	const prefijos = [...new Set(Object.entries(REGIONES).flatMap(([clave, info]) =>
+		[clave, info.fichaPrefijo, ...(info.etapas ?? []).map(e => e.fichaPrefijo)]).filter(Boolean))]
+		.sort((a, b) => b.length - a.length);
+	const prefijo = prefijos.find(p => id.startsWith(`${p}_`)) ?? region;
+	const animal = id.startsWith(`${prefijo}_`) ? id.slice(prefijo.length + 1) : id;
+	return {
+		carpeta: carpetaSonidosDe(prefijo),
+		archivo: SIN_SONIDO.has(id) ? "" : `sprite_sfx_${SONIDOS[animal] ?? animal}`
+	};
 }
 
 export function cerrarFicha(runtime)
@@ -175,15 +200,13 @@ export function alCompletarLaberinto(runtime)
 	runtime.timeScale = 1;
 	runtime.globalVars.SEMILLA = 0;
 
-	const reg = runtime.globalVars.REGION || region;
-	const ids = (ANIMALES[reg] ?? []).map(a => `${reg}_${a}`);
-	if (tieneTodos(ids))
+	const reg = claveRegion(runtime.globalVars.REGION || region);
+	avanzarNivel();
+	const hayMasEtapas = (REGIONES[reg].etapas?.length ?? 1) >= getNivel();
+	if (!hayMasEtapas && tieneTodos(idsDeRegion(reg)))
 		runtime.goToLayout("EndGame");
 	else
-	{
-		avanzarNivel();
-		runtime.goToLayout(layoutDeRegion(reg));
-	}
+		runtime.goToLayout(layoutDeRegion(reg, getNivel()));
 }
 
 function tocandoCueva(quien, cueva)

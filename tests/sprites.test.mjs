@@ -5,8 +5,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
-import { REGIONES } from "../scripts/regiones.js";
-import { ORDEN_ALBUM } from "../scripts/album.js";
+import { REGIONES, idsDeRegion } from "../scripts/regiones.js";
+import { PAGINAS_ALBUM } from "../scripts/album.js";
 import {
 	RAIZ, PROYECTO, listarArchivos, recogerNombres, recogerJson, walk,
 	cargarObjetos, imagenDe
@@ -90,17 +90,17 @@ test("sprites de regiones.js existen como objeto o animación", () => {
 		if (s.fondo && !OBJETOS.has(s.fondo))
 			mal.push(`${region}: falta objeto de fondo ${s.fondo}`);
 		for (const anim of s.obstaculos ?? [])
-			if (!OBJETOS.get("spriteRock")?.animaciones.includes(anim))
-				mal.push(`${region}: spriteRock no tiene ${anim}`);
+			if (!OBJETOS.get("spriteObstaculo")?.animaciones.includes(anim))
+				mal.push(`${region}: spriteObstaculo no tiene ${anim}`);
 		for (const anim of s.enemigos ?? [])
 			if (!OBJETOS.get("spriteCazador")?.animaciones.includes(anim))
 				mal.push(`${region}: spriteCazador no tiene ${anim}`);
 		for (const anim of s.danio ?? [])
-			if (!OBJETOS.get("spriteSaguaro")?.animaciones.includes(anim))
-				mal.push(`${region}: spriteSaguaro no tiene ${anim}`);
+			if (!OBJETOS.get("spritePeligro")?.animaciones.includes(anim))
+				mal.push(`${region}: spritePeligro no tiene ${anim}`);
 		for (const animal of info.animales ?? [])
 		{
-			const id = `${region}_${animal}`;
+			const id = `${info.fichaPrefijo || region}_${animal}`;
 			if (!OBJETOS.get("spriteFichaAnimal")?.animaciones.includes(id))
 				mal.push(`${region}: falta ficha ${id}`);
 			if (!OBJETOS.get("spriteAlbumSlot")?.animaciones.includes(id))
@@ -110,10 +110,33 @@ test("sprites de regiones.js existen como objeto o animación", () => {
 	assert.deepEqual(mal, []);
 });
 
-test("ORDEN_ALBUM usa animaciones reales de spriteAlbumSlot", () => {
+test("las páginas del álbum usan animaciones reales y entran en 12 ranuras", () => {
 	const slots = OBJETOS.get("spriteAlbumSlot")?.animaciones ?? [];
 	assert.ok(slots.includes("vacio"), "spriteAlbumSlot necesita animación vacio");
-	assert.deepEqual(ORDEN_ALBUM.filter(id => id && !slots.includes(id)), []);
+	for (const { region, ids } of PAGINAS_ALBUM)
+	{
+		assert.equal(ids.length, 12);
+		assert.deepEqual(ids.filter(id => id && !slots.includes(id)), [], `página ${region}`);
+		assert.equal(ids.filter(Boolean).length, idsDeRegion(region).length, `${region} no entra en una página`);
+	}
+});
+
+test("cada animal de cada etapa tiene ficha y miniatura de álbum", () => {
+	const mal = [];
+	for (const region of Object.keys(REGIONES))
+		for (const id of idsDeRegion(region))
+		{
+			if (!OBJETOS.get("spriteFichaAnimal")?.animaciones.includes(id)) mal.push(`falta ficha ${id}`);
+			if (!OBJETOS.get("spriteAlbumSlot")?.animaciones.includes(id)) mal.push(`falta slot ${id}`);
+		}
+	assert.deepEqual(mal, []);
+});
+
+test("la jaula de cada región existe como animación de spriteJaula", () => {
+	for (const [region, info] of Object.entries(REGIONES))
+		for (const etapa of [info, ...(info.etapas ?? [])])
+			if (etapa.sprites?.jaula)
+				assert.ok(OBJETOS.get("spriteJaula")?.animaciones.includes(etapa.sprites.jaula), `${region}: spriteJaula sin ${etapa.sprites.jaula}`);
 });
 
 test("los layouts del proyecto existen en layouts/", () => {

@@ -29,6 +29,7 @@ export function prepararCazador(inst, filas, tx, ty)
 		x0: inst.x, y0: inst.y, ax, ay,
 		min: -atras * CASILLA, max: adelante * CASILLA,
 		pos: 0, dir: Math.random() < 0.5 ? -1 : 1,
+		ancho: Math.abs(inst.width) || 48,
 		fase: "visible", tiempo: 2 + Math.random() * 3
 	});
 }
@@ -53,7 +54,8 @@ export function actualizarCazadores(runtime, personaje)
 				d.pos = Math.max(d.min, Math.min(d.max, d.pos));
 				d.dir = -d.dir;
 			}
-			if (d.ax && d.dir) inst.width = d.dir > 0 ? Math.abs(inst.width) : -Math.abs(inst.width);
+			if (d.ax && d.dir)
+				inst.width = d.dir > 0 ? d.ancho : -d.ancho;
 			if (d.tiempo <= 0) cambiar(d, "escondiendo", FUNDIDO);
 		}
 		else if (d.fase === "escondiendo")

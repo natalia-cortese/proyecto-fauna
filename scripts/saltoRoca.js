@@ -21,7 +21,7 @@ export function saltarRoca(runtime, inst, dx, dy)
 {
 	if (saltando.has(inst)) return false;
 
-	const roca = tocando(runtime.objects.spriteRock, inst, dx, dy);
+	const roca = tocando(runtime.objects.spriteObstaculo, inst, dx, dy);
 	if (!roca) return false;
 
 	const destino = aterrizaje(inst, roca, dx, dy);

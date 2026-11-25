@@ -339,7 +339,7 @@
 					}
 				},
 				{
-					"type": "spriteRock",
+					"type": "spriteObstaculo",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Default",
@@ -554,7 +554,7 @@
 					}
 				},
 				{
-					"type": "spriteSaguaro",
+					"type": "spritePeligro",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Default",
@@ -596,7 +596,7 @@
 					}
 				},
 				{
-					"type": "spriteSaguaro",
+					"type": "spritePeligro",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Default",
@@ -1962,7 +1962,7 @@
 					}
 				},
 				{
-					"type": "spriteRock",
+					"type": "spriteObstaculo",
 					"properties": {
 						"initially-visible": true,
 						"initial-animation": "Default",

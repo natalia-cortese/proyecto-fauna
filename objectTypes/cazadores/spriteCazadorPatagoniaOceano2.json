@@ -1,43 +1,32 @@
 {
-	"name": "spriteRock",
+	"name": "spriteCazadorPatagoniaOceano2",
 	"plugin-id": "Sprite",
-	"sid": 755926849812237,
+	"sid": 379620604145108,
 	"isGlobal": false,
 	"editorNewInstanceIsReplica": true,
 	"instanceVariables": [],
-	"behaviorTypes": [
-		{
-			"behaviorId": "jumpthru",
-			"name": "Jumpthru",
-			"sid": 819961576441274
-		},
-		{
-			"behaviorId": "solid",
-			"name": "Solid",
-			"sid": 590055932442246
-		}
-	],
+	"behaviorTypes": [],
 	"effectTypes": [],
 	"animations": {
 		"items": [
 			{
 				"frames": [
 					{
-						"width": 28,
-						"height": 23,
+						"width": 1024,
+						"height": 864,
 						"originX": 0.5,
 						"originY": 0.5,
 						"originalSource": "",
 						"exportFormat": "lossless",
 						"exportQuality": 0.8,
 						"fileType": "image/png",
-						"imageSpriteId": 3131366,
+						"imageSpriteId": 2136531,
 						"useCollisionPoly": true,
 						"duration": 1,
 						"tag": ""
 					}
 				],
-				"sid": 433974761514047,
+				"sid": 887659072630186,
 				"name": "Default",
 				"isLooping": false,
 				"isPingPong": false,

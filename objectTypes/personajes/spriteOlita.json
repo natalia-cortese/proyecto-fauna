@@ -1,38 +1,32 @@
 {
-	"name": "spriteSaguaro",
+	"name": "spriteOlita",
 	"plugin-id": "Sprite",
-	"sid": 792577894640991,
+	"sid": 206587708750211,
 	"isGlobal": false,
 	"editorNewInstanceIsReplica": true,
 	"instanceVariables": [],
-	"behaviorTypes": [
-		{
-			"behaviorId": "solid",
-			"name": "Solid",
-			"sid": 711269894587605
-		}
-	],
+	"behaviorTypes": [],
 	"effectTypes": [],
 	"animations": {
 		"items": [
 			{
 				"frames": [
 					{
-						"width": 46,
-						"height": 86,
+						"width": 1254,
+						"height": 1254,
 						"originX": 0.5,
 						"originY": 0.5,
 						"originalSource": "",
 						"exportFormat": "lossless",
 						"exportQuality": 0.8,
 						"fileType": "image/png",
-						"imageSpriteId": 7247285,
+						"imageSpriteId": 6041078,
 						"useCollisionPoly": true,
 						"duration": 1,
 						"tag": ""
 					}
 				],
-				"sid": 888211848048804,
+				"sid": 451243439807434,
 				"name": "Default",
 				"isLooping": false,
 				"isPingPong": false,

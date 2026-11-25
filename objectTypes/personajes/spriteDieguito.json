@@ -44,26 +44,14 @@
 						"imageSpriteId": 246598,
 						"collisionPoly": {
 							"points": [
-								0.3867403314917127,
-								0.007596685082872928,
-								0.47421731123388583,
-								0.007596685082872928,
-								0.7918968692449355,
-								0.12361878453038674,
-								0.9714548802946593,
-								0.30455801104972374,
-								0.7900552486187845,
-								0.9930939226519337,
-								0.6556169429097606,
-								0.9930939226519337,
-								0.08839779005524862,
-								0.9848066298342542,
-								0.05985267034990792,
-								0.30939226519337015,
-								0.18047882136279927,
-								0.11187845303867404,
-								0.26519337016574585,
-								0.05041436464088398
+								0.38,
+								0.52,
+								0.62,
+								0.52,
+								0.62,
+								0.92,
+								0.38,
+								0.92
 							]
 						},
 						"useCollisionPoly": true,
@@ -73,6 +61,80 @@
 				],
 				"sid": 149237041996332,
 				"name": "AnimationPuna",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			},
+			{
+				"frames": [
+					{
+						"width": 1419,
+						"height": 1109,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 208448,
+						"collisionPoly": {
+							"points": [
+								0.38,
+								0.52,
+								0.62,
+								0.52,
+								0.62,
+								0.92,
+								0.38,
+								0.92
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 107362088046985,
+				"name": "AnimationOceano",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			},
+			{
+				"frames": [
+					{
+						"width": 644,
+						"height": 893,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 5052176,
+						"collisionPoly": {
+							"points": [
+								0.38,
+								0.52,
+								0.62,
+								0.52,
+								0.62,
+								0.92,
+								0.38,
+								0.92
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 589958172383663,
+				"name": "AnimationPatagonia",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,

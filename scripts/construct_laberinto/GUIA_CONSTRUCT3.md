@@ -104,8 +104,8 @@ node scripts/construct_laberinto/generador/vista_previa.mjs [semilla] [jaulas]
 | Letra | Qué es | Objeto | Tamaño |
 |---|---|---|---|
 | `#` `F` `S` `Y` `P` `R` | muro: seto verde, florido, seco puna, yunga, piedra gris, piedra rojiza | tile del `Tilemap` | 64 × 64 |
-| `K` | cactus | `spriteSaguaro` | 80 × 130 |
-| `O` | roca | `spriteRock` | 40 × 34 |
+| `K` | cactus | `spritePeligro` | 80 × 130 |
+| `O` | roca | `spriteObstaculo` | 40 × 34 |
 | `V` | cueva | `spriteCueva` | 200 × 150 |
 | `G` | portal de inicio | `spritePortal` | 176 × 190 |
 | `J` | jaula | `spriteJaula` | 96 × 92 |
@@ -181,13 +181,13 @@ chaco: {
 | `sprites.personajes` | animación de `spriteMafalda` y `spriteDieguito` |
 | `sprites.huida` | animación de `spriteHuida` al abrir una jaula (variable `HUIDA`) |
 | `sprites.fondo` | objeto de la capa `BG` que se muestra; los fondos de las otras regiones se ocultan |
-| `sprites.obstaculos` | animaciones de `spriteRock` (se saltan); se elige una al azar por roca |
+| `sprites.obstaculos` | animaciones de `spriteObstaculo` (se saltan); se elige una al azar por roca |
 | `sprites.enemigos` | animaciones de `spriteCazador`; se elige una al azar por cazador |
-| `sprites.danio` | animaciones de `spriteSaguaro` (quitan una vida); se elige una al azar por cactus |
+| `sprites.danio` | animaciones de `spritePeligro` (quitan una vida); se elige una al azar por cactus |
 
-Los **objetos de Construct son los mismos** en todas las regiones (`spriteRock`, `spriteCazador`, `spriteSaguaro`, …). Lo que cambia es el nombre de la **animación**. Para un dibujo nuevo:
+Los **objetos de Construct son los mismos** en todas las regiones (`spriteObstaculo`, `spriteCazador`, `spritePeligro`, …). Lo que cambia es el nombre de la **animación**. Para un dibujo nuevo:
 
-1. Importá la imagen en Construct como animación del objeto que ya existe (por ejemplo `RocaChaco` en `spriteRock`, `CazadorChaco1` en `spriteCazador`, `Cardon` en `spriteSaguaro`).
+1. Importá la imagen en Construct como animación del objeto que ya existe (por ejemplo `RocaChaco` en `spriteObstaculo`, `CazadorChaco1` en `spriteCazador`, `Cardon` en `spritePeligro`).
 2. Poné ese nombre en `sprites` de la región. Tiene que coincidir exactamente; si no existe, el sprite se queda con la animación anterior.
 3. Un fondo nuevo es un **objeto** de la capa `BG` (no una animación). Creá p. ej. `FondoChaco`, ponelo en el layout del laberinto y usá `fondo: "FondoChaco"`.
 

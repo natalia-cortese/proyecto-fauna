@@ -1,0 +1,153 @@
+{
+	"name": "LaberintoPatagoniaOceano",
+	"events": [
+		{
+			"eventType": "variable",
+			"name": "SEMILLA",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "Laberinto que se está jugando. 0 = generar uno nuevo al empezar.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 457294248545337
+		},
+		{
+			"eventType": "variable",
+			"name": "NIVEL",
+			"type": "number",
+			"initialValue": "1",
+			"comment": "Número de laberinto de la partida (cartel NIVEL N — REGIÓN).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 154277924462643
+		},
+		{
+			"eventType": "include",
+			"includeSheet": "Event sheet 1"
+		},
+		{
+			"eventType": "comment",
+			"text": "Laberinto de Patagonia océano. Al liberar a todos hay que entrar a la cueva; alCompletarLaberinto pasa al siguiente laberinto de esta región o a EndGame."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 143871411431122
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 107451872846815,
+					"parameters": {
+						"tag": "\"animal\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 640979379827937,
+					"parameters": {
+						"tag": "\"musica\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 715900431748476,
+					"parameters": {
+						"tag": "\"endgame\""
+					}
+				},
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 980915135486773,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "\"patagonia_oceano/sprite_music_patagonia_oceano_loop\"",
+						"loop": "looping",
+						"volume": "-12",
+						"stereo-pan": "0",
+						"tag-optional": "\"musica\""
+					}
+				},
+				{
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"runtime.timeScale = 1;",
+						"runtime.globalVars.REGION = \"patagonia\";",
+						"const JAULAS = 3;",
+						"if (!runtime.globalVars.SEMILLA)",
+						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
+						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
+						"construirLaberinto(runtime, mapa);",
+						"elegirAnimales(\"patagonia\", runtime.globalVars.SEMILLA, JAULAS);",
+						"mostrarCartelNivel(runtime);"
+					]
+				}
+			],
+			"sid": 977035104541901
+		},
+		{
+			"eventType": "comment",
+			"text": "Al liberar a todos: habilita la cueva. Entrar a la cueva llama alCompletarLaberinto (otro laberinto de la región o EndGame)."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 135347243230306,
+					"parameters": {
+						"first-value": "spriteJaula.Count",
+						"comparison": 0,
+						"second-value": "0"
+					}
+				},
+				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 435602875482415,
+					"parameters": {
+						"first-value": "spriteHuida.Count",
+						"comparison": 0,
+						"second-value": "0"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 410217732839661,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 501461743885670
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"marcarListoParaCueva(runtime);"
+					]
+				}
+			],
+			"sid": 516064542382699
+		}
+	],
+	"sid": 470926061333593
+}

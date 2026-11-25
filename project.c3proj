@@ -125,7 +125,8 @@
 				"items": [
 					"spriteMafalda",
 					"spriteDieguito",
-					"spritePiedrita"
+					"spritePiedrita",
+					"spriteOlita"
 				],
 				"subfolders": [],
 				"name": "personajes"
@@ -135,8 +136,8 @@
 					"TiledBackgroundPuna",
 					"Tilemap",
 					"Niebla",
-					"spriteRock",
-					"spriteSaguaro",
+					"spriteObstaculo",
+					"spritePeligro",
 					"spriteSetoBorde",
 					"spriteSetoBorde2",
 					"spriteSetoBorde3",
@@ -149,7 +150,10 @@
 					"pilar_solo4x",
 					"recto_horizontal4x",
 					"recto_vertical",
-					"recto_vertical_v24x"
+					"recto_vertical_v24x",
+					"TiledBackgroundPatagoniaOceano",
+					"TiledBackgroundPatagonia",
+					"spriteIceberg"
 				],
 				"subfolders": [],
 				"name": "muros_y_tiles"
@@ -157,14 +161,17 @@
 			{
 				"items": [
 					"spriteHuida",
-					"spriteFichaAnimal"
+					"spriteFichaAnimal",
+					"spriteHuida_oceano"
 				],
 				"subfolders": [],
 				"name": "animales_libres"
 			},
 			{
 				"items": [
-					"spriteCazador"
+					"spriteCazador",
+					"spriteCazadorPatagoniaOceano1",
+					"spriteCazadorPatagoniaOceano2"
 				],
 				"subfolders": [],
 				"name": "cazadores"
@@ -208,6 +215,10 @@
 				"items": [
 					"spriteInicioFondo",
 					"spriteZonaPuna",
+					"spriteZonaNoreste",
+					"spriteZonaCuyo",
+					"spriteZonaPampeana",
+					"spriteZonaPatagonia",
 					"spriteBotonJugar",
 					"spriteEtiquetaNombre",
 					"textNombre"
@@ -245,7 +256,10 @@
 			"Layout 1",
 			"LaberintoPuna",
 			"EndGame",
-			"Creditos"
+			"Creditos",
+			"LaberintoPatagoniaOceano",
+			"LaberintoPatagonia",
+			"LaberintoPuna2"
 		],
 		"subfolders": []
 	},
@@ -256,7 +270,10 @@
 			"LaberintoPuna",
 			"Home events",
 			"EndGame events",
-			"Creditos events"
+			"Creditos events",
+			"LaberintoPatagoniaOceano",
+			"LaberintoPatagonia",
+			"Event sheet 2"
 		],
 		"subfolders": []
 	},
@@ -339,6 +356,14 @@
 					"name": "inicio.js",
 					"type": "application/javascript",
 					"sid": 609121726223685,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "mapaRegiones.js",
+					"type": "application/javascript",
+					"sid": 483920571638214,
 					"script-info": {
 						"purpose": "none"
 					}
@@ -530,6 +555,58 @@
 					],
 					"subfolders": [],
 					"name": "chaco"
+				},
+				{
+					"items": [
+						{
+							"name": "sprite_music_patagonia_oceano_loop.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 555840319405684,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_ballena.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 496007006721457,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_orca.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 809216517259240,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_estrella.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 711739315230552,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "patagonia_oceano"
+				},
+				{
+					"items": [
+						{
+							"name": "sprite_music_patagonia_loop.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 555840319405685,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "patagonia"
 				}
 			]
 		},
