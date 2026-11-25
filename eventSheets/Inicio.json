@@ -78,6 +78,87 @@
 			"sid": 718641458468862
 		},
 		{
+			"eventType": "comment",
+			"text": "Al abrir una carta del álbum en Inicio. Las variables FICHA/SONIDO/SONIDO_CARPETA/ALBUM están en Event sheet 1 (globales)."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 810402273478018,
+					"parameters": {
+						"variable": "ALBUM",
+						"comparison": 0,
+						"value": "1"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 810402273478019,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "1"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 810402273478020
+				}
+			],
+			"actions": [
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 810402273478021,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "SONIDO_CARPETA & \"/\" & SONIDO",
+						"loop": "looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"animal\""
+					}
+				}
+			],
+			"sid": 810402273478022
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 810402273478023,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 810402273478024
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 810402273478025,
+					"parameters": {
+						"tag": "\"animal\""
+					}
+				}
+			],
+			"sid": 810402273478026
+		},
+		{
 			"eventType": "block",
 			"conditions": [
 				{
