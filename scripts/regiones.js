@@ -41,6 +41,36 @@ export const REGIONES = {
 			enemigos: ["CazadorPuna", "CazadorPuna2"],
 			danio: ["Default"]
 		}
+	},
+	patagonia_oceano: {
+		layout: "LaberintoPatagoniaOceano",
+		sonidos: "patagonia_oceano",
+		mapaLoop: "sprite_music_patagonia_oceano_loop",
+		titulo: "PATAGONIA",
+		animales: ["ballena", "orca", "estrella"],
+		sprites: {
+			personajes: { spriteMafalda: "AnimationOceano", spriteDieguito: "AnimationOceano" },
+			huida: "Huida_oceano",
+			fondo: "TiledBackgroundPatagoniaOceano",
+			obstaculos: ["Olita"],
+			enemigos: ["CazadorPatagoniaOceano1", "CazadorPatagoniaOceano2"],
+			danio: ["Iceberg"]
+		}
+	},
+	patagonia: {
+		layout: "LaberintoPatagonia",
+		sonidos: "patagonia",
+		mapaLoop: "sprite_music_patagonia_loop",
+		titulo: "PATAGONIA",
+		animales: ["huemul", "pudu", "huillin", "carpintero", "cisne", "maca", "cauquen", "chinchillon", "ballena", "orca", "pinguino", "estrella"],
+		sprites: {
+			personajes: { spriteMafalda: "AnimationPatagonia", spriteDieguito: "AnimationPatagonia" },
+			huida: "HuidaPatagonia",
+			fondo: "TiledBackgroundPatagonia",
+			obstaculos: ["Olas"],
+			enemigos: ["CazadorPatagonia1", "CazadorPatagonia2"],
+			danio: ["Iceberg"]
+		}
 	}
 };
 

@@ -125,7 +125,10 @@
 				"items": [
 					"spriteMafalda",
 					"spriteDieguito",
-					"spritePiedrita"
+					"spritePiedrita",
+					"spriteDieguito_Patagonia_Oceano",
+					"spriteMafalda_Patagonia_Oceano",
+					"spriteOlita"
 				],
 				"subfolders": [],
 				"name": "personajes"
@@ -149,7 +152,9 @@
 					"pilar_solo4x",
 					"recto_horizontal4x",
 					"recto_vertical",
-					"recto_vertical_v24x"
+					"recto_vertical_v24x",
+					"TiledBackgroundPatagoniaOceano",
+					"spriteIceberg"
 				],
 				"subfolders": [],
 				"name": "muros_y_tiles"
@@ -157,14 +162,17 @@
 			{
 				"items": [
 					"spriteHuida",
-					"spriteFichaAnimal"
+					"spriteFichaAnimal",
+					"spriteHuida_oceano"
 				],
 				"subfolders": [],
 				"name": "animales_libres"
 			},
 			{
 				"items": [
-					"spriteCazador"
+					"spriteCazador",
+					"spriteCazadorPatagoniaOceano1",
+					"spriteCazadorPatagoniaOceano2"
 				],
 				"subfolders": [],
 				"name": "cazadores"
@@ -174,7 +182,8 @@
 					"spriteJaula",
 					"Sprite2",
 					"spriteCueva",
-					"spritePortal"
+					"spritePortal",
+					"spritejaula_patagonia_oceano"
 				],
 				"subfolders": [],
 				"name": "jaulas_y_metas"
@@ -244,7 +253,9 @@
 			"Layout 1",
 			"LaberintoPuna",
 			"EndGame",
-			"Creditos"
+			"Creditos",
+			"LaberintoPatagoniaOceano",
+			"LaberintoPuna2"
 		],
 		"subfolders": []
 	},
@@ -255,7 +266,8 @@
 			"LaberintoPuna",
 			"Home events",
 			"EndGame events",
-			"Creditos events"
+			"Creditos events",
+			"LaberintoPatagoniaOceano events"
 		],
 		"subfolders": []
 	},
@@ -529,6 +541,44 @@
 					],
 					"subfolders": [],
 					"name": "chaco"
+				},
+				{
+					"items": [
+						{
+							"name": "sprite_music_patagonia_oceano_loop.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 555840319405684,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_PTGNIA_ballena.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 496007006721457,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_PTGNIA_orca.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 809216517259240,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_PTGNIA_estrella.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 711739315230552,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "patagonia_oceano"
 				}
 			]
 		},

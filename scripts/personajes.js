@@ -17,8 +17,8 @@ import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
 import { cartelNivelActivo, actualizarCartelNivel } from "./nivel.js";
 
 export const VIDAS_MAXIMAS = 3;
-const SEGUIR_DESDE = 90;
-const FRENAR_EN = 70;
+//const SEGUIR_DESDE = 90;
+//const FRENAR_EN = 70;
 const INVULNERABLE = 1.5;
 
 const FLECHAS = [
@@ -213,24 +213,45 @@ export function actualizarPersonajes(runtime)
 	actualizarSalidaLaberinto(runtime);
 }
 
+
 function seguir(runtime, inst, destino)
 {
-	const pf = inst.behaviors.Pathfinding;
-	if (!pf || estaSaltando(inst)) return;
-	const distancia = Math.hypot(destino.x - inst.x, destino.y - inst.y);
-	if (distancia <= FRENAR_EN)
-	{
-		if (pf.isMoving) pf.stop();
-		return;
-	}
-	if (distancia > SEGUIR_DESDE && !pf.isCalculatingPath && runtime.gameTime >= proximaBusqueda)
-	{
-		proximaBusqueda = runtime.gameTime + 0.5;
-		pf.findPath(destino.x, destino.y).then(encontrado => {
-			if (encontrado && pf.isEnabled) pf.startMoving();
-		});
-	}
+    const esOceano =
+        runtime.globalVars.REGION === "patagonia_oceano";
+
+    const FRENAR_EN = esOceano ? 150 : 70;
+    const SEGUIR_DESDE = esOceano ? 190 : 90;
+
+    const pf = inst.behaviors.Pathfinding;
+
+    if (!pf || estaSaltando(inst)) return;
+
+    const distancia = Math.hypot(
+        destino.x - inst.x,
+        destino.y - inst.y
+    );
+
+    if (distancia <= FRENAR_EN)
+    {
+        if (pf.isMoving) pf.stop();
+        return;
+    }
+
+    if (
+        distancia > SEGUIR_DESDE &&
+        !pf.isCalculatingPath &&
+        runtime.gameTime >= proximaBusqueda
+    )
+    {
+        proximaBusqueda = runtime.gameTime + 0.5;
+
+        pf.findPath(destino.x, destino.y).then(encontrado => {
+            if (encontrado && pf.isEnabled)
+                pf.startMoving();
+        });
+    }
 }
+
 
 function mirarSegunMovimiento(inst)
 {
