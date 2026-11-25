@@ -148,7 +148,7 @@ test("las rocas y plantas de los muros existen con su imagen", () => {
 			if (!muros) continue;
 			const obj = OBJETOS.get(muros.objeto);
 			if (!obj) { mal.push(`${region}: falta ${muros.objeto}`); continue; }
-			for (const anim of [...muros.rocas, ...muros.plantas])
+			for (const anim of [...muros.rocas, ...muros.rocasAltas, ...muros.plantas])
 			{
 				if (!obj.animaciones.includes(anim)) mal.push(`${region}: ${muros.objeto} sin ${anim}`);
 				const img = join(RAIZ, "images", `${muros.objeto}-${anim}-000.png`.toLowerCase());

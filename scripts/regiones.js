@@ -45,7 +45,13 @@ const SPRITES_PATAGONIA = {
 	danio: ["Default"],
 	// En vez de los setos del Tilemap (que sigue como muro sólido, invisible) cada casilla de muro
 	// lleva una roca y algunas una planta encima.
-	muros: { objeto: "spriteMuroPatagonia", rocas: numeradas("Roca", 16), plantas: numeradas("Planta", 19) }
+	// rocasAltas: las que cubren bien la casilla en los muros verticales.
+	muros: {
+		objeto: "spriteMuroPatagonia",
+		rocas: numeradas("Roca", 16),
+		rocasAltas: ["Roca01", "Roca02", "Roca03", "Roca05", "Roca07", "Roca14"],
+		plantas: numeradas("Planta", 19)
+	}
 };
 
 const ETAPA_OCEANO = {

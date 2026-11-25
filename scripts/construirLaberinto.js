@@ -127,9 +127,10 @@ function decorarMuros(runtime, muros, filas, esMuro, capa)
 			if (!esMuro(x, y)) continue;
 			const cx = x * CASILLA + CASILLA / 2;
 			const abajo = (y + 1) * CASILLA;
+			const vertical = esMuro(x, y - 1);
 			const roca = tipo.createInstance(capaMuros, cx, abajo);
-			ponerAnimacion(roca, alAzar(muros.rocas));
-			escalarDentroDe(roca, ANCHO_ROCA, ALTO_ROCA);
+			ponerAnimacion(roca, alAzar(vertical ? muros.rocasAltas : muros.rocas));
+			escalarDentroDe(roca, ANCHO_ROCA + (vertical ? 8 : 0), ALTO_ROCA + (vertical ? 8 : 0));
 			roca.y = abajo + 8 - roca.height / 2;
 			if (Math.random() < 0.5) roca.width = -roca.width;
 
