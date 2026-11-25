@@ -9,8 +9,8 @@
 // SONIDOS sirve para un animal cuyo archivo se llama distinto (quirquincho_bola → quirquincho).
 // SIN_SONIDO lista las fichas que todavía no tienen archivo: se abren en silencio.
 
-import { agregarAnimal, tieneTodos, coleccionActual } from "./album.js";
-import { layoutDeRegion, etapaDe, claveRegion, REGIONES, idsDeRegion, carpetaSonidosDe } from "./regiones.js";
+import { agregarAnimal, coleccionActual } from "./album.js";
+import { etapaDe, claveRegion, REGIONES, carpetaSonidosDe, destinoAlCompletar } from "./regiones.js";
 import { avanzarNivel, getNivel } from "./nivel.js";
 
 export const ANIMALES = Object.fromEntries(
@@ -190,8 +190,8 @@ export function actualizarSalidaLaberinto(runtime)
 	}
 }
 
-// Al entrar a la cueva: si el álbum ya tiene todos los animales de la región → títulos;
-// si no, otro laberinto de la misma región.
+// Al entrar a la cueva: siguiente etapa, otro laberinto si faltan animales de la región,
+// el mapa si la región quedó completa, o los títulos si están todas las regiones jugables completas.
 export function alCompletarLaberinto(runtime)
 {
 	if (saliendo) return;
@@ -202,11 +202,7 @@ export function alCompletarLaberinto(runtime)
 
 	const reg = claveRegion(runtime.globalVars.REGION || region);
 	avanzarNivel();
-	const hayMasEtapas = (REGIONES[reg].etapas?.length ?? 1) >= getNivel();
-	if (!hayMasEtapas && tieneTodos(idsDeRegion(reg)))
-		runtime.goToLayout("EndGame");
-	else
-		runtime.goToLayout(layoutDeRegion(reg, getNivel()));
+	runtime.goToLayout(destinoAlCompletar(reg, getNivel(), coleccionActual()));
 }
 
 function tocandoCueva(quien, cueva)

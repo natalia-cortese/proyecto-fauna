@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
-import { REGIONES, idsDeRegion } from "../scripts/regiones.js";
+import { REGIONES, idsDeRegion, spritesDeRegion } from "../scripts/regiones.js";
 import { PAGINAS_ALBUM } from "../scripts/album.js";
 import {
 	RAIZ, PROYECTO, listarArchivos, recogerNombres, recogerJson, walk,
@@ -137,6 +137,31 @@ test("la jaula de cada región existe como animación de spriteJaula", () => {
 		for (const etapa of [info, ...(info.etapas ?? [])])
 			if (etapa.sprites?.jaula)
 				assert.ok(OBJETOS.get("spriteJaula")?.animaciones.includes(etapa.sprites.jaula), `${region}: spriteJaula sin ${etapa.sprites.jaula}`);
+});
+
+test("las rocas y plantas de los muros existen con su imagen", () => {
+	const mal = [];
+	for (const [region, info] of Object.entries(REGIONES))
+		for (const etapa of [info, ...(info.etapas ?? [])])
+		{
+			const muros = etapa.sprites?.muros;
+			if (!muros) continue;
+			const obj = OBJETOS.get(muros.objeto);
+			if (!obj) { mal.push(`${region}: falta ${muros.objeto}`); continue; }
+			for (const anim of [...muros.rocas, ...muros.rocasAltas, ...muros.plantas])
+			{
+				if (!obj.animaciones.includes(anim)) mal.push(`${region}: ${muros.objeto} sin ${anim}`);
+				const img = join(RAIZ, "images", `${muros.objeto}-${anim}-000.png`.toLowerCase());
+				if (!existsSync(img)) mal.push(`falta ${img}`);
+			}
+		}
+	assert.deepEqual(mal, []);
+});
+
+test("solo Patagonia tierra reemplaza los setos", () => {
+	assert.ok(spritesDeRegion("patagonia", 2).muros);
+	assert.ok(!spritesDeRegion("patagonia", 1).muros);
+	assert.ok(!spritesDeRegion("puna", 1).muros);
 });
 
 test("los layouts del proyecto existen en layouts/", () => {

@@ -35,7 +35,17 @@ function definicionObjeto(letra, sprites)
 	return base;
 }
 
-const NOMBRES_MAPA = [...new Set([...Object.values(OBJETOS).map(o => o.nombre), "spriteCartelSalida"])];
+const OBJETOS_MUROS = Object.values(REGIONES)
+	.flatMap(r => [r, ...(r.etapas ?? [])])
+	.map(e => e.sprites?.muros?.objeto)
+	.filter(Boolean);
+const NOMBRES_MAPA = [...new Set([...Object.values(OBJETOS).map(o => o.nombre), "spriteCartelSalida", ...OBJETOS_MUROS])];
+
+// Las rocas se pasan un poco de la casilla para que el muro se vea continuo.
+const ANCHO_ROCA = 84;
+const ALTO_ROCA = 82;
+const LADO_PLANTA = 36;
+const PROB_PLANTA = 0.3;
 const tamanosFijos = new Map();
 
 export function construirLaberinto(runtime, mapa, capa = "Layer 1")
@@ -64,6 +74,8 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 			const variante = Math.floor(Math.random() * 3);
 			tilemap.setTileAt(x, y, mascara + estilo(x, y) * 16 + variante * 96);
 		}
+	tilemap.isVisible = !sprites.muros;
+	if (sprites.muros) decorarMuros(runtime, sprites.muros, filas, esMuro, capa);
 
 	const mafalda = runtime.objects.spriteMafalda.getFirstInstance();
 	const dieguito = runtime.objects.spriteDieguito.getFirstInstance();
@@ -100,6 +112,41 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 	revelarNiebla(runtime, [mafalda, dieguito].filter(Boolean));
 	mafalda?.behaviors.Pathfinding?.map.regenerateMap();
 	dieguito?.behaviors.Pathfinding?.map.regenerateMap();
+}
+
+// Van en la capa BG (encima del fondo) para quedar debajo de todo lo de Layer 1.
+// Se crean fila por fila: la roca de abajo tapa el pie de la de arriba.
+function decorarMuros(runtime, muros, filas, esMuro, capa)
+{
+	const tipo = runtime.objects[muros.objeto];
+	if (!tipo) return;
+	const capaMuros = runtime.layout.getLayer("BG") ? "BG" : capa;
+	for (let y = 0; y < filas.length; y++)
+		for (let x = 0; x < filas[y].length; x++)
+		{
+			if (!esMuro(x, y)) continue;
+			const cx = x * CASILLA + CASILLA / 2;
+			const abajo = (y + 1) * CASILLA;
+			const vertical = esMuro(x, y - 1);
+			const roca = tipo.createInstance(capaMuros, cx, abajo);
+			ponerAnimacion(roca, alAzar(vertical ? muros.rocasAltas : muros.rocas));
+			escalarDentroDe(roca, ANCHO_ROCA + (vertical ? 8 : 0), ALTO_ROCA + (vertical ? 8 : 0));
+			roca.y = abajo + 8 - roca.height / 2;
+			if (Math.random() < 0.5) roca.width = -roca.width;
+
+			if (Math.random() >= PROB_PLANTA) continue;
+			const planta = tipo.createInstance(capaMuros, cx + (Math.random() - 0.5) * 36, abajo);
+			ponerAnimacion(planta, alAzar(muros.plantas));
+			escalarDentroDe(planta, LADO_PLANTA, LADO_PLANTA);
+			planta.y = abajo + 4 - planta.height / 2;
+		}
+}
+
+function escalarDentroDe(inst, ancho, alto)
+{
+	const k = Math.min(ancho / (inst.imageWidth || ancho), alto / (inst.imageHeight || alto));
+	inst.width = Math.round(inst.imageWidth * k);
+	inst.height = Math.round(inst.imageHeight * k);
 }
 
 function limpiarObjetosMapa(runtime)

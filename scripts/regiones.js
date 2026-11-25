@@ -33,13 +33,25 @@ const SPRITES_OCEANO = {
 	jaula: "Oceano"
 };
 
+const numeradas = (prefijo, cantidad) =>
+	Array.from({ length: cantidad }, (_, i) => prefijo + String(i + 1).padStart(2, "0"));
+
 const SPRITES_PATAGONIA = {
 	personajes: { spriteMafalda: "AnimationPatagonia", spriteDieguito: "AnimationPatagonia" },
 	huida: "Huida",
 	fondo: "TiledBackgroundPatagonia",
 	obstaculos: ["Default"],
 	enemigos: ["CazadorPuna", "CazadorPuna2"],
-	danio: ["Default"]
+	danio: ["Default"],
+	// En vez de los setos del Tilemap (que sigue como muro sólido, invisible) cada casilla de muro
+	// lleva una roca y algunas una planta encima.
+	// rocasAltas: las que cubren bien la casilla en los muros verticales.
+	muros: {
+		objeto: "spriteMuroPatagonia",
+		rocas: numeradas("Roca", 16),
+		rocasAltas: ["Roca01", "Roca02", "Roca03", "Roca05", "Roca07", "Roca14"],
+		plantas: numeradas("Planta", 19)
+	}
 };
 
 const ETAPA_OCEANO = {
@@ -98,6 +110,28 @@ export const REGIONES = {
 		aliasDe: "patagonia"
 	}
 };
+
+// Regiones que se pueden elegir en el mapa de Inicio; las demás aparecen con candado.
+export const REGIONES_JUGABLES = ["puna", "patagonia"];
+
+// Una región está completa cuando el álbum tiene todos sus animales (de todas sus etapas).
+export function regionCompleta(region, coleccion)
+{
+	const ids = idsDeRegion(region);
+	return ids.length > 0 && ids.every(id => coleccion.has(id));
+}
+
+// Adónde ir al salir por la cueva. nivel es el nivel siguiente (ya avanzado):
+// próxima etapa de la región → seguir en la región si faltan animales → final si están todas completas → mapa.
+export function destinoAlCompletar(region, nivel, coleccion)
+{
+	const etapas = infoRegion(region).etapas?.length ?? 1;
+	if (nivel <= etapas || !regionCompleta(region, coleccion))
+		return layoutDeRegion(region, nivel);
+	if (REGIONES_JUGABLES.every(r => regionCompleta(r, coleccion)))
+		return "EndGame";
+	return "Inicio";
+}
 
 // Ids de ficha (prefijo_animal) de todos los animales de la región, en todas sus etapas.
 export function idsDeRegion(region)

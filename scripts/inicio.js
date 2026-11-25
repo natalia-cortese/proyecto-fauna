@@ -5,14 +5,17 @@
 // Cada región es un sprite encima del fondo, en su lugar exacto, con animaciones
 // "desactivada" y "activa". Al pasar el mouse por una región jugable se activa y
 // queda elegida para JUGAR. La detección usa la silueta de mapaRegiones.js.
+//
+// spriteIconoRegion (una instancia sobre cada región) muestra "check" si el jugador ya completó
+// la región y "candado" si la región todavía no se puede jugar.
 
 import {
 	setJugador, cargarUltimoJugador, abrirAlbum, cerrarAlbum, albumAbierto,
-	tocarBotonAlbum, configurarAlbum, fichaAlbumAbierta
+	tocarBotonAlbum, configurarAlbum, fichaAlbumAbierta, coleccionDe
 } from "./album.js";
 import { abrirFichaId, cerrarFicha } from "./fichas.js";
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
-import { layoutDeRegion } from "./regiones.js";
+import { layoutDeRegion, REGIONES_JUGABLES, regionCompleta } from "./regiones.js";
 import { reiniciarNivel } from "./nivel.js";
 import { regionEnMapa } from "./mapaRegiones.js";
 
@@ -25,8 +28,9 @@ export const ZONAS_BLOQUEADAS = {
 	spriteZonaCuyo: "cuyo",
 	spriteZonaPampeana: "pampeana"
 };
-const REGIONES_HABILITADAS = new Set(Object.values(ZONAS));
+const REGIONES_HABILITADAS = new Set(REGIONES_JUGABLES);
 const ESCALA_HOVER = 1.05;
+const CADA_ICONOS = 0.5;
 const DURACION_SALIDA = 0.3;
 const NOMBRE_X = 680;
 const ETIQUETA_X = 820;
@@ -39,6 +43,7 @@ let avisoNombre = 0;
 let regionElegida = "";
 let regionSobre = null;
 let layoutPendiente = "";
+let proximosIconos = 0;
 
 export function iniciarInicio(runtime)
 {
@@ -51,8 +56,9 @@ export function iniciarInicio(runtime)
 	if (runtime.globalVars.ALBUM !== undefined) runtime.globalVars.ALBUM = 0;
 
 	const previa = String(runtime.globalVars.REGION || "").toLowerCase();
-	regionElegida = REGIONES_HABILITADAS.has(previa) ? previa : "";
+	regionElegida = regionInicial(previa, coleccionDe(cargarUltimoJugador()));
 	layoutPendiente = "";
+	proximosIconos = 0;
 	if (regionElegida) fijarRegion(runtime, regionElegida);
 
 	configurarAlbum(
@@ -120,9 +126,42 @@ export function iniciarInicio(runtime)
 	};
 }
 
+// Al volver de una región completa queda elegida la próxima que falta (si queda alguna).
+export function regionInicial(previa, coleccion)
+{
+	if (!REGIONES_HABILITADAS.has(previa)) return "";
+	if (!regionCompleta(previa, coleccion)) return previa;
+	return REGIONES_JUGABLES.find(r => !regionCompleta(r, coleccion)) || previa;
+}
+
+export function iconoDeRegion(region, coleccion)
+{
+	if (!region) return "";
+	if (!REGIONES_HABILITADAS.has(region)) return "candado";
+	return regionCompleta(region, coleccion) ? "check" : "";
+}
+
+function actualizarIconos(runtime)
+{
+	const campo = runtime.objects.textNombre?.getFirstInstance();
+	const coleccion = coleccionDe(campo?.text || cargarUltimoJugador());
+	for (const inst of runtime.objects.spriteIconoRegion?.getAllInstances() ?? [])
+	{
+		const icono = iconoDeRegion(regionEnMapa(inst.x, inst.y), coleccion);
+		inst.isVisible = !!icono;
+		if (icono && inst.animationName !== icono) inst.setAnimation(icono);
+	}
+}
+
 export function actualizarInicio(runtime)
 {
 	tiempo += runtime.dt;
+	proximosIconos -= runtime.dt;
+	if (proximosIconos <= 0)
+	{
+		proximosIconos = CADA_ICONOS;
+		actualizarIconos(runtime);
+	}
 	if (albumAbierto()) return;
 	if (salida < 0) actualizarZonaConMouse(runtime);
 

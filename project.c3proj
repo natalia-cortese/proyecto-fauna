@@ -144,6 +144,7 @@
 					"spriteSetoHorizontal",
 					"spriteSetoL",
 					"spriteSetoPilar",
+					"spriteMuroPatagonia",
 					"spriteCruce",
 					"spriteSetoNE",
 					"spriteSetoNO",
@@ -219,6 +220,7 @@
 					"spriteZonaCuyo",
 					"spriteZonaPampeana",
 					"spriteZonaPatagonia",
+					"spriteIconoRegion",
 					"spriteBotonJugar",
 					"spriteEtiquetaNombre",
 					"textNombre"
