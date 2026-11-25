@@ -23,7 +23,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Pantalla de inicio: el mapa elige la región; solo JUGAR arranca (scripts/inicio.js). Solo la Puna está habilitada."
+			"text": "Pantalla de inicio: el mapa elige la región; solo JUGAR arranca (scripts/inicio.js). Hover agranda la carta de la zona; Puna y Chaco están habilitadas."
 		},
 		{
 			"eventType": "block",

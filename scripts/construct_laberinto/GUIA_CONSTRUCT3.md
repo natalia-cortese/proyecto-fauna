@@ -161,12 +161,12 @@ chaco: {
 	titulo: "CHACO",
 	animales: ["quirquincho_bola", "tapir"],
 	sprites: {
-		personajes: { spriteMafalda: "AnimationPuna", spriteDieguito: "AnimationPuna" },
+		personajes: { spriteMafalda: "AnimationChaco", spriteDieguito: "AnimationChaco" },
 		huida: "Huida",
-		fondo: "TiledBackgroundPuna",
-		obstaculos: ["Default"],
+		fondo: "TiledBackgroundChaco",
+		obstaculos: ["Tacuru", "Tronco"],
 		enemigos: ["CazadorPuna", "CazadorPuna2"],
-		danio: ["Default"]
+		danio: ["Caraguata", "CaraguataFlor"]
 	}
 }
 ```
@@ -221,10 +221,10 @@ Ocho animaciones de `spriteCartelNivel`: `chaco_1` … `chaco_8` (`images/sprite
 
 ### 6. Zona en Inicio
 
-Cada zona habilitada es un recorte del fondo (`spriteZonaPuna`) encima de su lugar en el mapa; las zonas con candado son parte de `spriteInicioFondo`.
+Cada zona habilitada es una **carta** (`spriteZonaPuna`, `spriteZonaChaco`, …) en el layout `Inicio`, centrada en su provincia. No se muestran todas a la vez: al pasar el mouse (hitbox `HIT_ZONA`) aparece agrandada; si no hay hover, se ve solo la elegida. Las zonas con candado siguen en `spriteInicioFondo`.
 
-1. Recortá la zona (sin candado) en un sprite `spriteZonaChaco` (carpeta `inicio`) y ponelo en el layout `Inicio`.
-2. Sumalo a `ZONAS` en `scripts/inicio.js`: `{ spriteZonaPuna: "puna", spriteZonaChaco: "chaco" }`.
+1. Ilustración tipo postal (como `images/spritezonapuna-animation 1-000.png`) en un sprite `spriteZonaChaco` (carpeta `inicio`), misma medida que la Puna, y ponelo en el layout `Inicio` sobre el Chaco.
+2. Sumalo a `ZONAS` en `scripts/inicio.js`: `{ spriteZonaPuna: "puna", spriteZonaChaco: "chaco" }`. El hitbox no debe solaparse con otra zona (`npm test`).
 
 ### 7. Probar
 

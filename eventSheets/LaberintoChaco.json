@@ -1,0 +1,153 @@
+{
+	"name": "LaberintoChaco",
+	"events": [
+		{
+			"eventType": "variable",
+			"name": "SEMILLA",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "Laberinto que se está jugando. 0 = generar uno nuevo al empezar.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 420472935724902
+		},
+		{
+			"eventType": "variable",
+			"name": "NIVEL",
+			"type": "number",
+			"initialValue": "1",
+			"comment": "Número de laberinto de la partida (cartel NIVEL N — REGIÓN).",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 886704993043248
+		},
+		{
+			"eventType": "include",
+			"includeSheet": "Event sheet 1"
+		},
+		{
+			"eventType": "comment",
+			"text": "Laberinto del Chaco (NEA). Al liberar a todos hay que entrar a la cueva; alCompletarLaberinto pasa al siguiente laberinto de esta región o a EndGame."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 301202120364622
+				}
+			],
+			"actions": [
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 229348579705538,
+					"parameters": {
+						"tag": "\"animal\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 977255628151599,
+					"parameters": {
+						"tag": "\"musica\""
+					}
+				},
+				{
+					"id": "stop",
+					"objectClass": "Audio",
+					"sid": 405176179565499,
+					"parameters": {
+						"tag": "\"endgame\""
+					}
+				},
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 564899320488217,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "\"chaco/SonidoMapa_chaco_loop\"",
+						"loop": "looping",
+						"volume": "-12",
+						"stereo-pan": "0",
+						"tag-optional": "\"musica\""
+					}
+				},
+				{
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"runtime.timeScale = 1;",
+						"runtime.globalVars.REGION = \"chaco\";",
+						"const JAULAS = 3;",
+						"if (!runtime.globalVars.SEMILLA)",
+						"\truntime.globalVars.SEMILLA = Math.floor(Math.random() * 1e9) + 1;",
+						"const mapa = generarMapa({ jaulas: JAULAS, semilla: runtime.globalVars.SEMILLA });",
+						"construirLaberinto(runtime, mapa);",
+						"elegirAnimales(\"chaco\", runtime.globalVars.SEMILLA, JAULAS);",
+						"mostrarCartelNivel(runtime);"
+					]
+				}
+			],
+			"sid": 964243711238732
+		},
+		{
+			"eventType": "comment",
+			"text": "Al liberar a todos: habilita la cueva. Entrar a la cueva llama alCompletarLaberinto (otro laberinto de la región o EndGame)."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 368229594860008,
+					"parameters": {
+						"first-value": "spriteJaula.Count",
+						"comparison": 0,
+						"second-value": "0"
+					}
+				},
+				{
+					"id": "compare-two-values",
+					"objectClass": "System",
+					"sid": 377041244653793,
+					"parameters": {
+						"first-value": "spriteHuida.Count",
+						"comparison": 0,
+						"second-value": "0"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 607795744145718,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "0"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 946729104101808
+				}
+			],
+			"actions": [
+				{
+					"type": "script",
+					"language": "javascript",
+					"script": [
+						"marcarListoParaCueva(runtime);"
+					]
+				}
+			],
+			"sid": 786746815826238
+		}
+	],
+	"sid": 155572836877523
+}

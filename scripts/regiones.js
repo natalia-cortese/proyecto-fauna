@@ -34,12 +34,12 @@ export const REGIONES = {
 		titulo: "CHACO",
 		animales: ["quirquincho_bola"],
 		sprites: {
-			personajes: { spriteMafalda: "AnimationPuna", spriteDieguito: "AnimationPuna" },
+			personajes: { spriteMafalda: "AnimationChaco", spriteDieguito: "AnimationChaco" },
 			huida: "Huida",
-			fondo: "TiledBackgroundPuna",
-			obstaculos: ["Default"],
+			fondo: "TiledBackgroundChaco",
+			obstaculos: ["Tacuru", "Tronco"],
 			enemigos: ["CazadorPuna", "CazadorPuna2"],
-			danio: ["Default"]
+			danio: ["Caraguata", "CaraguataFlor"]
 		}
 	}
 };
