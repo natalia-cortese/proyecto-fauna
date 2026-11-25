@@ -99,6 +99,28 @@ export const REGIONES = {
 	}
 };
 
+// Regiones que se pueden elegir en el mapa de Inicio; las demás aparecen con candado.
+export const REGIONES_JUGABLES = ["puna", "patagonia"];
+
+// Una región está completa cuando el álbum tiene todos sus animales (de todas sus etapas).
+export function regionCompleta(region, coleccion)
+{
+	const ids = idsDeRegion(region);
+	return ids.length > 0 && ids.every(id => coleccion.has(id));
+}
+
+// Adónde ir al salir por la cueva. nivel es el nivel siguiente (ya avanzado):
+// próxima etapa de la región → seguir en la región si faltan animales → final si están todas completas → mapa.
+export function destinoAlCompletar(region, nivel, coleccion)
+{
+	const etapas = infoRegion(region).etapas?.length ?? 1;
+	if (nivel <= etapas || !regionCompleta(region, coleccion))
+		return layoutDeRegion(region, nivel);
+	if (REGIONES_JUGABLES.every(r => regionCompleta(r, coleccion)))
+		return "EndGame";
+	return "Inicio";
+}
+
 // Ids de ficha (prefijo_animal) de todos los animales de la región, en todas sus etapas.
 export function idsDeRegion(region)
 {

@@ -63,20 +63,18 @@ export function cargarUltimoJugador()
 
 export function coleccionActual()
 {
-	if (!jugador) return new Set();
+	return coleccionDe(jugador);
+}
+
+export function coleccionDe(nombre)
+{
+	if (!normalizarNombre(nombre)) return new Set();
 	try
 	{
-		const raw = localStorage.getItem(claveJugador(jugador));
+		const raw = localStorage.getItem(claveJugador(nombre));
 		return new Set(raw ? JSON.parse(raw) : []);
 	}
 	catch { return new Set(); }
-}
-
-export function tieneTodos(ids)
-{
-	if (!ids?.length) return false;
-	const set = coleccionActual();
-	return ids.every(id => set.has(id));
 }
 
 function guardarColeccion(set)
