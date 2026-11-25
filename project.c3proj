@@ -126,8 +126,6 @@
 					"spriteMafalda",
 					"spriteDieguito",
 					"spritePiedrita",
-					"spriteDieguito_Patagonia_Oceano",
-					"spriteMafalda_Patagonia_Oceano",
 					"spriteOlita"
 				],
 				"subfolders": [],
@@ -138,8 +136,8 @@
 					"TiledBackgroundPuna",
 					"Tilemap",
 					"Niebla",
-					"spriteRock",
-					"spriteSaguaro",
+					"spriteObstaculo",
+					"spritePeligro",
 					"spriteSetoBorde",
 					"spriteSetoBorde2",
 					"spriteSetoBorde3",
@@ -154,6 +152,7 @@
 					"recto_vertical",
 					"recto_vertical_v24x",
 					"TiledBackgroundPatagoniaOceano",
+					"TiledBackgroundPatagonia",
 					"spriteIceberg"
 				],
 				"subfolders": [],
@@ -182,8 +181,7 @@
 					"spriteJaula",
 					"Sprite2",
 					"spriteCueva",
-					"spritePortal",
-					"spritejaula_patagonia_oceano"
+					"spritePortal"
 				],
 				"subfolders": [],
 				"name": "jaulas_y_metas"
@@ -217,6 +215,10 @@
 				"items": [
 					"spriteInicioFondo",
 					"spriteZonaPuna",
+					"spriteZonaNoreste",
+					"spriteZonaCuyo",
+					"spriteZonaPampeana",
+					"spriteZonaPatagonia",
 					"spriteBotonJugar",
 					"spriteEtiquetaNombre",
 					"textNombre"
@@ -256,6 +258,7 @@
 			"EndGame",
 			"Creditos",
 			"LaberintoPatagoniaOceano",
+			"LaberintoPatagonia",
 			"LaberintoPuna2"
 		],
 		"subfolders": []
@@ -268,7 +271,9 @@
 			"Home events",
 			"EndGame events",
 			"Creditos events",
-			"LaberintoPatagoniaOceano events"
+			"LaberintoPatagoniaOceano",
+			"LaberintoPatagonia",
+			"Event sheet 2"
 		],
 		"subfolders": []
 	},
@@ -351,6 +356,14 @@
 					"name": "inicio.js",
 					"type": "application/javascript",
 					"sid": 609121726223685,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "mapaRegiones.js",
+					"type": "application/javascript",
+					"sid": 483920571638214,
 					"script-info": {
 						"purpose": "none"
 					}
@@ -554,7 +567,7 @@
 							}
 						},
 						{
-							"name": "sprite_sfx_PTGNIA_ballena.webm",
+							"name": "sprite_sfx_ballena.webm",
 							"type": "audio/webm; codecs=opus",
 							"sid": 496007006721457,
 							"file-info": {
@@ -562,7 +575,7 @@
 							}
 						},
 						{
-							"name": "sprite_sfx_PTGNIA_orca.webm",
+							"name": "sprite_sfx_orca.webm",
 							"type": "audio/webm; codecs=opus",
 							"sid": 809216517259240,
 							"file-info": {
@@ -570,33 +583,9 @@
 							}
 						},
 						{
-							"name": "sprite_sfx_PTGNIA_estrella.webm",
+							"name": "sprite_sfx_estrella.webm",
 							"type": "audio/webm; codecs=opus",
 							"sid": 711739315230552,
-							"file-info": {
-								"purpose": "none"
-							}
-						},
-						{
-							"name": "sprite_sfx_PTGNIA_orca.wav",
-							"type": "audio/wav",
-							"sid": 689989069721840,
-							"file-info": {
-								"purpose": "none"
-							}
-						},
-						{
-							"name": "sprite_sfx_PTGNIA_ballena.wav",
-							"type": "audio/wav",
-							"sid": 229124958319184,
-							"file-info": {
-								"purpose": "none"
-							}
-						},
-						{
-							"name": "sprite_sfx_PTGNIA_estrella_mar.wav",
-							"type": "audio/wav",
-							"sid": 197865401990623,
 							"file-info": {
 								"purpose": "none"
 							}
@@ -604,6 +593,20 @@
 					],
 					"subfolders": [],
 					"name": "patagonia_oceano"
+				},
+				{
+					"items": [
+						{
+							"name": "sprite_music_patagonia_loop.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 555840319405685,
+							"file-info": {
+								"purpose": "none"
+							}
+						}
+					],
+					"subfolders": [],
+					"name": "patagonia"
 				}
 			]
 		},
@@ -621,14 +624,6 @@
 					"name": "sprite_music_endGame.webm",
 					"type": "audio/webm; codecs=opus",
 					"sid": 175063811689471,
-					"file-info": {
-						"purpose": "none"
-					}
-				},
-				{
-					"name": "sprite_music_patagonia_oceano.wav",
-					"type": "audio/wav",
-					"sid": 178097583683046,
 					"file-info": {
 						"purpose": "none"
 					}

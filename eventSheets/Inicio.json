@@ -5,7 +5,7 @@
 			"eventType": "variable",
 			"name": "REGION",
 			"type": "string",
-			"initialValue": "puna",
+			"initialValue": "",
 			"comment": "Zona elegida en la pantalla de inicio; el laberinto sortea animales de esta región.",
 			"isStatic": false,
 			"isConstant": false,
@@ -23,7 +23,7 @@
 		},
 		{
 			"eventType": "comment",
-			"text": "Pantalla de inicio: el mapa elige la región; solo JUGAR arranca (scripts/inicio.js). Solo la Puna está habilitada."
+			"text": "Pantalla de inicio: el mapa elige la región; solo JUGAR arranca (scripts/inicio.js). Puna, Patagonia y Patagonia océano están habilitadas."
 		},
 		{
 			"eventType": "block",

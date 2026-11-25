@@ -1,17 +1,18 @@
 // Álbum de fauna: colección de cartas por jugador (localStorage).
 // Botón pokédex en Inicio y Laberinto; al rescatar se guarda region_animal.
 // Flecha spriteBotonCerrarAlbum para salir (también Esc o tocar fuera).
+// Una página de 12 ranuras por región; abre en la región elegida y las flechas ← → cambian de página.
+
+import { idsDeRegion, claveRegion } from "./regiones.js";
 
 const PREFIJO = "fauna_album_";
 const ULTIMO = "fauna_ultimo_jugador";
+const RANURAS = 12;
 
-// Orden fijo de las 12 ranuras del álbum (las últimas quedan libres para el futuro).
-export const ORDEN_ALBUM = [
-	"puna_vicuna", "puna_zorro_andino", "puna_condor",
-	"puna_flamenco", "puna_gato_andino", "puna_guanaco",
-	"puna_puma", "puna_taruca", "chaco_quirquincho_bola",
-	null, null, null
-];
+export const PAGINAS_ALBUM = ["puna", "patagonia", "chaco"].map(region => ({
+	region,
+	ids: [...idsDeRegion(region), ...Array(RANURAS).fill(null)].slice(0, RANURAS)
+}));
 
 // Centros de cada "?" del sprite del álbum (fracción del ancho/alto respecto al centro).
 const SLOTS_REL = [
@@ -24,6 +25,7 @@ const SLOT_ANCHO = 0.117;
 const SLOT_ALTO = 0.284;
 
 let jugador = "";
+let pagina = 0;
 let abierto = false;
 let fichaDesdeAlbum = false;
 let quitarEscucha = null;
@@ -127,6 +129,7 @@ export function abrirAlbum(runtime)
 	runtimeActual = runtime;
 	abierto = true;
 	fichaDesdeAlbum = false;
+	pagina = Math.max(0, PAGINAS_ALBUM.findIndex(p => p.region === claveRegion(runtime.globalVars.REGION)));
 	if (runtime.globalVars.ALBUM !== undefined) runtime.globalVars.ALBUM = 1;
 
 	const fondo = runtime.objects.spriteAlbumFondo?.getFirstInstance();
@@ -162,9 +165,24 @@ export function abrirAlbum(runtime)
 
 	quitarEscucha?.();
 	const alTocar = e => tocarAlbum(runtime, e);
+	const alTeclear = e => teclaAlbum(runtime, e);
 	runtime.addEventListener("pointerdown", alTocar);
-	quitarEscucha = () => { runtime.removeEventListener("pointerdown", alTocar); quitarEscucha = null; };
+	runtime.addEventListener("keydown", alTeclear);
+	quitarEscucha = () => {
+		runtime.removeEventListener("pointerdown", alTocar);
+		runtime.removeEventListener("keydown", alTeclear);
+		quitarEscucha = null;
+	};
 	return true;
+}
+
+function teclaAlbum(runtime, e)
+{
+	if (!abierto || fichaDesdeAlbum) return;
+	const paso = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+	if (!paso) return;
+	pagina = (pagina + paso + PAGINAS_ALBUM.length) % PAGINAS_ALBUM.length;
+	pintarSlots(runtime);
 }
 
 export function cerrarAlbum(runtime, forzar = false)
@@ -250,16 +268,16 @@ function pintarSlots(runtime)
 	const album = runtime.objects.spriteAlbum?.getFirstInstance();
 	const slots = [...(runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])]
 		.sort((a, b) => a.uid - b.uid);
-	if (!album || slots.length < 12) return;
+	if (!album || slots.length < RANURAS) return;
 
 	const col = coleccionActual();
 	const sw = album.width * SLOT_ANCHO;
 	const sh = album.height * SLOT_ALTO;
 
-	for (let i = 0; i < 12; i++)
+	for (let i = 0; i < RANURAS; i++)
 	{
 		const slot = slots[i];
-		const id = ORDEN_ALBUM[i];
+		const id = PAGINAS_ALBUM[pagina].ids[i];
 		const [rx, ry] = SLOTS_REL[i];
 		slot.x = album.x + rx * album.width;
 		slot.y = album.y + ry * album.height;
@@ -295,9 +313,9 @@ function tocarAlbum(runtime, e)
 	const slots = [...(runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])]
 		.sort((a, b) => a.uid - b.uid);
 	const col = coleccionActual();
-	for (let i = 0; i < Math.min(12, slots.length); i++)
+	for (let i = 0; i < Math.min(RANURAS, slots.length); i++)
 	{
-		const id = ORDEN_ALBUM[i];
+		const id = PAGINAS_ALBUM[pagina].ids[i];
 		if (!id || !col.has(id)) continue;
 		if (slots[i].isVisible && slots[i].containsPoint(x, y))
 		{

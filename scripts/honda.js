@@ -79,7 +79,7 @@ export function actualizarHonda(runtime, tirador, manejado)
 			continue;
 		}
 		const solido = p.testOverlapSolid();
-		if (v.recorrido >= ALCANCE || (solido && solido.objectType.name !== "spriteRock"))
+		if (v.recorrido >= ALCANCE || (solido && solido.objectType.name !== "spriteObstaculo"))
 			p.destroy();
 	}
 }

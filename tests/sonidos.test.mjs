@@ -148,7 +148,8 @@ test("los Play literales existen en disco", () => {
 	}
 });
 
-test("cada animal de regiones.js tiene sprite_sfx en su carpeta", () => {
+test("cada animal de regiones.js tiene sprite_sfx en su carpeta (salvo SIN_SONIDO)", async () => {
+	const { SIN_SONIDO } = await import("../scripts/fichas.js");
 	const alias = aliasSonidosFichas();
 	const faltan = [];
 	for (const [region, info] of Object.entries(REGIONES))
@@ -156,11 +157,39 @@ test("cada animal de regiones.js tiene sprite_sfx en su carpeta", () => {
 		assert.ok(info.sonidos, `${region}: falta sonidos`);
 		for (const animal of info.animales ?? [])
 		{
+			if (SIN_SONIDO.has(`${info.fichaPrefijo || region}_${animal}`)) continue;
 			const archivo = `sounds/${info.sonidos}/${sfxAnimal(region, animal, alias)}.webm`;
 			if (!enDisco.sounds.includes(archivo)) faltan.push(archivo);
 		}
 	}
 	assert.deepEqual(faltan, []);
+});
+
+test("SIN_SONIDO solo lista fichas que de verdad no tienen archivo", async () => {
+	const { SIN_SONIDO } = await import("../scripts/fichas.js");
+	const { carpetaSonidosDe } = await import("../scripts/regiones.js");
+	for (const id of SIN_SONIDO)
+	{
+		const prefijo = id.startsWith("patagonia_oceano_") ? "patagonia_oceano" : id.slice(0, id.indexOf("_"));
+		const archivo = `sounds/${carpetaSonidosDe(prefijo)}/sprite_sfx_${id.slice(prefijo.length + 1)}.webm`;
+		assert.ok(!enDisco.sounds.includes(archivo), `${id} ya tiene ${archivo}: sacalo de SIN_SONIDO`);
+	}
+});
+
+test("cada ficha de spriteFichaAnimal suena con un archivo que existe", async () => {
+	const { sonidoDeFicha } = await import("../scripts/fichas.js");
+	const ficha = JSON.parse(readFileSync(join(RAIZ, "objectTypes/animales_libres/spriteFichaAnimal.json"), "utf8"));
+	const faltan = [];
+	for (const { name } of ficha.animations.items)
+	{
+		const { carpeta, archivo } = sonidoDeFicha(name);
+		if (!archivo) continue;
+		const ruta = `sounds/${carpeta}/${archivo}.webm`;
+		if (!enDisco.sounds.includes(ruta)) faltan.push(`${name} → ${ruta}`);
+	}
+	assert.deepEqual(faltan, []);
+	assert.deepEqual(sonidoDeFicha("patagonia_oceano_ballena"), { carpeta: "patagonia_oceano", archivo: "sprite_sfx_ballena" });
+	assert.deepEqual(sonidoDeFicha("puna_zorro_andino"), { carpeta: "puna", archivo: "sprite_sfx_zorro_andino" });
 });
 
 test("el loop de mapa de cada región jugable existe", () => {
@@ -179,6 +208,21 @@ test("LaberintoPuna reproduce el loop de regiones.puna", () => {
 	const esperado = `${REGIONES.puna.sonidos}/${REGIONES.puna.mapaLoop}`;
 	const play = plays.find(p => p.hoja.includes("LaberintoPuna") && String(p.tag ?? "").includes("musica"));
 	assert.ok(play, "LaberintoPuna tiene que reproducir el loop con tag musica");
+	assert.equal(literalAudio(play.nombre), esperado);
+});
+
+test("LaberintoPatagonia reproduce el loop de tierra", () => {
+	const tierra = REGIONES.patagonia.etapas[1];
+	const esperado = `${tierra.sonidos}/${tierra.mapaLoop}`;
+	const play = plays.find(p => p.hoja.includes("LaberintoPatagonia.json") && String(p.tag ?? "").includes("musica"));
+	assert.ok(play, "LaberintoPatagonia tiene que reproducir el loop con tag musica");
+	assert.equal(literalAudio(play.nombre), esperado);
+});
+
+test("LaberintoPatagoniaOceano reproduce el loop de regiones.patagonia_oceano", () => {
+	const esperado = `${REGIONES.patagonia_oceano.sonidos}/${REGIONES.patagonia_oceano.mapaLoop}`;
+	const play = plays.find(p => p.hoja.includes("LaberintoPatagoniaOceano") && String(p.tag ?? "").includes("musica"));
+	assert.ok(play, "LaberintoPatagoniaOceano tiene que reproducir el loop con tag musica");
 	assert.equal(literalAudio(play.nombre), esperado);
 });
 

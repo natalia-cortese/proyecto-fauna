@@ -113,32 +113,10 @@
 						"imageSpriteId": 3196328,
 						"collisionPoly": {
 							"points": [
-								0.3359375,
-								0.048828125,
-								0.408203125,
-								0.048828125,
-								0.5634765625,
-								0.08333333333333333,
-								0.607421875,
-								0.09765625,
-								0.6982421875,
-								0.162109375,
-								0.9755859375,
-								0.7265625,
-								0.890625,
-								0.8509114583333334,
-								0.8505859375,
-								0.875,
-								0.7158203125,
-								0.935546875,
-								0.658203125,
-								0.935546875,
-								0.0185546875,
-								0.814453125,
-								0.01953125,
-								0.5709635416666666,
-								0.1884765625,
-								0.2109375
+								0.38, 0.52,
+								0.62, 0.52,
+								0.62, 0.92,
+								0.38, 0.92
 							]
 						},
 						"useCollisionPoly": true,
@@ -148,6 +126,39 @@
 				],
 				"sid": 145626221999413,
 				"name": "AnimationOceano",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			},
+			{
+				"frames": [
+					{
+						"width": 472,
+						"height": 894,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 3966905,
+						"collisionPoly": {
+							"points": [
+								0.38, 0.52,
+								0.62, 0.52,
+								0.62, 0.92,
+								0.38, 0.92
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 192838383433191,
+				"name": "AnimationPatagonia",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,

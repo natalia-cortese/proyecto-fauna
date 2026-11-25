@@ -1,5 +1,5 @@
 {
-	"name": "spriteSaguaro",
+	"name": "spritePeligro",
 	"plugin-id": "Sprite",
 	"sid": 792577894640991,
 	"isGlobal": false,
@@ -34,6 +34,39 @@
 				],
 				"sid": 888211848048804,
 				"name": "Default",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			},
+			{
+				"frames": [
+					{
+						"width": 1254,
+						"height": 1254,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 5109401,
+						"collisionPoly": {
+							"points": [
+								0.35, 0.55,
+								0.65, 0.55,
+								0.65, 0.95,
+								0.35, 0.95
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 141643753326814,
+				"name": "Iceberg",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,

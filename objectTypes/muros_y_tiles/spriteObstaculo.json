@@ -1,5 +1,5 @@
 {
-	"name": "spriteRock",
+	"name": "spriteObstaculo",
 	"plugin-id": "Sprite",
 	"sid": 755926849812237,
 	"isGlobal": false,
@@ -39,6 +39,39 @@
 				],
 				"sid": 433974761514047,
 				"name": "Default",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			},
+			{
+				"frames": [
+					{
+						"width": 1254,
+						"height": 1254,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 1159564,
+						"collisionPoly": {
+							"points": [
+								0.3, 0.45,
+								0.7, 0.45,
+								0.7, 0.95,
+								0.3, 0.95
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 609655057386751,
+				"name": "Olita",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,

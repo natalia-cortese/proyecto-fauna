@@ -1,7 +1,10 @@
 // Pantalla de inicio (layout Inicio): mapa de Argentina para elegir zona.
 // Hay que escribir el nombre (textNombre) para guardar el progreso del álbum.
 // El mapa solo selecciona la región; el juego empieza al tocar JUGAR.
-// Las zonas con candado son parte del fondo.
+//
+// Cada región es un sprite encima del fondo, en su lugar exacto, con animaciones
+// "desactivada" y "activa". Al pasar el mouse por una región jugable se activa y
+// queda elegida para JUGAR. La detección usa la silueta de mapaRegiones.js.
 
 import {
 	setJugador, cargarUltimoJugador, abrirAlbum, cerrarAlbum, albumAbierto,
@@ -11,28 +14,46 @@ import { abrirFichaId, cerrarFicha } from "./fichas.js";
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
 import { layoutDeRegion } from "./regiones.js";
 import { reiniciarNivel } from "./nivel.js";
+import { regionEnMapa } from "./mapaRegiones.js";
 
-const ZONAS = { spriteZonaPuna: "puna" };
+export const ZONAS = {
+	spriteZonaPuna: "puna",
+	spriteZonaPatagonia: "patagonia"
+};
+export const ZONAS_BLOQUEADAS = {
+	spriteZonaNoreste: "noreste",
+	spriteZonaCuyo: "cuyo",
+	spriteZonaPampeana: "pampeana"
+};
+const REGIONES_HABILITADAS = new Set(Object.values(ZONAS));
+const ESCALA_HOVER = 1.05;
 const DURACION_SALIDA = 0.3;
+const NOMBRE_X = 680;
+const ETIQUETA_X = 820;
 
 let tiempo = 0;
 let salida = -1;
 let base = new Map();
 let quitarEscucha = null;
 let avisoNombre = 0;
-let regionElegida = "puna";
+let regionElegida = "";
+let regionSobre = null;
+let layoutPendiente = "";
 
 export function iniciarInicio(runtime)
 {
 	tiempo = 0;
 	salida = -1;
 	avisoNombre = 0;
+	regionSobre = null;
 	base = new Map();
 	runtime.timeScale = 1;
 	if (runtime.globalVars.ALBUM !== undefined) runtime.globalVars.ALBUM = 0;
 
-	regionElegida = runtime.globalVars.REGION || "puna";
-	runtime.globalVars.REGION = regionElegida;
+	const previa = String(runtime.globalVars.REGION || "").toLowerCase();
+	regionElegida = REGIONES_HABILITADAS.has(previa) ? previa : "";
+	layoutPendiente = "";
+	if (regionElegida) fijarRegion(runtime, regionElegida);
 
 	configurarAlbum(
 		(rt, id) => abrirFichaId(rt, id),
@@ -44,9 +65,23 @@ export function iniciarInicio(runtime)
 			for (const b of ["8Direction", "Pathfinding", "ScrollTo"])
 				if (inst.behaviors[b]) inst.behaviors[b].isEnabled = false;
 
+	for (const nombre of Object.keys(ZONAS_BLOQUEADAS))
+		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
+		{
+			inst.isVisible = true;
+			inst.setAnimation("desactivada");
+		}
+
 	for (const nombre of [...Object.keys(ZONAS), "spriteBotonJugar", "spriteMafalda", "spriteDieguito", "spriteBotonAlbum"])
 		for (const inst of runtime.objects[nombre]?.getAllInstances() ?? [])
-			base.set(inst, { y: inst.y, w: Math.abs(inst.width), h: Math.abs(inst.height) });
+		{
+			base.set(inst, { y: inst.y, w: Math.abs(inst.width), h: Math.abs(inst.height), sc: 1 });
+			if (Object.prototype.hasOwnProperty.call(ZONAS, nombre))
+			{
+				inst.isVisible = true;
+				inst.setAnimation("desactivada");
+			}
+		}
 
 	const campo = runtime.objects.textNombre?.getFirstInstance();
 	const ultimo = cargarUltimoJugador();
@@ -74,18 +109,27 @@ export function iniciarInicio(runtime)
 
 	quitarEscucha?.();
 	const alTocar = e => tocar(runtime, e);
+	const alMover = e => mover(runtime, e);
 	runtime.addEventListener("pointerdown", alTocar);
-	quitarEscucha = () => { runtime.removeEventListener("pointerdown", alTocar); quitarEscucha = null; };
+	runtime.addEventListener("pointermove", alMover);
+	quitarEscucha = () => {
+		runtime.removeEventListener("pointerdown", alTocar);
+		runtime.removeEventListener("pointermove", alMover);
+		setCursor(runtime, "");
+		quitarEscucha = null;
+	};
 }
 
 export function actualizarInicio(runtime)
 {
 	tiempo += runtime.dt;
 	if (albumAbierto()) return;
+	if (salida < 0) actualizarZonaConMouse(runtime);
 
 	const latido = 1 + 0.03 * Math.sin(tiempo * 4);
 	const aviso = avisoNombre > 0;
 	if (aviso) avisoNombre -= runtime.dt;
+	const t = Math.min(1, runtime.dt * 14);
 
 	for (const [inst, b] of base)
 	{
@@ -105,11 +149,7 @@ export function actualizarInicio(runtime)
 		}
 		if (Object.prototype.hasOwnProperty.call(ZONAS, nombre))
 		{
-			const elegida = ZONAS[nombre] === regionElegida;
-			const escala = elegida ? 1 + 0.06 * Math.sin(tiempo * 4) : latido * 0.96;
-			inst.width = b.w * escala;
-			inst.height = b.h * escala;
-			inst.opacity = elegida ? 1 : 0.72;
+			animarZona(runtime, inst, b, t);
 			continue;
 		}
 		let escala = nombre === "spriteBotonJugar" ? 1 + 0.04 * Math.sin(tiempo * 4 + 1.5) : latido;
@@ -123,24 +163,55 @@ export function actualizarInicio(runtime)
 	if (aviso && campo)
 	{
 		const temblor = Math.sin(tiempo * 40) * 4;
-		campo.x = 372 + temblor;
-		if (etiqueta) etiqueta.x = 512 + temblor;
+		campo.x = NOMBRE_X + temblor;
+		if (etiqueta) etiqueta.x = ETIQUETA_X + temblor;
 	}
 	else if (campo)
 	{
-		campo.x = 372;
-		if (etiqueta) etiqueta.x = 512;
+		campo.x = NOMBRE_X;
+		if (etiqueta) etiqueta.x = ETIQUETA_X;
 	}
 
 	if (salida >= 0)
 	{
 		salida += runtime.dt;
 		if (salida >= DURACION_SALIDA)
-			runtime.goToLayout(layoutDeRegion(runtime.globalVars.REGION || regionElegida));
+		{
+			const destino = layoutPendiente || (regionElegida && layoutDeRegion(regionElegida));
+			if (destino) runtime.goToLayout(destino);
+		}
 	}
 }
 
-export function jugar(runtime, region = regionElegida || runtime.globalVars.REGION)
+function animarZona(runtime, inst, b, t)
+{
+	const region = ZONAS[inst.objectType.name];
+	const hover = regionSobre === region;
+	const activa = hover || region === regionElegida;
+	const destSc = hover ? ESCALA_HOVER : activa ? 1 + 0.015 * Math.sin(tiempo * 4) : 1;
+	b.sc += (destSc - b.sc) * t;
+	inst.isVisible = true;
+	inst.width = b.w * b.sc;
+	inst.height = b.h * b.sc;
+	const anim = activa ? "activa" : "desactivada";
+	if (inst.animationName !== anim)
+	{
+		inst.setAnimation(anim);
+		if (activa) subirSobreZonas(runtime, inst);
+	}
+}
+
+// Queda arriba de las otras regiones (al agrandarse) pero debajo del resto de la interfaz.
+function subirSobreZonas(runtime, inst)
+{
+	let tope = null;
+	for (const nombre of [...Object.keys(ZONAS), ...Object.keys(ZONAS_BLOQUEADAS)])
+		for (const otra of runtime.objects[nombre]?.getAllInstances() ?? [])
+			if (otra !== inst && (!tope || otra.zIndex > tope.zIndex)) tope = otra;
+	try { if (tope && tope.zIndex > inst.zIndex) inst.moveAdjacentToInstance(tope, true); } catch {}
+}
+
+export function jugar(runtime, region)
 {
 	if (salida >= 0 || albumAbierto()) return;
 	if (!tomarNombre(runtime))
@@ -148,18 +219,37 @@ export function jugar(runtime, region = regionElegida || runtime.globalVars.REGI
 		avisoNombre = 1.2;
 		return;
 	}
-	runtime.globalVars.REGION = region || regionElegida || "puna";
-	runtime.globalVars.SEMILLA = 0;
+	const clave = region || regionSobre || regionElegida;
+	if (!REGIONES_HABILITADAS.has(String(clave || "").toLowerCase()))
+	{
+		avisoNombre = 1.2;
+		return;
+	}
+	fijarRegion(runtime, clave);
+	layoutPendiente = layoutDeRegion(clave, 1);
+	if (runtime.globalVars.SEMILLA !== undefined) runtime.globalVars.SEMILLA = 0;
 	reiniciarNivel();
 	if (runtime.globalVars.NIVEL !== undefined) runtime.globalVars.NIVEL = 1;
+	try { runtime.objects.textNombre?.getFirstInstance()?.blur?.(); } catch {}
 	quitarEscucha?.();
 	salida = 0;
 }
 
+function normalizarRegion(region)
+{
+	const clave = String(region || "").toLowerCase();
+	return REGIONES_HABILITADAS.has(clave) ? clave : "";
+}
+
+function fijarRegion(runtime, region)
+{
+	regionElegida = normalizarRegion(region);
+	try { runtime.globalVars.REGION = regionElegida; } catch {}
+}
+
 function elegirRegion(runtime, region)
 {
-	regionElegida = region;
-	runtime.globalVars.REGION = region;
+	fijarRegion(runtime, region);
 }
 
 function tomarNombre(runtime)
@@ -170,11 +260,84 @@ function tomarNombre(runtime)
 	return !!nombre;
 }
 
+function coordsCapa(runtime, e)
+{
+	const capa = runtime.layout.getLayer("Inicio");
+	return capa.cssPxToLayer(e.clientX, e.clientY);
+}
+
+export function zonaBajoPunto(x, y)
+{
+	const region = regionEnMapa(x, y);
+	return REGIONES_HABILITADAS.has(region) ? region : null;
+}
+
+function cursorEnMapa(x, y)
+{
+	if (regionSobre) return "pointer";
+	return regionEnMapa(x, y) ? "not-allowed" : "";
+}
+
+function mouseCapaXY(runtime, capa)
+{
+	const m = runtime.mouse;
+	if (!m || !capa) return null;
+	if (typeof m.getMouseX === "function" && typeof m.getMouseY === "function")
+		return [m.getMouseX(capa), m.getMouseY(capa)];
+	if (typeof m.getMousePosition === "function")
+	{
+		const p = m.getMousePosition(capa);
+		if (Array.isArray(p)) return p;
+		if (p && p.x != null) return [p.x, p.y];
+	}
+	return null;
+}
+
+function actualizarZonaConMouse(runtime)
+{
+	const capa = runtime.layout.getLayer("Inicio");
+	if (!capa) return;
+	try
+	{
+		const pos = mouseCapaXY(runtime, capa);
+		if (!pos) return;
+		const [x, y] = pos;
+		if (x == null || y == null) return;
+		regionSobre = zonaBajoPunto(x, y);
+		if (regionSobre) elegirRegion(runtime, regionSobre);
+		setCursor(runtime, cursorEnMapa(x, y));
+	}
+	catch {}
+}
+
+function setCursor(runtime, tipo)
+{
+	try
+	{
+		const el = runtime.canvas ?? runtime.getElement?.();
+		if (el) el.style.cursor = tipo || "";
+	}
+	catch {}
+}
+
+function mover(runtime, e)
+{
+	if (runtime.layout.name !== "Inicio" || albumAbierto() || salida >= 0)
+	{
+		regionSobre = null;
+		setCursor(runtime, "");
+		return;
+	}
+	const [x, y] = coordsCapa(runtime, e);
+	regionSobre = zonaBajoPunto(x, y);
+	if (regionSobre) elegirRegion(runtime, regionSobre);
+	setCursor(runtime, cursorEnMapa(x, y));
+}
+
 function tocar(runtime, e)
 {
 	if (runtime.layout.name !== "Inicio") return quitarEscucha?.();
-	const capa = runtime.layout.getLayer("Inicio");
-	const [x, y] = capa.cssPxToLayer(e.clientX, e.clientY);
+	const [x, y] = coordsCapa(runtime, e);
 
 	if (albumAbierto()) return;
 
@@ -192,9 +355,8 @@ function tocar(runtime, e)
 		return;
 	}
 
-	for (const [nombre, region] of Object.entries(ZONAS))
-		if (runtime.objects[nombre]?.getAllInstances().some(i => i.containsPoint(x, y)))
-			return elegirRegion(runtime, region);
+	const zona = zonaBajoPunto(x, y);
+	if (zona) return elegirRegion(runtime, zona);
 
 	if (runtime.objects.spriteBotonJugar?.getAllInstances().some(i => i.containsPoint(x, y)))
 		jugar(runtime);

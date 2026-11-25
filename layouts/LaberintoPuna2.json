@@ -566,7 +566,7 @@
 			"sid": 195906766407760,
 			"effectTypes": [],
 			"isInitiallyVisible": true,
-			"isInitiallyInteractive": true,
+			"isInitiallyInteractive": false,
 			"isHTMLElementsLayer": false,
 			"color": [
 				1,
@@ -1661,5 +1661,5 @@
 	"vpX": 0.5,
 	"vpY": 0.5,
 	"projection": "perspective",
-	"eventSheet": "LaberintoPatagoniaOceano events"
+	"eventSheet": "LaberintoPuna"
 }

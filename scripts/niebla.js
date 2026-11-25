@@ -6,11 +6,20 @@ const BORDE = 48;
 
 const niveles = new WeakMap();
 
+function desactivarColisionNiebla(niebla)
+{
+	if (!niebla) return;
+	if ("collisionEnabled" in niebla) niebla.collisionEnabled = false;
+	if (niebla.behaviors?.Solid) niebla.behaviors.Solid.isEnabled = false;
+}
+
 export function reiniciarNiebla(runtime)
 {
 	const niebla = runtime.objects.Niebla?.getFirstInstance();
 	if (!niebla) return;
+	desactivarColisionNiebla(niebla);
 	const { mapWidth: ancho, mapHeight: alto } = niebla;
+	if (!ancho || !alto) return;
 	niveles.set(niebla, new Uint8Array(ancho * alto).fill(3));
 	for (let y = 0; y < alto; y++)
 		for (let x = 0; x < ancho; x++)
@@ -21,8 +30,12 @@ export function revelarNiebla(runtime, personajes)
 {
 	const niebla = runtime.objects.Niebla?.getFirstInstance();
 	if (!niebla) return;
+	desactivarColisionNiebla(niebla);
 
-	const { mapWidth: ancho, mapHeight: alto, tileWidth: tw, tileHeight: th } = niebla;
+	const tw = niebla.tileWidth || 32;
+	const th = niebla.tileHeight || 32;
+	const ancho = niebla.mapWidth || Math.max(1, Math.floor(niebla.width / tw));
+	const alto = niebla.mapHeight || Math.max(1, Math.floor(niebla.height / th));
 	let nivel = niveles.get(niebla);
 	if (!nivel)
 	{
