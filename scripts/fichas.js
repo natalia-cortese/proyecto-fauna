@@ -157,7 +157,7 @@ export function actualizarSalidaLaberinto(runtime)
 	for (const nombre of ["spriteMafalda", "spriteDieguito"])
 	{
 		const quien = runtime.objects[nombre]?.getFirstInstance();
-		if (quien && quien.testOverlap(cueva))
+		if (quien && tocandoCueva(quien, cueva))
 		{
 			alCompletarLaberinto(runtime);
 			return;
@@ -184,4 +184,13 @@ export function alCompletarLaberinto(runtime)
 		avanzarNivel();
 		runtime.goToLayout(layoutDeRegion(reg));
 	}
+}
+
+function tocandoCueva(quien, cueva)
+{
+	if (quien.testOverlap(cueva)) return true;
+	const a = quien.getBoundingBox();
+	const b = cueva.getBoundingBox();
+	const m = 6;
+	return a.left < b.right + m && a.right > b.left - m && a.top < b.bottom + m && a.bottom > b.top - m;
 }
