@@ -53,7 +53,7 @@ export const REGIONES = {
 			huida: "Huida_oceano",
 			fondo: "TiledBackgroundPatagoniaOceano",
 			obstaculos: ["Olita"],
-			enemigos: ["CazadorPatagoniaOceano1", "CazadorPatagoniaOceano2"],
+			enemigos: ["CazadorOceano", "CazadorOceano2"],
 			danio: ["Iceberg"]
 		}
 	},

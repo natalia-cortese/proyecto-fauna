@@ -27,7 +27,7 @@
 						"x": 512,
 						"y": 512,
 						"width": 1024,
-						"height": 1024,
+						"height": 1023.9999999999999,
 						"originX": 0.5,
 						"originY": 0.5,
 						"color": [
@@ -71,9 +71,9 @@
 						"tilemapData": {
 							"width": 28,
 							"height": 19,
-							"max-width": 48,
-							"max-height": 38,
-							"data": "1824x0"
+							"max-width": 28,
+							"max-height": 19,
+							"data": "532x0"
 						},
 						"tile-width": 64,
 						"tile-height": 64,
@@ -235,8 +235,8 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 62,
-						"y": 1032,
+						"x": 66,
+						"y": 956,
 						"width": 90,
 						"height": 132,
 						"originX": 0.5,
@@ -309,8 +309,8 @@
 					"showing": true,
 					"locked": false,
 					"world": {
-						"x": 177,
-						"y": 1033,
+						"x": 170,
+						"y": 952,
 						"width": 90,
 						"height": 132,
 						"originX": 0.5,

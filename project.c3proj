@@ -576,6 +576,30 @@
 							"file-info": {
 								"purpose": "none"
 							}
+						},
+						{
+							"name": "sprite_sfx_PTGNIA_orca.wav",
+							"type": "audio/wav",
+							"sid": 689989069721840,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_PTGNIA_ballena.wav",
+							"type": "audio/wav",
+							"sid": 229124958319184,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_PTGNIA_estrella_mar.wav",
+							"type": "audio/wav",
+							"sid": 197865401990623,
+							"file-info": {
+								"purpose": "none"
+							}
 						}
 					],
 					"subfolders": [],
@@ -597,6 +621,14 @@
 					"name": "sprite_music_endGame.webm",
 					"type": "audio/webm; codecs=opus",
 					"sid": 175063811689471,
+					"file-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "sprite_music_patagonia_oceano.wav",
+					"type": "audio/wav",
+					"sid": 178097583683046,
 					"file-info": {
 						"purpose": "none"
 					}
