@@ -69,7 +69,7 @@
 					"sid": 554587945856731,
 					"parameters": {
 						"folder": "sounds",
-						"audio-file-name": "\"SonidoMapa_puna_loop\"",
+						"audio-file-name": "\"puna/SonidoMapa_puna_loop\"",
 						"loop": "looping",
 						"volume": "-12",
 						"stereo-pan": "0",

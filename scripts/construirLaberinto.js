@@ -19,7 +19,7 @@ const OBJETOS = {
 	H: { nombre: "spriteCazador", ancho: 48, alto: 72 }
 };
 
-const NOMBRES_MAPA = [...new Set(Object.values(OBJETOS).map(o => o.nombre))];
+const NOMBRES_MAPA = [...new Set([...Object.values(OBJETOS).map(o => o.nombre), "spriteCartelSalida"])];
 
 export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 {
@@ -71,6 +71,7 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 					ponerAnimacion(inst, alAzar(sprites.enemigos) || "CazadorPuna");
 					prepararCazador(inst, filas, x, y);
 				}
+				else if (letra === "V") ponerCartelSalida(runtime, inst, capa);
 			}
 			else if (letra === "E" && mafalda) { mafalda.x = cx; mafalda.y = cy; }
 			else if (letra === "N" && dieguito) { dieguito.x = cx; dieguito.y = cy; }
@@ -110,6 +111,17 @@ function ponerAnimacion(inst, nombre)
 {
 	if (!inst || !nombre) return;
 	try { inst.setAnimation(nombre); } catch {}
+}
+
+function ponerCartelSalida(runtime, cueva, capa)
+{
+	const tipo = runtime.objects.spriteCartelSalida;
+	if (!tipo || !cueva) return;
+	const cartel = tipo.createInstance(capa, cueva.x, cueva.y);
+	cartel.width = 72;
+	cartel.height = 40;
+	cartel.y = cueva.y - cueva.height / 2 - cartel.height / 2 + 8;
+	cartel.moveToTop();
 }
 
 function alAzar(lista)

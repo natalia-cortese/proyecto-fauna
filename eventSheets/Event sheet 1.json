@@ -408,7 +408,7 @@
 					"sid": 639008389897037,
 					"parameters": {
 						"folder": "sounds",
-						"audio-file-name": "SONIDO",
+						"audio-file-name": "SONIDO_CARPETA & \"/\" & SONIDO",
 						"loop": "looping",
 						"volume": "0",
 						"stereo-pan": "0",
@@ -426,6 +426,56 @@
 				}
 			],
 			"sid": 972179013263523
+		},
+		{
+			"eventType": "comment",
+			"text": "Al releer una carta desde el álbum (ALBUM=1): mismo SFX que al rescatar. Play (by name) usa carpeta/archivo porque el export es Folders."
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 827023854467820,
+					"parameters": {
+						"variable": "ALBUM",
+						"comparison": 0,
+						"value": "1"
+					}
+				},
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 827023854467821,
+					"parameters": {
+						"variable": "FICHA",
+						"comparison": 0,
+						"value": "1"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 827023854467822
+				}
+			],
+			"actions": [
+				{
+					"id": "play-by-name",
+					"objectClass": "Audio",
+					"sid": 639008389897038,
+					"parameters": {
+						"folder": "sounds",
+						"audio-file-name": "SONIDO_CARPETA & \"/\" & SONIDO",
+						"loop": "looping",
+						"volume": "0",
+						"stereo-pan": "0",
+						"tag-optional": "\"animal\""
+					}
+				}
+			],
+			"sid": 251448161016585
 		},
 		{
 			"eventType": "block",
@@ -502,7 +552,7 @@
 					"sid": 255381246701183,
 					"parameters": {
 						"folder": "sounds",
-						"audio-file-name": "\"GameOver\"",
+						"audio-file-name": "\"comun/GameOver\"",
 						"loop": "not-looping",
 						"volume": "0",
 						"stereo-pan": "0",
@@ -591,7 +641,7 @@
 					"sid": 531701668608775,
 					"parameters": {
 						"folder": "sounds",
-						"audio-file-name": "\"golpe_cazador\"",
+						"audio-file-name": "\"comun/golpe_cazador\"",
 						"loop": "not-looping",
 						"volume": "0",
 						"stereo-pan": "0",
