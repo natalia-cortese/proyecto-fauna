@@ -168,3 +168,18 @@ test("los layouts del proyecto existen en layouts/", () => {
 	for (const nombre of recogerNombres(PROYECTO.layouts))
 		assert.ok(existsSync(join(RAIZ, "layouts", `${nombre}.json`)), `falta layouts/${nombre}.json`);
 });
+
+test("el álbum tiene flechas y título de región donde aparece", () => {
+	const titulo = OBJETOS.get("spriteTituloAlbum");
+	for (const { region } of PAGINAS_ALBUM)
+		assert.ok(titulo?.animaciones.includes(region), `spriteTituloAlbum sin ${region}`);
+	assert.deepEqual([...(OBJETOS.get("spriteFlechaAlbum")?.animaciones ?? [])].sort(), ["derecha", "izquierda"]);
+	for (const archivo of listarArchivos(join(RAIZ, "layouts"), n => n.endsWith(".json") && !n.endsWith(".uistate.json")))
+	{
+		const texto = readFileSync(join(RAIZ, archivo), "utf8");
+		if (!texto.includes('"type": "spriteAlbum"')) continue;
+		const flechas = texto.match(/"type": "spriteFlechaAlbum"/g)?.length ?? 0;
+		assert.equal(flechas, 2, `${archivo}: ${flechas} flechas`);
+		assert.ok(texto.includes('"type": "spriteTituloAlbum"'), `${archivo} sin título`);
+	}
+});

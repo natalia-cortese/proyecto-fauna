@@ -1,7 +1,8 @@
 // Álbum de fauna: colección de cartas por jugador (localStorage).
 // Botón pokédex en Inicio y Laberinto; al rescatar se guarda region_animal.
 // Flecha spriteBotonCerrarAlbum para salir (también Esc o tocar fuera).
-// Una página de 12 ranuras por región; abre en la región elegida y las flechas ← → cambian de página.
+// Cada región ocupa las dos hojas del álbum (12 ranuras); abre en la región elegida.
+// Se cambia de región con spriteFlechaAlbum (debajo del álbum, con spriteTituloAlbum en el medio) o con ← →.
 
 import { idsDeRegion, claveRegion } from "./regiones.js";
 
@@ -23,6 +24,9 @@ const SLOTS_REL = [
 ];
 const SLOT_ANCHO = 0.117;
 const SLOT_ALTO = 0.284;
+const LADO_FLECHA = 56;
+const SEPARACION_FLECHAS = 190;
+const DEBAJO_DEL_ALBUM = 44;
 
 let jugador = "";
 let pagina = 0;
@@ -159,6 +163,7 @@ export function abrirAlbum(runtime)
 	ocultarBotonAlbum(runtime, true);
 	ocultarNombre(runtime, true);
 	colocarCerrar(runtime, true);
+	colocarNavegacion(runtime, true);
 	pintarSlots(runtime);
 
 	quitarEscucha?.();
@@ -178,8 +183,13 @@ function teclaAlbum(runtime, e)
 {
 	if (!abierto || fichaDesdeAlbum) return;
 	const paso = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-	if (!paso) return;
+	if (paso) cambiarPagina(runtime, paso);
+}
+
+function cambiarPagina(runtime, paso)
+{
 	pagina = (pagina + paso + PAGINAS_ALBUM.length) % PAGINAS_ALBUM.length;
+	colocarNavegacion(runtime, true);
 	pintarSlots(runtime);
 }
 
@@ -192,6 +202,7 @@ export function cerrarAlbum(runtime, forzar = false)
 		fichaDesdeAlbum = false;
 		ocultarPiezasAlbum(runtime, false);
 		colocarCerrar(runtime, true);
+		colocarNavegacion(runtime, true);
 		pintarSlots(runtime);
 		return true;
 	}
@@ -205,6 +216,7 @@ export function cerrarAlbum(runtime, forzar = false)
 	for (const slot of runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])
 		slot.isVisible = false;
 	colocarCerrar(runtime, false);
+	colocarNavegacion(runtime, false);
 
 	ocultarBotonAlbum(runtime, false);
 	ocultarNombre(runtime, false);
@@ -235,6 +247,36 @@ function colocarCerrar(runtime, mostrar)
 	btn.y = album.y - album.height * 0.5 + 36;
 }
 
+function colocarNavegacion(runtime, mostrar)
+{
+	const album = runtime.objects.spriteAlbum?.getFirstInstance();
+	const flechas = runtime.objects.spriteFlechaAlbum?.getAllInstances() ?? [];
+	const titulo = runtime.objects.spriteTituloAlbum?.getFirstInstance();
+	const ver = mostrar && !!album;
+	const y = ver ? album.y + album.height / 2 + DEBAJO_DEL_ALBUM : 0;
+	for (const f of flechas)
+	{
+		f.isVisible = ver;
+		if (!ver) continue;
+		const lado = f.animationName === "derecha" ? 1 : -1;
+		f.x = album.x + lado * SEPARACION_FLECHAS;
+		f.y = y;
+		f.width = LADO_FLECHA;
+		f.height = LADO_FLECHA;
+	}
+	if (!titulo) return;
+	titulo.isVisible = ver;
+	if (!ver) return;
+	const region = PAGINAS_ALBUM[pagina].region;
+	if (titulo.animationName !== region)
+		try { titulo.setAnimation(region); } catch {}
+	const escala = 270 / titulo.imageWidth;
+	titulo.width = titulo.imageWidth * escala;
+	titulo.height = titulo.imageHeight * escala;
+	titulo.x = album.x;
+	titulo.y = y;
+}
+
 function ocultarPiezasAlbum(runtime, ocultar)
 {
 	for (const nombre of ["spriteAlbumFondo", "spriteAlbum"])
@@ -245,6 +287,7 @@ function ocultarPiezasAlbum(runtime, ocultar)
 		for (const slot of runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])
 			slot.isVisible = false;
 		colocarCerrar(runtime, false);
+		colocarNavegacion(runtime, false);
 	}
 }
 
@@ -307,6 +350,12 @@ function tocarAlbum(runtime, e)
 	const cerrar = runtime.objects.spriteBotonCerrarAlbum?.getFirstInstance();
 	if (cerrar?.isVisible && cerrar.containsPoint(x, y))
 		return void cerrarAlbum(runtime);
+
+	const flecha = (runtime.objects.spriteFlechaAlbum?.getAllInstances() ?? [])
+		.find(f => f.isVisible && f.containsPoint(x, y));
+	if (flecha) return void cambiarPagina(runtime, flecha.animationName === "derecha" ? 1 : -1);
+	const titulo = runtime.objects.spriteTituloAlbum?.getFirstInstance();
+	if (titulo?.isVisible && titulo.containsPoint(x, y)) return;
 
 	const slots = [...(runtime.objects.spriteAlbumSlot?.getAllInstances() ?? [])]
 		.sort((a, b) => a.uid - b.uid);

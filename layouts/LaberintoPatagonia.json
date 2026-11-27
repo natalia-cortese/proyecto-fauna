@@ -1663,6 +1663,108 @@
 					}
 				},
 				{
+					"type": "spriteFlechaAlbum",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "izquierda",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 556,
+					"sid": 152781579968224,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 322,
+						"y": 800,
+						"width": 56,
+						"height": 56,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
+					"type": "spriteFlechaAlbum",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "derecha",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 557,
+					"sid": 357952988037124,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 702,
+						"y": 800,
+						"width": 56,
+						"height": 56,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
+					"type": "spriteTituloAlbum",
+					"properties": {
+						"initially-visible": false,
+						"initial-animation": "puna",
+						"initial-frame": 0,
+						"enable-collisions": true,
+						"live-preview": false
+					},
+					"uid": 558,
+					"sid": 323159804486775,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 512,
+						"y": 800,
+						"width": 270,
+						"height": 54,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
 					"type": "spriteBotonCerrarAlbum",
 					"properties": {
 						"initially-visible": false,

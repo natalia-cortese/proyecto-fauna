@@ -1,0 +1,90 @@
+{
+	"name": "spriteTituloAlbum",
+	"plugin-id": "Sprite",
+	"sid": 135148844258665,
+	"isGlobal": false,
+	"editorNewInstanceIsReplica": true,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 360,
+						"height": 72,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9761891,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 908291099607478,
+				"name": "puna",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 360,
+						"height": 72,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9761892,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 506117163428024,
+				"name": "patagonia",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			},
+			{
+				"frames": [
+					{
+						"width": 360,
+						"height": 72,
+						"originX": 0.5,
+						"originY": 0.5,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"fileType": "image/png",
+						"imageSpriteId": 9761893,
+						"useCollisionPoly": false,
+						"duration": 1,
+						"tag": ""
+					}
+				],
+				"sid": 611881649124113,
+				"name": "chaco",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 0
+			}
+		],
+		"subfolders": []
+	}
+}
