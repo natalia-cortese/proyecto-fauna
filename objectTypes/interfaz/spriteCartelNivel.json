@@ -227,7 +227,7 @@
 					}
 				],
 				"sid": 800000000000009,
-				"name": "chaco_1",
+				"name": "pampeana_1",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -252,7 +252,7 @@
 					}
 				],
 				"sid": 800000000000010,
-				"name": "chaco_2",
+				"name": "pampeana_2",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -277,7 +277,7 @@
 					}
 				],
 				"sid": 800000000000011,
-				"name": "chaco_3",
+				"name": "pampeana_3",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -302,7 +302,7 @@
 					}
 				],
 				"sid": 800000000000012,
-				"name": "chaco_4",
+				"name": "pampeana_4",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -327,7 +327,7 @@
 					}
 				],
 				"sid": 800000000000013,
-				"name": "chaco_5",
+				"name": "pampeana_5",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -352,7 +352,7 @@
 					}
 				],
 				"sid": 800000000000014,
-				"name": "chaco_6",
+				"name": "pampeana_6",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -377,7 +377,7 @@
 					}
 				],
 				"sid": 800000000000015,
-				"name": "chaco_7",
+				"name": "pampeana_7",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,
@@ -402,7 +402,7 @@
 					}
 				],
 				"sid": 800000000000016,
-				"name": "chaco_8",
+				"name": "pampeana_8",
 				"isLooping": false,
 				"isPingPong": false,
 				"repeatCount": 1,

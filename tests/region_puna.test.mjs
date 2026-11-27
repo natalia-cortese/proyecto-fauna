@@ -1,6 +1,6 @@
 // test_region_puna: el nivel de una región, no solo el generador.
 // Cubre catálogo (regiones.js), layout, hoja de eventos y el mapa con esas jaulas.
-// Para otra región: copiá este archivo a tests/region_chaco.test.mjs y cambiá CLAVE.
+// Para otra región: copiá este archivo a tests/region_pampeana.test.mjs y cambiá CLAVE.
 
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";

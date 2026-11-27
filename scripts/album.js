@@ -10,7 +10,7 @@ const PREFIJO = "fauna_album_";
 const ULTIMO = "fauna_ultimo_jugador";
 const RANURAS = 12;
 
-export const PAGINAS_ALBUM = ["puna", "patagonia", "chaco"].map(region => ({
+export const PAGINAS_ALBUM = ["puna", "patagonia", "pampeana"].map(region => ({
 	region,
 	ids: [...idsDeRegion(region), ...Array(RANURAS).fill(null)].slice(0, RANURAS)
 }));

@@ -7,10 +7,10 @@ Material que todavía no está cableado en el juego, **ordenado por región**.
 | Carpeta | Contenido |
 |---|---|
 | `cartas/puna/` | fichas de la Puna aún no en el juego (o borradores) |
-| `cartas/chaco/` | fichas del Chaco pendientes |
+| `cartas/pampeana/` | fichas de la Pampeana pendientes |
 | `cartas/otras/` | otras regiones / sin región definida |
 | `sonidos/puna/` | SFX de la Puna pendientes |
-| `sonidos/chaco/` | SFX del Chaco pendientes |
+| `sonidos/pampeana/` | SFX de la Pampeana pendientes |
 | `sonidos/otras/` | SFX de otras regiones |
 | `fuentes/` | originales (p. ej. MP3); el juego usa WebM Opus en `sounds/` |
 
