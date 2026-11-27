@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { iniciarControlesTactiles, actualizarControlesTactiles, direccionApretada } from "../scripts/controlesTactiles.js";
 import { RAIZ, cargarObjetos } from "./lib/c3.mjs";
 
-const POS = { arriba: [165, 745], abajo: [165, 965], izquierda: [55, 855], derecha: [275, 855], cambiar: [955, 850], honda: [830, 950] };
+const POS = { arriba: [130, 816], abajo: [130, 972], izquierda: [52, 894], derecha: [208, 894], cambiar: [962, 878], honda: [860, 962] };
 
 function crearRuntime()
 {
