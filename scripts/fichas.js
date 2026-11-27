@@ -10,8 +10,8 @@
 // SIN_SONIDO lista las fichas que todavía no tienen archivo: se abren en silencio.
 
 import { agregarAnimal, coleccionActual } from "./album.js";
-import { etapaDe, claveRegion, REGIONES, carpetaSonidosDe, destinoAlCompletar } from "./regiones.js";
-import { avanzarNivel, getNivel } from "./nivel.js";
+import { etapaDe, claveRegion, REGIONES, carpetaSonidosDe, destinoAlCompletar, siguienteEtapa } from "./regiones.js";
+import { avanzarNivel, getNivel, getEtapa } from "./nivel.js";
 import { iniciarSalidaCueva, saliendoPorCueva } from "./salidaCueva.js";
 
 export const ANIMALES = Object.fromEntries(
@@ -47,7 +47,7 @@ export function reiniciarFichas(runtime)
 
 export function elegirAnimales(nuevaRegion, semilla, jaulas)
 {
-	const etapa = etapaDe(nuevaRegion, getNivel());
+	const etapa = etapaDe(nuevaRegion, getEtapa());
 	region = etapa.fichaPrefijo || etapa.clave || nuevaRegion;
 	const todosBase = etapa.animales ?? ANIMALES[region] ?? [];
 	if (!todosBase.length)
@@ -199,8 +199,11 @@ export function alCompletarLaberinto(runtime)
 	runtime.globalVars.SEMILLA = 0;
 
 	const reg = claveRegion(runtime.globalVars.REGION || region);
-	avanzarNivel();
-	runtime.goToLayout(destinoAlCompletar(reg, getNivel(), coleccionActual()));
+	const coleccion = coleccionActual();
+	const etapaActual = getEtapa();
+	const proximoNivel = getNivel() + 1;
+	avanzarNivel(siguienteEtapa(reg, proximoNivel, etapaActual, coleccion) ?? etapaActual);
+	runtime.goToLayout(destinoAlCompletar(reg, proximoNivel, coleccion, etapaActual));
 }
 
 function tocandoCueva(quien, cueva)

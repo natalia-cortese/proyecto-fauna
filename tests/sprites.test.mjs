@@ -110,15 +110,26 @@ test("sprites de regiones.js existen como objeto o animación", () => {
 	assert.deepEqual(mal, []);
 });
 
-test("las páginas del álbum usan animaciones reales y entran en 12 ranuras", () => {
+test("las páginas del álbum usan animaciones reales y muestran todos los animales de cada región", () => {
 	const slots = OBJETOS.get("spriteAlbumSlot")?.animaciones ?? [];
 	assert.ok(slots.includes("vacio"), "spriteAlbumSlot necesita animación vacio");
 	for (const { region, ids } of PAGINAS_ALBUM)
 	{
 		assert.equal(ids.length, 12);
 		assert.deepEqual(ids.filter(id => id && !slots.includes(id)), [], `página ${region}`);
-		assert.equal(ids.filter(Boolean).length, idsDeRegion(region).length, `${region} no entra en una página`);
 	}
+	for (const region of new Set(PAGINAS_ALBUM.map(p => p.region)))
+	{
+		const enAlbum = PAGINAS_ALBUM.filter(p => p.region === region).flatMap(p => p.ids).filter(Boolean);
+		assert.deepEqual(enAlbum.sort(), idsDeRegion(region).sort(), `${region}: faltan animales en el álbum`);
+	}
+});
+
+test("Patagonia tiene un par de hojas para el océano y otro para tierra", () => {
+	const paginas = PAGINAS_ALBUM.filter(p => p.region === "patagonia");
+	assert.equal(paginas.length, 2);
+	assert.ok(paginas[0].ids.filter(Boolean).every(id => id.startsWith("patagonia_oceano_")));
+	assert.ok(paginas[1].ids.filter(Boolean).every(id => !id.startsWith("patagonia_oceano_")));
 });
 
 test("cada animal de cada etapa tiene ficha y miniatura de álbum", () => {
@@ -182,4 +193,14 @@ test("el álbum tiene flechas y título de región donde aparece", () => {
 		assert.equal(flechas, 2, `${archivo}: ${flechas} flechas`);
 		assert.ok(texto.includes('"type": "spriteTituloAlbum"'), `${archivo} sin título`);
 	}
+});
+
+test("el álbum abre en las hojas de la etapa del laberinto", async () => {
+	const { paginaInicial } = await import("../scripts/album.js");
+	const oceano = paginaInicial("patagonia", "LaberintoPatagoniaOceano");
+	const tierra = paginaInicial("patagonia", "LaberintoPatagonia");
+	assert.ok(PAGINAS_ALBUM[oceano].ids.includes("patagonia_oceano_ballena"));
+	assert.ok(PAGINAS_ALBUM[tierra].ids.includes("patagonia_huemul"));
+	assert.equal(paginaInicial("patagonia", "Inicio"), oceano);
+	assert.equal(PAGINAS_ALBUM[paginaInicial("puna", "Inicio")].region, "puna");
 });

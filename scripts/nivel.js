@@ -5,14 +5,18 @@ import { claveRegion } from "./regiones.js";
 const DURACION = 2.6;
 
 let nivel = 1;
+// Etapa de la región (Patagonia: 1 océano, 2 tierra). Va aparte del nivel porque, cuando faltan
+// animales de una etapa ya jugada, se vuelve a ella mientras el número de nivel sigue subiendo.
+let etapa = 1;
 let cartelHasta = 0;
 let baseW = 0;
 let baseH = 0;
 let frenado = false;
 
-export function reiniciarNivel()
+export function reiniciarNivel(etapaInicial = 1)
 {
 	nivel = 1;
+	etapa = etapaInicial;
 	cartelHasta = 0;
 	frenado = false;
 }
@@ -22,9 +26,15 @@ export function getNivel()
 	return nivel;
 }
 
-export function avanzarNivel()
+export function getEtapa()
+{
+	return etapa;
+}
+
+export function avanzarNivel(etapaSiguiente = etapa)
 {
 	nivel += 1;
+	etapa = etapaSiguiente;
 	return nivel;
 }
 

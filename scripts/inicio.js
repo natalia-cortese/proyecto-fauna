@@ -11,11 +11,11 @@
 
 import {
 	setJugador, cargarUltimoJugador, abrirAlbum, cerrarAlbum, albumAbierto,
-	tocarBotonAlbum, configurarAlbum, fichaAlbumAbierta, coleccionDe
+	tocarBotonAlbum, configurarAlbum, fichaAlbumAbierta, coleccionDe, getJugador
 } from "./album.js";
 import { abrirFichaId, cerrarFicha } from "./fichas.js";
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
-import { layoutDeRegion, REGIONES_JUGABLES, regionCompleta } from "./regiones.js";
+import { layoutDeRegion, REGIONES_JUGABLES, regionCompleta, primeraEtapaPendiente } from "./regiones.js";
 import { reiniciarNivel } from "./nivel.js";
 import { regionEnMapa } from "./mapaRegiones.js";
 
@@ -265,9 +265,10 @@ export function jugar(runtime, region)
 		return;
 	}
 	fijarRegion(runtime, clave);
-	layoutPendiente = layoutDeRegion(clave, 1);
+	const etapa = primeraEtapaPendiente(String(clave).toLowerCase(), coleccionDe(getJugador() || cargarUltimoJugador()));
+	layoutPendiente = layoutDeRegion(clave, etapa);
 	if (runtime.globalVars.SEMILLA !== undefined) runtime.globalVars.SEMILLA = 0;
-	reiniciarNivel();
+	reiniciarNivel(etapa);
 	if (runtime.globalVars.NIVEL !== undefined) runtime.globalVars.NIVEL = 1;
 	try { runtime.objects.textNombre?.getFirstInstance()?.blur?.(); } catch {}
 	quitarEscucha?.();

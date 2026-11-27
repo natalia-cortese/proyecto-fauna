@@ -4,7 +4,7 @@
 import { prepararCazador } from "./cazadores.js";
 import { reiniciarNiebla, revelarNiebla } from "./niebla.js";
 import { REGIONES, spritesDeRegion } from "./regiones.js";
-import { getNivel } from "./nivel.js";
+import { getEtapa } from "./nivel.js";
 
 const CASILLA = 64;
 const ESTILOS = "#FSYPR";
@@ -54,7 +54,7 @@ export function construirLaberinto(runtime, mapa, capa = "Layer 1")
 	limpiarObjetosMapa(runtime);
 	reiniciarNiebla(runtime);
 
-	const sprites = spritesDeRegion(runtime.globalVars.REGION, getNivel());
+	const sprites = spritesDeRegion(runtime.globalVars.REGION, getEtapa());
 	aplicarSpritesRegion(runtime, sprites);
 
 	const filas = mapa.split("|");

@@ -610,6 +610,14 @@
 							"file-info": {
 								"purpose": "none"
 							}
+						},
+						{
+							"name": "sprite_sfx_elefante_marino.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 502427638805413,
+							"file-info": {
+								"purpose": "none"
+							}
 						}
 					],
 					"subfolders": [],
