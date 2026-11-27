@@ -41,3 +41,17 @@ Detalle completo: `scripts/construct_laberinto/GUIA_CONSTRUCT3.md` (incluye cóm
 ## Tests
 
 `npm test` comprueba que sonidos y sprites no pierdan archivo ni referencia en Construct. En GitHub corre en cada PR (`.github/workflows/test.yml`).
+
+## Contribuir
+
+`main` está protegida (regla en `.github/rulesets/proteger-main.json`):
+
+- No se puede pushear directo a `main`: todo cambio entra por **pull request**.
+- El PR necesita **1 aprobación** de otra persona; si se pushean commits nuevos, hay que volver a aprobar.
+- El check **todos los tests** tiene que pasar antes de mergear.
+
+Para aplicar o actualizar la regla (requiere ser admin del repo):
+
+```sh
+gh api -X POST repos/natalia-cortese/proyecto-fauna/rulesets --input .github/rulesets/proteger-main.json
+```
