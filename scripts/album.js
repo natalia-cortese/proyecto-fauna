@@ -4,16 +4,26 @@
 // Cada región ocupa las dos hojas del álbum (12 ranuras); abre en la región elegida.
 // Se cambia de región con spriteFlechaAlbum (debajo del álbum, con spriteTituloAlbum en el medio) o con ← →.
 
-import { idsDeRegion, claveRegion } from "./regiones.js";
+import { idsDeRegion, claveRegion, infoRegion } from "./regiones.js";
 
 const PREFIJO = "fauna_album_";
 const ULTIMO = "fauna_ultimo_jugador";
 const RANURAS = 12;
 
-export const PAGINAS_ALBUM = ["puna", "patagonia", "pampeana"].map(region => ({
-	region,
-	ids: [...idsDeRegion(region), ...Array(RANURAS).fill(null)].slice(0, RANURAS)
-}));
+// Una región con etapas (Patagonia: océano y tierra) tiene un par de hojas por etapa;
+// si una etapa no entra en 12 ranuras sigue en el par siguiente.
+export const PAGINAS_ALBUM = ["puna", "patagonia", "pampeana"].flatMap(region => {
+	const etapas = infoRegion(region).etapas;
+	const grupos = etapas?.length
+		? etapas.map(e => e.animales.map(a => `${e.fichaPrefijo}_${a}`))
+		: [idsDeRegion(region)];
+	return grupos.flatMap(ids => {
+		const paginas = [];
+		for (let i = 0; i < Math.max(ids.length, 1); i += RANURAS)
+			paginas.push({ region, ids: [...ids.slice(i, i + RANURAS), ...Array(RANURAS).fill(null)].slice(0, RANURAS) });
+		return paginas;
+	});
+});
 
 // Centros de cada "?" del sprite del álbum (fracción del ancho/alto respecto al centro).
 const SLOTS_REL = [
@@ -131,7 +141,7 @@ export function abrirAlbum(runtime)
 	runtimeActual = runtime;
 	abierto = true;
 	fichaDesdeAlbum = false;
-	pagina = Math.max(0, PAGINAS_ALBUM.findIndex(p => p.region === claveRegion(runtime.globalVars.REGION)));
+	pagina = paginaInicial(claveRegion(runtime.globalVars.REGION), runtime.layout.name);
 	if (runtime.globalVars.ALBUM !== undefined) runtime.globalVars.ALBUM = 1;
 
 	const fondo = runtime.objects.spriteAlbumFondo?.getFirstInstance();
@@ -177,6 +187,15 @@ export function abrirAlbum(runtime)
 		quitarEscucha = null;
 	};
 	return true;
+}
+
+// Abre en la región elegida; dentro de un laberinto con etapas, en las hojas de esa etapa.
+export function paginaInicial(region, layout)
+{
+	const etapa = infoRegion(region).etapas?.find(e => e.layout === layout);
+	const primerId = etapa ? `${etapa.fichaPrefijo}_${etapa.animales[0]}` : null;
+	const i = PAGINAS_ALBUM.findIndex(p => p.region === region && (!primerId || p.ids.includes(primerId)));
+	return Math.max(0, i);
 }
 
 function teclaAlbum(runtime, e)

@@ -2,7 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { REGIONES_JUGABLES, idsDeRegion, regionCompleta, destinoAlCompletar } from "../scripts/regiones.js";
+import {
+	REGIONES_JUGABLES, idsDeRegion, regionCompleta, destinoAlCompletar, siguienteEtapa, primeraEtapaPendiente
+} from "../scripts/regiones.js";
 import { ZONAS, ZONAS_BLOQUEADAS, regionInicial, iconoDeRegion } from "../scripts/inicio.js";
 import { regionEnMapa } from "../scripts/mapaRegiones.js";
 import { RAIZ, cargarObjetos } from "./lib/c3.mjs";
@@ -15,7 +17,31 @@ test("las regiones jugables son las zonas habilitadas del mapa", () => {
 
 test("terminar un laberinto con animales pendientes sigue en la misma región", () => {
 	assert.equal(destinoAlCompletar("puna", 2, con()), "LaberintoPuna");
-	assert.equal(destinoAlCompletar("patagonia", 3, con("puna")), "LaberintoPatagonia");
+	assert.equal(destinoAlCompletar("puna", 5, con()), "LaberintoPuna");
+});
+
+const oceano = id => id.startsWith("patagonia_oceano_");
+const soloDe = filtro => new Set(idsDeRegion("patagonia").filter(filtro));
+
+test("después de la primera vuelta Patagonia alterna entre las etapas con animales pendientes", () => {
+	assert.equal(destinoAlCompletar("patagonia", 3, con(), 2), "LaberintoPatagoniaOceano");
+	assert.equal(destinoAlCompletar("patagonia", 4, con(), 1), "LaberintoPatagonia");
+});
+
+test("si una etapa ya está completa, Patagonia vuelve a la que le faltan animales", () => {
+	// Tierra completa y faltan animales del océano: no se queda en tierra para siempre.
+	const tierraCompleta = soloDe(id => !oceano(id));
+	assert.equal(destinoAlCompletar("patagonia", 3, tierraCompleta, 2), "LaberintoPatagoniaOceano");
+	assert.equal(siguienteEtapa("patagonia", 4, 1, tierraCompleta), 1);
+	const oceanoCompleto = soloDe(oceano);
+	assert.equal(destinoAlCompletar("patagonia", 3, oceanoCompleto, 2), "LaberintoPatagonia");
+});
+
+test("desde el mapa se entra por la primera etapa con animales pendientes", () => {
+	assert.equal(primeraEtapaPendiente("patagonia", con()), 1);
+	assert.equal(primeraEtapaPendiente("patagonia", soloDe(oceano)), 2);
+	assert.equal(primeraEtapaPendiente("patagonia", con("patagonia")), 1);
+	assert.equal(primeraEtapaPendiente("puna", con()), 1);
 });
 
 test("Patagonia pasa del océano a tierra aunque ya estén los animales", () => {

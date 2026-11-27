@@ -59,7 +59,7 @@ const ETAPA_OCEANO = {
 	sonidos: "patagonia_oceano",
 	mapaLoop: "sprite_music_patagonia_oceano_loop",
 	fichaPrefijo: "patagonia_oceano",
-	animales: ["ballena", "orca", "pinguino"],
+	animales: ["ballena", "orca", "pinguino", "elefante_marino", "estrella"],
 	sprites: SPRITES_OCEANO
 };
 
@@ -121,13 +121,41 @@ export function regionCompleta(region, coleccion)
 	return ids.length > 0 && ids.every(id => coleccion.has(id));
 }
 
-// Adónde ir al salir por la cueva. nivel es el nivel siguiente (ya avanzado):
-// próxima etapa de la región → seguir en la región si faltan animales → final si están todas completas → mapa.
-export function destinoAlCompletar(region, nivel, coleccion)
+function etapaCompleta(region, numero, coleccion)
 {
-	const etapas = infoRegion(region).etapas?.length ?? 1;
-	if (nivel <= etapas || !regionCompleta(region, coleccion))
-		return layoutDeRegion(region, nivel);
+	const e = etapaDe(region, numero);
+	return (e.animales ?? []).every(a => coleccion.has(`${e.fichaPrefijo || e.clave}_${a}`));
+}
+
+// Etapa (desde 1) por la que se entra a la región: la primera que tiene animales sin rescatar.
+export function primeraEtapaPendiente(region, coleccion)
+{
+	const total = infoRegion(region).etapas?.length || 1;
+	for (let n = 1; n <= total; n++)
+		if (!etapaCompleta(region, n, coleccion)) return n;
+	return 1;
+}
+
+// Etapa del laberinto siguiente, o null si la región quedó completa. nivel es el nivel siguiente (ya avanzado).
+// La primera vuelta recorre las etapas en orden (océano → tierra); después rota entre las que tienen animales sin rescatar.
+export function siguienteEtapa(region, nivel, etapaActual, coleccion)
+{
+	const total = infoRegion(region).etapas?.length || 1;
+	if (nivel <= total) return nivel;
+	if (regionCompleta(region, coleccion)) return null;
+	for (let k = 1; k <= total; k++)
+	{
+		const n = (etapaActual - 1 + k) % total + 1;
+		if (!etapaCompleta(region, n, coleccion)) return n;
+	}
+	return null;
+}
+
+// Adónde ir al salir por la cueva: otra etapa de la región → final si están todas completas → mapa.
+export function destinoAlCompletar(region, nivel, coleccion, etapaActual = nivel - 1)
+{
+	const etapa = siguienteEtapa(region, nivel, etapaActual, coleccion);
+	if (etapa) return layoutDeRegion(region, etapa);
 	if (REGIONES_JUGABLES.every(r => regionCompleta(r, coleccion)))
 		return "EndGame";
 	return "Inicio";
