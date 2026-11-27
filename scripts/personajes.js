@@ -17,6 +17,7 @@ import {
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
 import { cartelNivelActivo, actualizarCartelNivel } from "./nivel.js";
 import { saliendoPorCueva, actualizarSalidaCueva, reiniciarSalidaCueva } from "./salidaCueva.js";
+import { iniciarControlesTactiles, actualizarControlesTactiles, direccionApretada } from "./controlesTactiles.js";
 
 export const VIDAS_MAXIMAS = 3;
 //const SEGUIR_DESDE = 90;
@@ -75,6 +76,12 @@ export function iniciarPersonajes(runtime)
 			inst.destroy();
 	aplicarControl(runtime);
 	escucharAlbumHud(runtime);
+	iniciarControlesTactiles(runtime, {
+		cambiar: () => cambiarPersonaje(runtime),
+		honda: () => disparar(runtime),
+		// Tocar la pantalla con la ficha abierta la cierra, como Espacio o Enter.
+		tocar: () => !gameOver && !albumAbierto() && fichaAbierta() && cerrarFicha(runtime)
+	});
 	try
 	{
 		runtime.objects.textNombre?.getFirstInstance()?.blur?.();
@@ -194,6 +201,10 @@ export function actualizarPersonajes(runtime)
 	const otro = personaje(runtime, otroNombre(activo));
 	revelarNiebla(runtime, [actual, otro].filter(Boolean));
 	actualizarLlaves(runtime);
+	actualizarControlesTactiles(runtime, actual && !estaSaltando(actual) ? actual : null, {
+		visibles: !gameOver && !saliendoPorCueva() && !albumAbierto() && !fichaAbierta(),
+		honda: activo === "spriteDieguito"
+	});
 	if (gameOver)
 	{
 		actualizarGameOver(runtime);
@@ -215,9 +226,9 @@ export function actualizarPersonajes(runtime)
 	if (!inicio)
 		inicio = { mafalda: posicion(personaje(runtime, "spriteMafalda")), dieguito: posicion(personaje(runtime, "spriteDieguito")) };
 
-	if (!estaSaltando(actual) && runtime.keyboard)
+	if (!estaSaltando(actual))
 	{
-		const apretadas = FLECHAS.filter(([tecla]) => runtime.keyboard.isKeyDown(tecla));
+		const apretadas = FLECHAS.filter(([tecla]) => direccionApretada(runtime, tecla));
 		for (const [, dx, dy] of apretadas)
 		{
 			if (runtime.objects.spritePeligro && tocando(runtime.objects.spritePeligro, actual, dx, dy))

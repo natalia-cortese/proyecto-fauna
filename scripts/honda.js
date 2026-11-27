@@ -3,6 +3,7 @@
 
 import { golpearCazador } from "./cazadores.js";
 import { avisarGolpeCazador } from "./sonido.js";
+import { direccionApretada } from "./controlesTactiles.js";
 
 const VELOCIDAD = 520;
 const ALCANCE = 420;
@@ -52,9 +53,9 @@ export function actualizarHonda(runtime, tirador, manejado)
 		if (runtime.globalVars.GOLPE_CAZADOR !== undefined) runtime.globalVars.GOLPE_CAZADOR = 0;
 	}
 
-	if (tirador && manejado && runtime.keyboard)
+	if (tirador && manejado)
 	{
-		const apretada = FLECHAS.find(([tecla]) => runtime.keyboard.isKeyDown(tecla));
+		const apretada = FLECHAS.find(([tecla]) => direccionApretada(runtime, tecla));
 		if (apretada) mirada = [apretada[1], apretada[2]];
 	}
 	if (tirador && !manejado) mirada = [Math.sign(tirador.width) || 1, 0];

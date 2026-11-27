@@ -205,6 +205,7 @@
 					"spriteCartelSalida",
 					"spriteCorazon",
 					"spriteContadorLlaves",
+					"spriteControlTactil",
 					"spriteDesafioPerdido",
 					"spriteGameOverFondo",
 					"spriteMarcador",
@@ -297,6 +298,14 @@
 					"name": "cartelJaula.js",
 					"type": "application/javascript",
 					"sid": 262480281566996,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "controlesTactiles.js",
+					"type": "application/javascript",
+					"sid": 731946205588417,
 					"script-info": {
 						"purpose": "none"
 					}
