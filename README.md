@@ -6,7 +6,7 @@ Juego educativo en Construct 3 para conocer la fauna argentina, región a regió
 
 **[Probá el juego en itch.io →](https://faunathegame.itch.io/fauna)**
 
-Se juega en el navegador, sin instalar nada (computadora con teclado). Regiones disponibles: **Puna** y **Patagonia** (océano y tierra).
+Se juega en el navegador, sin instalar nada: en la computadora con el teclado y en el celular con los botones en pantalla. Regiones disponibles: **Puna** y **Patagonia** (océano y tierra).
 
 ## Cómo está armado
 
@@ -28,6 +28,7 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 - **Home**: historia; **CONTINUAR** → mapa · **CRÉDITOS** → créditos
 - En **Inicio**: escribir el **nombre** (guarda el álbum), elegir zona en el mapa y tocar **JUGAR**
 - **Flechas** mover · **Espacio** cambiar Mafalda/Dieguito · **X** honda (Dieguito)
+- En el **celular**: cruz de flechas abajo a la izquierda; abajo a la derecha, cambiar de personaje y la honda (con Dieguito). Tocar la pantalla cierra la ficha del animal
 - **Pokédex**: álbum de cartas; flechas debajo del álbum (o ← →) para cambiar de región; flecha atrás / Esc / tocar fuera para cerrar
 - **Parlante**: apaga/enciende el sonido del juego
 - Solo **Mafalda** junta llaves y abre jaulas; arriba se ve cuántas llaves hay
