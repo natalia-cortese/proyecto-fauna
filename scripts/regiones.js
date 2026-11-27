@@ -81,11 +81,11 @@ export const REGIONES = {
 		animales: ["vicuna", "zorro_andino", "condor", "flamenco", "gato_andino", "guanaco", "puma", "taruca"],
 		sprites: SPRITES_PUNA
 	},
-	chaco: {
-		layout: "LaberintoChaco",
-		sonidos: "chaco",
-		mapaLoop: "SonidoMapa_chaco_loop",
-		titulo: "CHACO",
+	pampeana: {
+		layout: "LaberintoPampeana",
+		sonidos: "pampeana",
+		mapaLoop: "SonidoMapa_pampeana_loop",
+		titulo: "PAMPEANA",
 		animales: ["quirquincho_bola"],
 		sprites: SPRITES_PUNA
 	},

@@ -13,7 +13,7 @@ Proyecto de carpeta de Construct 3 (`project.c3proj`). Abrilo con el editor (*Op
 | `objectTypes/` | objetos por carpeta (`personajes`, `interfaz`, `inicio`, `cinematica`, …) |
 | `scripts/` | lógica; regiones en `scripts/regiones.js`; guía en `scripts/construct_laberinto/GUIA_CONSTRUCT3.md` |
 | `images/` | sprites (planos; prefijo `region_animal` en fichas/slots) |
-| `sounds/` | efectos por región: `comun/`, `puna/`, `chaco/` (WebM Opus) |
+| `sounds/` | efectos por región: `comun/`, `puna/`, `pampeana/` (WebM Opus) |
 | `music/` | música de historia y títulos |
 | `assets/pendientes/` | cartas y sonidos pendientes, por región |
 

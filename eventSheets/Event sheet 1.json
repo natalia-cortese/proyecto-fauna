@@ -56,7 +56,7 @@
 			"name": "SONIDO_CARPETA",
 			"type": "string",
 			"initialValue": "puna",
-			"comment": "Subcarpeta de Sounds para el SFX del animal (puna, chaco, …).",
+			"comment": "Subcarpeta de Sounds para el SFX del animal (puna, pampeana, …).",
 			"isStatic": false,
 			"isConstant": false,
 			"sid": 205746922165987
