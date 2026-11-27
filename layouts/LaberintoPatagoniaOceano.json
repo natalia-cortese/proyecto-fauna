@@ -735,6 +735,40 @@
 					}
 				},
 				{
+					"type": "spriteContadorLlaves",
+					"properties": {
+						"initially-visible": true,
+						"initial-animation": "llaves",
+						"initial-frame": 0,
+						"enable-collisions": false,
+						"live-preview": false
+					},
+					"uid": 552,
+					"sid": 702592984504822,
+					"tags": "",
+					"instanceVariables": {},
+					"behaviors": {},
+					"materialSurfaceType": "smooth",
+					"showing": true,
+					"locked": false,
+					"world": {
+						"x": 228,
+						"y": 40,
+						"width": 95,
+						"height": 40,
+						"originX": 0.5,
+						"originY": 0.5,
+						"color": [
+							1,
+							1,
+							1,
+							1
+						],
+						"z": 0,
+						"angle": 0
+					}
+				},
+				{
 					"type": "spriteCartelNivel",
 					"properties": {
 						"initially-visible": false,

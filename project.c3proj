@@ -202,6 +202,7 @@
 					"spriteCartelNivel",
 					"spriteCartelSalida",
 					"spriteCorazon",
+					"spriteContadorLlaves",
 					"spriteDesafioPerdido",
 					"spriteGameOverFondo",
 					"spriteMarcador",
@@ -294,6 +295,14 @@
 					"name": "cartelJaula.js",
 					"type": "application/javascript",
 					"sid": 262480281566996,
+					"script-info": {
+						"purpose": "none"
+					}
+				},
+				{
+					"name": "salidaCueva.js",
+					"type": "application/javascript",
+					"sid": 584730192648213,
 					"script-info": {
 						"purpose": "none"
 					}
@@ -591,6 +600,14 @@
 							"file-info": {
 								"purpose": "none"
 							}
+						},
+						{
+							"name": "sprite_sfx_pinguino.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 415185535577229,
+							"file-info": {
+								"purpose": "none"
+							}
 						}
 					],
 					"subfolders": [],
@@ -602,6 +619,70 @@
 							"name": "sprite_music_patagonia_loop.webm",
 							"type": "audio/webm; codecs=opus",
 							"sid": 555840319405685,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_huemul.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 384549310501693,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_pudu.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 322154288174559,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_huillin.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 317442342206380,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_carpintero.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 429128133049628,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_chinchillon.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 367750886888163,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_cauquen.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 725876144070192,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_maca.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 844354900758786,
+							"file-info": {
+								"purpose": "none"
+							}
+						},
+						{
+							"name": "sprite_sfx_cisne.webm",
+							"type": "audio/webm; codecs=opus",
+							"sid": 102733749345842,
 							"file-info": {
 								"purpose": "none"
 							}

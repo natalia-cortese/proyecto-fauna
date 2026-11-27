@@ -12,6 +12,7 @@
 import { agregarAnimal, coleccionActual } from "./album.js";
 import { etapaDe, claveRegion, REGIONES, carpetaSonidosDe, destinoAlCompletar } from "./regiones.js";
 import { avanzarNivel, getNivel } from "./nivel.js";
+import { iniciarSalidaCueva, saliendoPorCueva } from "./salidaCueva.js";
 
 export const ANIMALES = Object.fromEntries(
 	Object.entries(REGIONES).map(([clave, info]) => [clave, info.animales ?? []])
@@ -21,11 +22,7 @@ const SONIDOS = {
 	quirquincho_bola: "quirquincho"
 };
 
-export const SIN_SONIDO = new Set([
-	"patagonia_oceano_pinguino",
-	"patagonia_huemul", "patagonia_pudu", "patagonia_huillin", "patagonia_carpintero",
-	"patagonia_chinchillon", "patagonia_cauquen", "patagonia_maca", "patagonia_cisne"
-]);
+export const SIN_SONIDO = new Set([]);
 
 let region = "puna";
 let orden = [...ANIMALES.puna];
@@ -170,10 +167,11 @@ export function laberintoListoParaCueva()
 	return listoParaCueva;
 }
 
-// Cada tick: si el laberinto está completo y un personaje toca la cueva → siguiente pantalla.
+// Cada tick: si el laberinto está completo y un personaje toca la cueva, los chicos entran
+// (salidaCueva.js) y después se pasa a la siguiente pantalla.
 export function actualizarSalidaLaberinto(runtime)
 {
-	if (!listoParaCueva || saliendo || abierta || runtime.globalVars.FICHA === 1) return;
+	if (!listoParaCueva || saliendo || saliendoPorCueva() || abierta || runtime.globalVars.FICHA === 1) return;
 	if (runtime.globalVars.GAMEOVER === 1 || runtime.globalVars.ALBUM === 1) return;
 
 	const cueva = runtime.objects.spriteCueva?.getFirstInstance();
@@ -184,7 +182,7 @@ export function actualizarSalidaLaberinto(runtime)
 		const quien = runtime.objects[nombre]?.getFirstInstance();
 		if (quien && tocandoCueva(quien, cueva))
 		{
-			alCompletarLaberinto(runtime);
+			iniciarSalidaCueva(runtime, cueva, nombre, () => alCompletarLaberinto(runtime));
 			return;
 		}
 	}

@@ -16,6 +16,7 @@ import {
 } from "./album.js";
 import { iniciarSonido, alternarSonido, tocarBotonSonido } from "./sonido.js";
 import { cartelNivelActivo, actualizarCartelNivel } from "./nivel.js";
+import { saliendoPorCueva, actualizarSalidaCueva, reiniciarSalidaCueva } from "./salidaCueva.js";
 
 export const VIDAS_MAXIMAS = 3;
 //const SEGUIR_DESDE = 90;
@@ -57,6 +58,7 @@ export function iniciarPersonajes(runtime)
 	if (runtime.globalVars.ALBUM !== undefined) runtime.globalVars.ALBUM = 0;
 	runtime.globalVars.VIDAS = VIDAS_MAXIMAS;
 	runtime.globalVars.LLAVES = 0;
+	reiniciarSalidaCueva();
 	if (runtime.globalVars.JUGADOR) setJugador(runtime.globalVars.JUGADOR);
 	configurarAlbum(
 		(rt, id) => abrirFichaId(rt, id),
@@ -107,7 +109,7 @@ export function cambiarPersonaje(runtime)
 {
 	if (reintentar(runtime)) return;
 	if (fichaAlbumAbierta()) { cerrarAlbum(runtime); return; }
-	if (albumAbierto()) return;
+	if (albumAbierto() || saliendoPorCueva()) return;
 	if (cerrarFicha(runtime)) return;
 	const actual = personaje(runtime, activo);
 	const otro = personaje(runtime, otroNombre(activo));
@@ -121,7 +123,7 @@ export function cambiarPersonaje(runtime)
 export function disparar(runtime)
 {
 	const dieguito = personaje(runtime, "spriteDieguito");
-	if (gameOver || cartelNivelActivo() || albumAbierto() || fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
+	if (gameOver || saliendoPorCueva() || cartelNivelActivo() || albumAbierto() || fichaAbierta() || activo !== "spriteDieguito" || !dieguito || estaSaltando(dieguito)) return;
 	dispararHonda(runtime, dieguito);
 }
 
@@ -167,7 +169,7 @@ function escucharAlbumHud(runtime)
 	quitarAlbumHud?.();
 	const alTocar = e => {
 		if (!String(runtime.layout.name || "").startsWith("Laberinto")) return quitarAlbumHud?.();
-		if (gameOver || fichaAbierta()) return;
+		if (gameOver || fichaAbierta() || saliendoPorCueva()) return;
 		const capa = runtime.layout.getLayer("HUD");
 		if (!capa) return;
 		const [x, y] = capa.cssPxToLayer(e.clientX, e.clientY);
@@ -191,9 +193,16 @@ export function actualizarPersonajes(runtime)
 	const actual = personaje(runtime, activo);
 	const otro = personaje(runtime, otroNombre(activo));
 	revelarNiebla(runtime, [actual, otro].filter(Boolean));
+	actualizarLlaves(runtime);
 	if (gameOver)
 	{
 		actualizarGameOver(runtime);
+		return;
+	}
+	if (saliendoPorCueva())
+	{
+		actualizarCazadores(runtime, null);
+		actualizarSalidaCueva(runtime);
 		return;
 	}
 	if (otro) seguir(runtime, otro, actual);
@@ -353,6 +362,14 @@ function actualizarMarcador(runtime, actual)
 	marcador.x = actual.x;
 	marcador.y = actual.getBoundingBox().top - 18 + Math.sin(runtime.gameTime * 6) * 4;
 	marcador.moveToTop();
+}
+
+function actualizarLlaves(runtime)
+{
+	const contador = runtime.objects.spriteContadorLlaves?.getFirstInstance();
+	if (!contador) return;
+	const llaves = Math.max(0, Math.min(9, runtime.globalVars.LLAVES | 0));
+	if (contador.animationFrame !== llaves) contador.animationFrame = llaves;
 }
 
 function actualizarCorazones(runtime)
